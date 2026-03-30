@@ -2128,7 +2128,9 @@ export default function App() {
         @media (max-width: 600px) {
           .vgk-main { padding: 24px 12px 40px !important; }
           .vgk-logo { width: 48px !important; height: 54px !important; }
-          .vgk-header-actions span { display: none !important; }
+          .vgk-header-actions a span { display: none !important; }
+          .vgk-mode-label { font-size: 0 !important; }
+          .vgk-mode-label::after { content: attr(data-short); font-size: 11px; }
           .vgk-header-actions a,
           .vgk-header-actions button { padding: 8px 10px !important; }
           .vgk-header-actions { gap: 8px !important; }
@@ -2205,7 +2207,7 @@ export default function App() {
               }}
             >
               <span style={{ fontSize: 16 }}>{darkMode ? "☀️" : "🌙"}</span>
-              <span style={{
+              <span className="vgk-mode-label" data-short={darkMode ? "LT" : "DK"} style={{
                 fontSize: 11, color: C.textDim, fontFamily: "'DM Mono', monospace",
                 letterSpacing: "1px",
               }}>{darkMode ? "LIGHT" : "DARK"}</span>
