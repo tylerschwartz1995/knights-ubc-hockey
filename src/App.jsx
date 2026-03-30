@@ -1416,22 +1416,22 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMod
   }
 
   const renderWidgetRow = (widgets, delay = 0) => (
-    <div style={{
+    <div className="vgk-widget-row" style={{
       display: "grid",
       gridTemplateColumns: `repeat(${widgets.length}, 1fr)`,
       gap: 10, marginBottom: 20,
       animation: `fadeSlideUp 0.4s ease ${delay}ms both`,
     }}>
       {widgets.map((w) => (
-        <div key={w.label} style={{
+        <div key={w.label} className="vgk-widget-card" style={{
           background: C.surface, border: `1px solid ${C.border}`,
           borderRadius: 6, padding: "16px 14px", textAlign: "center",
         }}>
-          <div style={{
+          <div className="vgk-widget-value" style={{
             fontSize: 26, fontWeight: 700, color: C.gold,
-            fontFamily: "'Outfit', sans-serif",
+            fontFamily: "'Outfit', sans-serif", whiteSpace: "nowrap",
           }}>{w.value}</div>
-          <div style={{
+          <div className="vgk-widget-label" style={{
             fontSize: 13, color: C.textDim, letterSpacing: "2px",
             fontFamily: "'DM Mono', monospace", marginTop: 5,
           }}>{w.label}</div>
@@ -2126,8 +2126,17 @@ export default function App() {
         ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 3px; }
         .vgk-tab:hover { color: ${C.textMid} !important; }
         @media (max-width: 600px) {
-          .vgk-main { padding: 24px 16px 40px !important; }
+          .vgk-main { padding: 24px 12px 40px !important; }
           .vgk-logo { width: 48px !important; height: 54px !important; }
+          .vgk-header-actions span { display: none !important; }
+          .vgk-header-actions a,
+          .vgk-header-actions button { padding: 8px 10px !important; }
+          .vgk-header-actions { gap: 8px !important; }
+          .vgk-stat-view-btn { padding: 8px 12px !important; font-size: 12px !important; letter-spacing: 1px !important; }
+          .vgk-tab { padding: 12px 14px !important; font-size: 13px !important; letter-spacing: 1px !important; }
+          .vgk-widget-value { font-size: 20px !important; }
+          .vgk-widget-label { font-size: 11px !important; letter-spacing: 1px !important; }
+          .vgk-widget-card { padding: 12px 8px !important; }
         }
       `}</style>
 
@@ -2166,7 +2175,7 @@ export default function App() {
               animation: "lineGrow 0.8s ease 0.3s both",
             }} />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div className="vgk-header-actions" style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <a
               href="https://open.spotify.com/playlist/2pqv2kXaxSSaZhbUqxdw1r"
               target="_blank"
@@ -2209,7 +2218,7 @@ export default function App() {
         <div style={{
           display: "flex", alignItems: "stretch", gap: 0,
           marginBottom: 32, borderBottom: `1px solid ${C.border}`,
-          overflowX: "visible", WebkitOverflowScrolling: "touch", scrollbarWidth: "none",
+          overflowX: "visible", overflow: "visible",
           animation: "fadeSlideUp 0.5s ease 80ms both",
           position: "relative", zIndex: 10,
         }}>
@@ -2258,10 +2267,11 @@ export default function App() {
           gap: 12, marginBottom: 28,
           animation: "fadeSlideUp 0.5s ease 120ms both",
         }}>
-          <div style={{ display: "flex", gap: 4 }}>
+          <div style={{ display: "flex", gap: 4, overflowX: "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" }}>
             {["skaters", "goalies", "team", "awards"].filter((view) => view !== "awards" || (activeTab !== "alltime" && !playoffMode)).map((view) => (
               <button
                 key={view}
+                className="vgk-stat-view-btn"
                 onClick={() => setStatView(view)}
                 style={{
                   padding: "8px 18px", fontSize: 14, fontWeight: 500,
