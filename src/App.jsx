@@ -12,6 +12,7 @@ const SEASONS = [
 const CONFIG = {
   teamName: "UBC Knights",
   established: "2023",
+  totalGames: 24, // regular season games per team
 };
 
 // ── Colors ──────────────────────────────────────────────
@@ -46,6 +47,9 @@ const LIGHT = {
 };
 
 let C = DARK;
+
+// ── Filters ─────────────────────────────────────────────
+const GOALIE_EXCLUDE = ["Stuart Coy"];
 
 // ── CSV parsing ─────────────────────────────────────────
 function parseCSV(text) {
@@ -86,7 +90,7 @@ function parseGoalieCSV(text) {
       min: parseInt(norm.min || 0) || 0,
       otl: parseInt(norm.otl || 0) || 0,
     };
-  });
+  }).filter((r) => !GOALIE_EXCLUDE.includes(r.player));
 }
 
 function parseGamesCSV(text) {
@@ -150,6 +154,85 @@ function aggregateGoalieAllTime(seasonDataMap) {
   }));
 }
 
+// ── Recap-derived stats ────────────────────────────────
+function computeGWG(recaps) {
+  const gwgCounts = {};
+  recaps.forEach((game) => {
+    if (game.result !== "W") return;
+    // GWG = the Knights goal that put them at (opponent final score + 1)
+    const target = game.ga + 1;
+    let knightsGoals = 0;
+    for (const goal of game.goals) {
+      if (goal.team === "Knights") {
+        knightsGoals++;
+        if (knightsGoals === target) {
+          gwgCounts[goal.scorer] = (gwgCounts[goal.scorer] || 0) + 1;
+          break;
+        }
+      }
+    }
+  });
+  return gwgCounts;
+}
+
+function computeScoringCombos(recaps) {
+  const combos = {};
+  recaps.forEach((game) => {
+    game.goals.forEach((goal) => {
+      if (goal.team !== "Knights") return;
+      goal.assists.forEach((assister) => {
+        const key = `${goal.scorer} + ${assister}`;
+        if (!combos[key]) combos[key] = { scorer: goal.scorer, assister, count: 0 };
+        combos[key].count++;
+      });
+    });
+  });
+  return Object.values(combos).sort((a, b) => b.count - a.count);
+}
+
+function computePenaltyLeaders(recaps) {
+  const players = {};
+  recaps.forEach((game) => {
+    game.penalties.forEach((pen) => {
+      if (pen.team !== "Knights") return;
+      if (!players[pen.player]) players[pen.player] = { player: pen.player, count: 0, minutes: 0, types: {} };
+      players[pen.player].count++;
+      players[pen.player].minutes += pen.minutes;
+      players[pen.player].types[pen.type] = (players[pen.player].types[pen.type] || 0) + 1;
+    });
+  });
+  return Object.values(players).sort((a, b) => b.minutes - a.minutes);
+}
+
+function computeGoalsByPeriod(recaps) {
+  const periods = {};
+  recaps.forEach((game) => {
+    game.goals.forEach((goal) => {
+      if (goal.team !== "Knights") return;
+      periods[goal.period] = (periods[goal.period] || 0) + 1;
+    });
+  });
+  return periods;
+}
+
+function computeComebacks(recaps) {
+  const comebacks = [];
+  recaps.forEach((game) => {
+    if (game.result !== "W") return;
+    let knightsScore = 0, oppScore = 0;
+    let maxDeficit = 0;
+    game.goals.forEach((goal) => {
+      if (goal.team === "Knights") knightsScore++;
+      else oppScore++;
+      if (oppScore > knightsScore) maxDeficit = Math.max(maxDeficit, oppScore - knightsScore);
+    });
+    if (maxDeficit > 0) {
+      comebacks.push({ ...game, deficit: maxDeficit });
+    }
+  });
+  return comebacks.sort((a, b) => b.deficit - a.deficit);
+}
+
 // ── Columns ─────────────────────────────────────────────
 const BASE_COLS = [
   { key: "player", label: "PLAYER", align: "left" },
@@ -158,6 +241,7 @@ const BASE_COLS = [
   { key: "a", label: "A" },
   { key: "p", label: "PTS" },
   { key: "ppg", label: "PPG", format: (v) => v.toFixed(2) },
+  { key: "gwg", label: "GWG" },
   { key: "pm", label: "PIM" },
 ];
 
@@ -169,6 +253,7 @@ const ALLTIME_COLS = [
   { key: "a", label: "A" },
   { key: "p", label: "PTS" },
   { key: "ppg", label: "PPG", format: (v) => v.toFixed(2) },
+  { key: "gwg", label: "GWG" },
   { key: "pm", label: "PIM" },
 ];
 
@@ -244,7 +329,7 @@ function HistoryDropdown({ seasons, activeId, onSelect }) {
         onClick={() => setOpen(!open)}
         className="vgk-tab"
         style={{
-          padding: "12px 20px", fontSize: 13, fontWeight: 500, letterSpacing: "1.5px",
+          padding: "12px 20px", fontSize: 15, fontWeight: 500, letterSpacing: "1.5px",
           textTransform: "uppercase", fontFamily: "'Outfit', sans-serif",
           border: "none",
           borderBottom: isActive ? `2px solid ${C.gold}` : "2px solid transparent",
@@ -266,7 +351,7 @@ function HistoryDropdown({ seasons, activeId, onSelect }) {
         <div style={{
           position: "absolute", top: "calc(100% + 4px)", left: 0,
           background: C.surface, border: `1px solid ${C.border}`,
-          borderRadius: 6, overflow: "hidden", minWidth: 160, zIndex: 100,
+          borderRadius: 6, overflow: "hidden", minWidth: 160, zIndex: 200,
           boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
           animation: "fadeIn 0.15s ease",
         }}>
@@ -291,6 +376,174 @@ function HistoryDropdown({ seasons, activeId, onSelect }) {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+// ── Cumulative Points Chart ────────────────────────────
+function CumulativePointsChart({ recaps }) {
+  const [hoveredPlayer, setHoveredPlayer] = useState(null);
+
+  if (!recaps.length) return null;
+
+  const sorted = [...recaps].sort((a, b) => a.date.localeCompare(b.date));
+
+  // Build per-player cumulative points by game
+  const playerPoints = {};
+  sorted.forEach((game) => {
+    game.goals.forEach((goal) => {
+      if (goal.team !== "Knights") return;
+      playerPoints[goal.scorer] = (playerPoints[goal.scorer] || 0) + 1;
+      goal.assists.forEach((a) => {
+        playerPoints[a] = (playerPoints[a] || 0);
+      });
+    });
+    game.goals.forEach((goal) => {
+      if (goal.team !== "Knights") return;
+      goal.assists.forEach((a) => {
+        playerPoints[a] = (playerPoints[a] || 0) + 1;
+      });
+    });
+  });
+
+  // Rebuild as time series: for each game, track cumulative for each player
+  const topPlayers = Object.entries(playerPoints)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([name]) => name);
+
+  if (!topPlayers.length) return null;
+
+  const series = {};
+  topPlayers.forEach((p) => { series[p] = []; });
+  const cumulative = {};
+  topPlayers.forEach((p) => { cumulative[p] = 0; });
+
+  sorted.forEach((game, gi) => {
+    // Count points per player in this game
+    const gamePoints = {};
+    game.goals.forEach((goal) => {
+      if (goal.team !== "Knights") return;
+      if (topPlayers.includes(goal.scorer)) {
+        gamePoints[goal.scorer] = (gamePoints[goal.scorer] || 0) + 1;
+      }
+      goal.assists.forEach((a) => {
+        if (topPlayers.includes(a)) {
+          gamePoints[a] = (gamePoints[a] || 0) + 1;
+        }
+      });
+    });
+    topPlayers.forEach((p) => {
+      cumulative[p] += (gamePoints[p] || 0);
+      series[p].push(cumulative[p]);
+    });
+  });
+
+  const totalGames = sorted.length;
+  const maxPoints = Math.max(...topPlayers.map((p) => cumulative[p]), 1);
+
+  const w = 820, h = 300, padL = 40, padR = 140, padT = 20, padB = 32;
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+
+  // Spread colors more distinctly
+  const lineColors = ["#c9a84c", "#e8c96e", "#8a7a52", "#a08838", "#d4b45e", "#5c5238"];
+
+  // Avoid label overlap: sort end positions and nudge if too close
+  const endPositions = topPlayers.map((player, pi) => ({
+    player, pi, val: cumulative[player],
+    y: padT + chartH * (1 - cumulative[player] / maxPoints),
+  })).sort((a, b) => a.y - b.y);
+  const minGap = 18;
+  for (let i = 1; i < endPositions.length; i++) {
+    if (endPositions[i].y - endPositions[i - 1].y < minGap) {
+      endPositions[i].y = endPositions[i - 1].y + minGap;
+    }
+  }
+  const labelYMap = {};
+  endPositions.forEach((e) => { labelYMap[e.player] = e.y; });
+
+  return (
+    <div style={{ marginTop: 40, animation: "fadeSlideUp 0.5s ease 500ms both" }}>
+      <h3 style={{
+        fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+        marginBottom: 16, textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
+      }}>Points Race <span style={{ fontSize: 13, color: C.textFaint, fontWeight: 400 }}>(Top 5 Scorers)</span></h3>
+      <div style={{
+        background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8,
+        padding: "20px 12px", overflowX: "auto",
+      }}>
+        <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: "block", margin: "0 auto" }}>
+          {/* Grid lines */}
+          {[0, 0.25, 0.5, 0.75, 1].map((pct) => {
+            const y = padT + chartH * (1 - pct);
+            const val = Math.round(maxPoints * pct);
+            return (
+              <g key={pct}>
+                <line x1={padL} y1={y} x2={padL + chartW} y2={y} stroke={C.border} strokeWidth="1" />
+                <text x={padL - 8} y={y + 5} textAnchor="end" fill={C.textFaint}
+                  fontSize="13" fontFamily="DM Mono, monospace">{val}</text>
+              </g>
+            );
+          })}
+          {/* Lines + dots + labels */}
+          {topPlayers.map((player, pi) => {
+            const points = series[player];
+            const color = lineColors[pi % lineColors.length];
+            const isHovered = hoveredPlayer === player;
+            const isDimmed = hoveredPlayer !== null && !isHovered;
+            const d = points.map((val, i) => {
+              const x = padL + (i / (totalGames - 1 || 1)) * chartW;
+              const y = padT + chartH * (1 - val / maxPoints);
+              return `${i === 0 ? "M" : "L"}${x},${y}`;
+            }).join(" ");
+            const finalVal = cumulative[player];
+            const endX = padL + chartW;
+            const endY = padT + chartH * (1 - finalVal / maxPoints);
+            const labelY = labelYMap[player];
+            return (
+              <g key={player} style={{ transition: "opacity 0.2s" }}
+                opacity={isDimmed ? 0.15 : 1}>
+                {/* Invisible wide hit area for hover */}
+                <path d={d} fill="none" stroke="transparent"
+                  strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"
+                  style={{ cursor: "pointer" }}
+                  onMouseEnter={() => setHoveredPlayer(player)}
+                  onMouseLeave={() => setHoveredPlayer(null)} />
+                <path d={d} fill="none" stroke={color}
+                  strokeWidth={isHovered ? "4" : "3"} strokeLinecap="round" strokeLinejoin="round"
+                  style={{ pointerEvents: "none" }} />
+                {/* Endpoint dot */}
+                <circle cx={endX} cy={endY} r={isHovered ? 7 : 5} fill={color} stroke={C.surface} strokeWidth="2"
+                  style={{ pointerEvents: "none" }} />
+                {/* Connector line to label if nudged */}
+                <line x1={endX + 6} y1={endY} x2={endX + 12} y2={labelY} stroke={color} strokeWidth="1" opacity="0.4"
+                  style={{ pointerEvents: "none" }} />
+                {/* Label */}
+                <text x={endX + 14} y={labelY + 5} fill={color}
+                  fontSize={isHovered ? "15" : "14"} fontFamily="Outfit, sans-serif" fontWeight="600"
+                  style={{ pointerEvents: "none" }}>
+                  {player.split(" ")[1] || player} {finalVal}
+                </text>
+                {/* Show dots on data points when hovered */}
+                {isHovered && points.map((val, i) => {
+                  const x = padL + (i / (totalGames - 1 || 1)) * chartW;
+                  const y = padT + chartH * (1 - val / maxPoints);
+                  return (
+                    <circle key={i} cx={x} cy={y} r="3.5" fill={color} stroke={C.surface} strokeWidth="1.5"
+                      style={{ pointerEvents: "none" }}>
+                      <title>{`G${i + 1}: ${player} — ${val} pts`}</title>
+                    </circle>
+                  );
+                })}
+              </g>
+            );
+          })}
+          {/* X axis */}
+          <text x={padL} y={h - 6} fill={C.textFaint} fontSize="13" fontFamily="DM Mono, monospace">G1</text>
+          <text x={padL + chartW} y={h - 6} fill={C.textFaint} fontSize="13" fontFamily="DM Mono, monospace" textAnchor="end">G{totalGames}</text>
+        </svg>
+      </div>
     </div>
   );
 }
@@ -519,6 +772,7 @@ function StatsView({ data, columns, seasonData }) {
                               col.key === "player" ? (isTop3 ? C.text : C.textMid)
                               : col.key === "p" ? C.gold
                               : col.key === "ppg" ? C.gold
+                              : col.key === "gwg" ? C.goldBright
                               : col.key === "g" ? C.goldBright
                               : col.key === "a" ? C.goldMuted
                               : col.key === "seasons" ? C.gold
@@ -559,76 +813,6 @@ function StatsView({ data, columns, seasonData }) {
       </div>
 
     </>
-  );
-}
-
-// ── Points Breakdown Bar Chart ─────────────────────────
-function PointsBreakdown({ data }) {
-  if (!data.length) return null;
-  const maxP = Math.max(...data.map((d) => d.p));
-  if (maxP === 0) return null;
-
-  return (
-    <div style={{ marginTop: 40, animation: "fadeSlideUp 0.5s ease 450ms both" }}>
-      <h3 style={{
-        fontSize: 14, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
-        marginBottom: 20, textTransform: "uppercase",
-        fontFamily: "'DM Mono', monospace",
-      }}>
-        Points Breakdown
-      </h3>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        {[...data]
-          .sort((a, b) => b.p - a.p)
-          .map((row, i) => (
-            <div key={row.player} style={{
-              display: "grid",
-              gridTemplateColumns: "72px 1fr 38px",
-              alignItems: "center", gap: 12,
-              animation: `fadeSlideUp 0.35s ease ${500 + i * 35}ms both`,
-            }}>
-              <span style={{
-                fontSize: 14, color: C.textMid, textAlign: "right",
-                fontWeight: 600, fontFamily: "'Outfit', sans-serif",
-              }}>
-                {row.player}
-              </span>
-              <div style={{
-                display: "flex", height: 22, borderRadius: 3,
-                overflow: "hidden", background: C.bg,
-                border: `1px solid ${C.border}`,
-              }}>
-                <div style={{
-                  width: `${(row.g / maxP) * 100}%`,
-                  background: `linear-gradient(90deg, ${C.gold}, ${C.goldBright})`,
-                  transition: "width 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-                }} />
-                <div style={{
-                  width: `${(row.a / maxP) * 100}%`,
-                  background: `linear-gradient(90deg, ${C.goldDim}, ${C.goldMuted})`,
-                  transition: "width 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-                }} />
-              </div>
-              <span style={{
-                fontSize: 15, color: C.gold, fontWeight: 600, textAlign: "right",
-                fontFamily: "'DM Mono', monospace",
-              }}>
-                {row.p}
-              </span>
-            </div>
-          ))}
-      </div>
-      <div style={{ display: "flex", gap: 24, marginTop: 16, justifyContent: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-          <div style={{ width: 12, height: 12, borderRadius: 2, background: C.gold }} />
-          <span style={{ fontSize: 14, color: C.textDim, letterSpacing: "1.5px", fontFamily: "'DM Mono', monospace" }}>GOALS</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-          <div style={{ width: 12, height: 12, borderRadius: 2, background: C.goldDim }} />
-          <span style={{ fontSize: 14, color: C.textDim, letterSpacing: "1.5px", fontFamily: "'DM Mono', monospace" }}>ASSISTS</span>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -687,7 +871,7 @@ function ScoringDonut({ data }) {
   return (
     <div style={{ marginTop: 40, animation: "fadeSlideUp 0.5s ease 500ms both" }}>
       <h3 style={{
-        fontSize: 14, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+        fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
         marginBottom: 20, textTransform: "uppercase",
         fontFamily: "'DM Mono', monospace",
       }}>
@@ -768,7 +952,7 @@ function MilestoneTracker({ allTimeData }) {
   return (
     <div style={{ marginTop: 40, animation: "fadeSlideUp 0.5s ease 550ms both" }}>
       <h3 style={{
-        fontSize: 14, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+        fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
         marginBottom: 16, textTransform: "uppercase",
         fontFamily: "'DM Mono', monospace",
       }}>
@@ -824,7 +1008,7 @@ function SvPctGauge({ data }) {
   return (
     <div style={{ marginTop: 40, animation: "fadeSlideUp 0.5s ease 500ms both" }}>
       <h3 style={{
-        fontSize: 14, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+        fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
         marginBottom: 20, textTransform: "uppercase",
         fontFamily: "'DM Mono', monospace",
       }}>
@@ -887,7 +1071,7 @@ function SvPctGauge({ data }) {
 }
 
 // ── GoalieStatsView ────────────────────────────────────
-function GoalieStatsView({ data, columns, subtitle }) {
+function GoalieStatsView({ data, columns }) {
   const [sortKey, setSortKey] = useState("svPct");
   const [sortAsc, setSortAsc] = useState(false);
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -921,14 +1105,6 @@ function GoalieStatsView({ data, columns, subtitle }) {
 
   return (
     <>
-      <p style={{
-        fontFamily: "'DM Mono', monospace",
-        fontSize: 14, color: C.textDim, letterSpacing: "2.5px",
-        textTransform: "uppercase", marginBottom: 28, marginTop: 0,
-      }}>
-        {subtitle}
-      </p>
-
       {/* Leader Cards */}
       <div style={{
         display: "grid",
@@ -1067,18 +1243,108 @@ function GoalieStatsView({ data, columns, subtitle }) {
   );
 }
 
+// ── Pace Projections ───────────────────────────────────
+function PaceProjections({ data }) {
+  if (!data.length) return null;
+
+  const totalGames = CONFIG.totalGames;
+  const top = [...data]
+    .filter((r) => r.gp >= 3) // minimum 3 games to project
+    .sort((a, b) => b.ppg - a.ppg)
+    .slice(0, 10)
+    .map((r) => {
+      const remaining = Math.max(0, totalGames - r.gp);
+      const projG = Math.round(r.g + (r.gp > 0 ? (r.g / r.gp) * remaining : 0));
+      const projA = Math.round(r.a + (r.gp > 0 ? (r.a / r.gp) * remaining : 0));
+      const projP = Math.round(r.p + (r.ppg * remaining));
+      return { ...r, projG, projA, projP, remaining };
+    });
+
+  if (!top.length) return null;
+
+  const maxProj = Math.max(...top.map((r) => r.projP), 1);
+
+  return (
+    <div style={{ marginTop: 40, animation: "fadeSlideUp 0.5s ease 500ms both" }}>
+      <h3 style={{
+        fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+        marginBottom: 6, textTransform: "uppercase",
+        fontFamily: "'DM Mono', monospace",
+      }}>
+        Season Pace
+      </h3>
+      <p style={{
+        fontSize: 14, color: C.textFaint, fontFamily: "'DM Mono', monospace",
+        marginBottom: 16, marginTop: 0,
+      }}>
+        Projected points over {totalGames} games
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {top.map((r, i) => (
+          <div key={r.player} style={{
+            display: "grid", gridTemplateColumns: "100px 1fr 60px",
+            alignItems: "center", gap: 12,
+            animation: `fadeSlideUp 0.3s ease ${520 + i * 40}ms both`,
+          }}>
+            <span style={{
+              fontSize: 14, color: C.textMid, textAlign: "right",
+              fontWeight: 600, fontFamily: "'Outfit', sans-serif",
+            }}>{r.player}</span>
+            <div style={{ position: "relative", height: 24, borderRadius: 3, overflow: "hidden", background: C.bg, border: `1px solid ${C.border}` }}>
+              {/* Current stats (solid) */}
+              <div style={{
+                position: "absolute", left: 0, top: 0, height: "100%",
+                width: `${(r.p / maxProj) * 100}%`,
+                display: "flex",
+              }}>
+                <div style={{
+                  width: r.p > 0 ? `${(r.g / r.p) * 100}%` : "0%", height: "100%",
+                  background: `linear-gradient(90deg, ${C.gold}, ${C.goldBright})`,
+                }} />
+                <div style={{
+                  width: r.p > 0 ? `${(r.a / r.p) * 100}%` : "0%", height: "100%",
+                  background: `linear-gradient(90deg, ${C.goldDim}, ${C.goldMuted})`,
+                }} />
+              </div>
+              {/* Projected (striped/faded) */}
+              <div style={{
+                position: "absolute", left: `${(r.p / maxProj) * 100}%`, top: 0, height: "100%",
+                width: `${((r.projP - r.p) / maxProj) * 100}%`,
+                background: `repeating-linear-gradient(90deg, ${C.gold}20, ${C.gold}20 3px, transparent 3px, transparent 6px)`,
+              }} />
+            </div>
+            <div style={{ textAlign: "right", fontFamily: "'DM Mono', monospace" }}>
+              <span style={{ fontSize: 15, fontWeight: 700, color: C.gold }}>{r.projP}</span>
+              <span style={{ fontSize: 11, color: C.textFaint, marginLeft: 4 }}>({r.p})</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 20, marginTop: 12, justifyContent: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={{ width: 12, height: 12, borderRadius: 2, background: C.gold }} />
+          <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>CURRENT</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={{ width: 12, height: 12, borderRadius: 2, background: `repeating-linear-gradient(90deg, ${C.gold}40, ${C.gold}40 2px, transparent 2px, transparent 4px)` }} />
+          <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>PROJECTED</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── TeamView ───────────────────────────────────────────
-function TeamView({ skaterData, goalieData, games }) {
+function TeamView({ skaterData, goalieData, games, recaps, isAllTime }) {
   const [oppSortKey, setOppSortKey] = useState("gp");
   const [oppSortAsc, setOppSortAsc] = useState(false);
+  const [expandedGame, setExpandedGame] = useState(null);
   const handleOppSort = (key) => {
     if (oppSortKey === key) setOppSortAsc(!oppSortAsc);
     else { setOppSortKey(key); setOppSortAsc(false); }
   };
   const totalGoals = skaterData.reduce((s, r) => s + r.g, 0);
-  const totalAssists = skaterData.reduce((s, r) => s + r.a, 0);
   const totalPIM = skaterData.reduce((s, r) => s + r.pm, 0);
-  const rosterSize = skaterData.length;
   const topGoalie = goalieData.length
     ? goalieData.reduce((a, b) => (a.gp >= b.gp ? a : b))
     : null;
@@ -1125,20 +1391,27 @@ function TeamView({ skaterData, goalieData, games }) {
 
   const statWidgets = [
     { label: "RECORD", value: `${wins}-${losses}-${otl}` },
-    { label: "GAMES", value: games.length },
     { label: "GOALS FOR", value: gf },
     { label: "GOALS AGAINST", value: ga },
     { label: "DIFF", value: gf - ga >= 0 ? `+${gf - ga}` : `${gf - ga}` },
   ];
 
+  // Longest winning streak
+  let longestWinStreak = 0, currentStreak = 0;
+  [...games].sort((a, b) => a.date.localeCompare(b.date)).forEach((g) => {
+    if (g.result === "W") { currentStreak++; longestWinStreak = Math.max(longestWinStreak, currentStreak); }
+    else currentStreak = 0;
+  });
+
   const teamWidgets = [
     { label: "TOTAL GOALS", value: totalGoals },
-    { label: "TOTAL ASSISTS", value: totalAssists },
-    { label: "ROSTER", value: rosterSize },
     { label: "PIM", value: totalPIM },
   ];
   if (topGoalie) {
     teamWidgets.push({ label: "TEAM SV%", value: topGoalie.svPct.toFixed(3) });
+  }
+  if (games.length > 0) {
+    teamWidgets.push({ label: "BEST STREAK", value: `${longestWinStreak}W` });
   }
 
   const renderWidgetRow = (widgets, delay = 0) => (
@@ -1176,25 +1449,26 @@ function TeamView({ skaterData, goalieData, games }) {
       {renderWidgetRow(teamWidgets, 120)}
 
       {/* Current Form */}
-      {last5.length > 0 && (
+      {!isAllTime && last5.length > 0 && (
         <div style={{
           display: "flex", alignItems: "center", gap: 16, marginBottom: 32,
           animation: "fadeSlideUp 0.4s ease 160ms both",
         }}>
           <span style={{
-            fontSize: 14, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+            fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
             textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
           }}>FORM</span>
           <div style={{ display: "flex", gap: 6 }}>
             {last5.map((g, i) => (
               <div key={`${g.date}-${i}`} style={{
-                width: 36, height: 36, borderRadius: 6, display: "flex",
+                minWidth: 36, height: 36, borderRadius: 6, display: "flex",
                 alignItems: "center", justifyContent: "center",
-                fontSize: 14, fontWeight: 700, fontFamily: "'DM Mono', monospace",
+                padding: "0 6px",
+                fontSize: g.result === "OTL" ? 11 : 14, fontWeight: 700, fontFamily: "'DM Mono', monospace",
                 background: g.result === "W" ? "rgba(74,222,128,0.12)" : g.result === "OTL" ? "rgba(201,168,76,0.12)" : "rgba(248,113,113,0.12)",
                 color: resultColor(g.result),
                 border: `1px solid ${g.result === "W" ? "rgba(74,222,128,0.25)" : g.result === "OTL" ? "rgba(201,168,76,0.25)" : "rgba(248,113,113,0.25)"}`,
-              }}>{g.result[0]}</div>
+              }}>{g.result}</div>
             ))}
           </div>
           {streak && (
@@ -1207,11 +1481,115 @@ function TeamView({ skaterData, goalieData, games }) {
       )}
 
 
-      {/* Opponent Breakdown */}
-      {opponentList.length > 0 && (
+      {/* Goals by Period */}
+      {!isAllTime && recaps.length > 0 && (() => {
+        const byPeriod = computeGoalsByPeriod(recaps);
+        const entries = Object.entries(byPeriod)
+          .filter(([name]) => !name.toLowerCase().includes("ot"))
+          .sort((a, b) => {
+            const order = { "1st": 1, "2nd": 2, "3rd": 3 };
+            return (order[a[0]] || 9) - (order[b[0]] || 9);
+          });
+        const totalGoals = entries.reduce((s, [, v]) => s + v, 0);
+        const maxGoals = Math.max(...entries.map(([, v]) => v), 1);
+        return (
+          <div style={{ marginBottom: 32, animation: "fadeSlideUp 0.5s ease 200ms both" }}>
+            <h3 style={{
+              fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+              marginBottom: 16, textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
+            }}>Goals by Period</h3>
+            <div style={{ display: "flex", gap: 16, marginTop: 24 }}>
+              {entries.map(([period, count]) => (
+                <div key={period} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <span style={{ fontSize: 20, fontWeight: 700, color: C.gold, fontFamily: "'DM Mono', monospace", marginBottom: 8 }}>
+                    {count} <span style={{ fontSize: 14, color: C.textDim }}>({Math.round((count / totalGoals) * 100)}%)</span>
+                  </span>
+                  <div style={{ height: 100, display: "flex", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>
+                    <div style={{
+                      width: "100%", maxWidth: 70, borderRadius: 4,
+                      height: `${(count / maxGoals) * 100}px`, minHeight: 4,
+                      background: `linear-gradient(180deg, ${C.gold}, ${C.goldDim})`,
+                    }} />
+                  </div>
+                  <span style={{ fontSize: 16, color: C.textMid, fontWeight: 500, fontFamily: "'DM Mono', monospace", marginTop: 8 }}>{period}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Season Timeline */}
+      {!isAllTime && games.length > 0 && (
         <div style={{ marginBottom: 32, animation: "fadeSlideUp 0.5s ease 250ms both" }}>
           <h3 style={{
-            fontSize: 14, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+            fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+            marginBottom: 16, textTransform: "uppercase",
+            fontFamily: "'DM Mono', monospace",
+          }}>Season Timeline</h3>
+          <div style={{
+            background: C.surface, border: `1px solid ${C.border}`,
+            borderRadius: 8, padding: "20px 16px",
+          }}>
+            {/* Month labels + dots */}
+            {(() => {
+              const sorted = [...games].sort((a, b) => a.date.localeCompare(b.date));
+              // Group by month
+              const months = {};
+              sorted.forEach((g) => {
+                const month = g.date.slice(0, 7); // "2025-10"
+                if (!months[month]) months[month] = [];
+                months[month].push(g);
+              });
+              const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              return (
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  <div style={{ display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center" }}>
+                    {Object.entries(months).map(([month, monthGames]) => (
+                      <div key={month} style={{ display: "flex", alignItems: "center", gap: 2, marginRight: 8 }}>
+                        <span style={{
+                          fontSize: 14, color: C.textDim, fontFamily: "'DM Mono', monospace",
+                          marginRight: 6, minWidth: 32, fontWeight: 500,
+                        }}>{monthNames[parseInt(month.slice(5))]}</span>
+                        {monthGames.map((g, i) => (
+                          <div
+                            key={`${g.date}-${i}`}
+                            title={`${g.date.slice(5)} vs ${g.opponent}: ${g.gf}-${g.ga} (${g.result})`}
+                            style={{
+                              width: 14, height: 14, borderRadius: 3,
+                              background: g.result === "W" ? "#4ade80" : g.result === "OTL" ? C.gold : "#f87171",
+                              opacity: 0.85,
+                              cursor: "default",
+                              transition: "transform 0.15s, opacity 0.15s",
+                            }}
+                            onMouseEnter={(e) => { e.target.style.transform = "scale(1.4)"; e.target.style.opacity = "1"; }}
+                            onMouseLeave={(e) => { e.target.style.transform = "scale(1)"; e.target.style.opacity = "0.85"; }}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  {/* Legend */}
+                  <div style={{ display: "flex", gap: 16, marginTop: 4 }}>
+                    {[{ label: "WIN", color: "#4ade80" }, { label: "LOSS", color: "#f87171" }, { label: "OTL", color: C.gold }].map((l) => (
+                      <div key={l.label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <div style={{ width: 10, height: 10, borderRadius: 2, background: l.color, opacity: 0.85 }} />
+                        <span style={{ fontSize: 13, color: C.textDim, fontFamily: "'DM Mono', monospace", letterSpacing: "1px" }}>{l.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
+
+      {/* Opponent Breakdown */}
+      {!isAllTime && opponentList.length > 0 && (
+        <div style={{ marginBottom: 32, animation: "fadeSlideUp 0.5s ease 250ms both" }}>
+          <h3 style={{
+            fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
             marginBottom: 12, textTransform: "uppercase",
             fontFamily: "'DM Mono', monospace",
           }}>vs Opponents</h3>
@@ -1258,53 +1636,184 @@ function TeamView({ skaterData, goalieData, games }) {
         </div>
       )}
 
-      {/* Recent Results */}
-      {recentGames.length > 0 && (
-        <div style={{ marginBottom: 32, animation: "fadeSlideUp 0.5s ease 300ms both" }}>
+      {/* Comeback Wins */}
+      {!isAllTime && recaps.length > 0 && (() => {
+        const comebacks = computeComebacks(recaps);
+        if (!comebacks.length) return null;
+        return (
+          <div style={{ marginBottom: 32, animation: "fadeSlideUp 0.5s ease 320ms both" }}>
+            <h3 style={{
+              fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+              marginBottom: 16, textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
+            }}>Comeback Wins</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {comebacks.map((g) => (
+                <div key={`${g.date}-${g.opponent}`} style={{
+                  display: "flex", alignItems: "center", gap: 12,
+                  padding: "10px 14px", borderRadius: 6,
+                  background: C.surface, border: `1px solid ${C.border}`,
+                }}>
+                  <span style={{ fontSize: 13, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>{g.date.slice(5)}</span>
+                  <span style={{ fontSize: 15, color: C.textMid, fontWeight: 500, fontFamily: "'Outfit', sans-serif", flex: 1 }}>
+                    vs {g.opponent}
+                  </span>
+                  <span style={{ fontSize: 14, color: "#4ade80", fontWeight: 600, fontFamily: "'DM Mono', monospace" }}>
+                    {g.gf}–{g.ga}
+                  </span>
+                  <span style={{
+                    fontSize: 12, fontWeight: 600, fontFamily: "'DM Mono', monospace",
+                    padding: "3px 8px", borderRadius: 4,
+                    background: "rgba(74,222,128,0.12)", color: "#4ade80",
+                  }}>
+                    Down {g.deficit}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Game Results */}
+      {!isAllTime && recentGames.length > 0 && (
+        <div style={{ marginBottom: 32, animation: "fadeSlideUp 0.5s ease 350ms both" }}>
           <h3 style={{
-            fontSize: 14, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+            fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
             marginBottom: 16, textTransform: "uppercase",
             fontFamily: "'DM Mono', monospace",
           }}>
-            Recent Results
+            Game Results
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {recentGames.map((g, i) => (
-              <div key={`${g.date}-${g.opponent}`} style={{
-                display: "grid", gridTemplateColumns: "90px 40px 1fr 60px 40px",
-                alignItems: "center", gap: 12,
-                padding: "10px 14px", borderRadius: 6,
-                background: C.surface, border: `1px solid ${C.border}`,
-                animation: `fadeSlideUp 0.3s ease ${320 + i * 40}ms both`,
-              }}>
-                <span style={{
-                  fontSize: 13, color: C.textDim, fontFamily: "'DM Mono', monospace",
-                }}>{g.date.slice(5)}</span>
-                <span style={{
-                  fontSize: 11, color: C.textFaint, fontFamily: "'DM Mono', monospace",
-                  textAlign: "center",
-                }}>{g.home ? "HOME" : "AWAY"}</span>
-                <span style={{
-                  fontSize: 15, color: C.textMid, fontWeight: 500,
-                  fontFamily: "'Outfit', sans-serif",
-                }}>vs {g.opponent}</span>
-                <span style={{
-                  fontSize: 16, fontWeight: 700, textAlign: "center",
-                  fontFamily: "'DM Mono', monospace", color: C.text,
-                }}>{g.gf}–{g.ga}</span>
-                <span style={{
-                  fontSize: 14, fontWeight: 700, textAlign: "center",
-                  fontFamily: "'DM Mono', monospace",
-                  color: resultColor(g.result),
-                }}>{g.result}</span>
-              </div>
-            ))}
+            {recentGames.map((g, i) => {
+              const gameKey = `${g.date}-${g.opponent}`;
+              const isExpanded = expandedGame === gameKey;
+              const recap = recaps.find((r) => r.date === g.date && r.opponent === g.opponent);
+              return (
+                <div key={gameKey}>
+                  <div
+                    onClick={() => setExpandedGame(isExpanded ? null : gameKey)}
+                    style={{
+                      display: "grid", gridTemplateColumns: "90px 40px 1fr 60px 40px",
+                      alignItems: "center", gap: 12,
+                      padding: "10px 14px", borderRadius: isExpanded ? "6px 6px 0 0" : 6,
+                      background: C.surface, border: `1px solid ${C.border}`,
+                      cursor: recap ? "pointer" : "default",
+                      animation: `fadeSlideUp 0.3s ease ${320 + i * 40}ms both`,
+                    }}
+                  >
+                    <span style={{
+                      fontSize: 13, color: C.textDim, fontFamily: "'DM Mono', monospace",
+                    }}>{g.date.slice(5)}</span>
+                    <span style={{
+                      fontSize: 11, color: C.textFaint, fontFamily: "'DM Mono', monospace",
+                      textAlign: "center",
+                    }}>{g.home ? "HOME" : "AWAY"}</span>
+                    <span style={{
+                      fontSize: 15, color: C.textMid, fontWeight: 500,
+                      fontFamily: "'Outfit', sans-serif",
+                    }}>
+                      vs {g.opponent}
+                      {recap && <span style={{ fontSize: 10, color: C.textFaint, marginLeft: 6 }}>{isExpanded ? "▾" : "▸"}</span>}
+                    </span>
+                    <span style={{
+                      fontSize: 16, fontWeight: 700, textAlign: "center",
+                      fontFamily: "'DM Mono', monospace", color: C.text,
+                    }}>{g.gf}–{g.ga}</span>
+                    <span style={{
+                      fontSize: 14, fontWeight: 700, textAlign: "center",
+                      fontFamily: "'DM Mono', monospace",
+                      color: resultColor(g.result),
+                    }}>{g.result}</span>
+                  </div>
+                  {isExpanded && recap && (
+                    <div style={{
+                      background: `${C.bg}ee`, border: `1px solid ${C.border}`, borderTop: "none",
+                      borderRadius: "0 0 6px 6px", padding: "16px 20px",
+                      animation: "fadeSlideUp 0.2s ease both",
+                    }}>
+                      {/* Period Summary */}
+                      {recap.periods && recap.periods.length > 0 && (
+                        <div style={{ marginBottom: 16 }}>
+                          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                            {recap.periods.map((p) => (
+                              <div key={p.name} style={{
+                                background: C.surface, border: `1px solid ${C.border}`,
+                                borderRadius: 4, padding: "8px 12px", textAlign: "center",
+                              }}>
+                                <div style={{ fontSize: 11, color: C.textFaint, fontFamily: "'DM Mono', monospace", marginBottom: 4 }}>{p.name}</div>
+                                <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "'DM Mono', monospace", color: C.text }}>{p.goalsHome}–{p.goalsAway}</div>
+                                <div style={{ fontSize: 10, color: C.textFaint, fontFamily: "'DM Mono', monospace", marginTop: 2 }}>SOG {p.shotsHome}–{p.shotsAway}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {/* Goals */}
+                      {recap.goals && recap.goals.length > 0 && (
+                        <div style={{ marginBottom: recap.penalties?.length ? 16 : 0 }}>
+                          <div style={{
+                            fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace",
+                            letterSpacing: "2px", marginBottom: 8, textTransform: "uppercase",
+                          }}>Goals</div>
+                          {recap.goals.map((goal, gi) => {
+                            const isKnights = goal.team === "Knights";
+                            return (
+                              <div key={gi} style={{
+                                display: "flex", alignItems: "baseline", gap: 8,
+                                padding: "4px 0",
+                                borderLeft: `3px solid ${isKnights ? C.gold : C.textFaint}`,
+                                paddingLeft: 10, marginBottom: 4,
+                              }}>
+                                <span style={{ fontSize: 12, color: C.textFaint, fontFamily: "'DM Mono', monospace", minWidth: 32 }}>{goal.period}</span>
+                                <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace", minWidth: 50 }}>{goal.time}</span>
+                                <span style={{ fontSize: 14, color: isKnights ? C.gold : C.textMid, fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>{goal.scorer}</span>
+                                {goal.assists.length > 0 && (
+                                  <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>
+                                    ({goal.assists.join(", ")})
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {/* Penalties */}
+                      {recap.penalties && recap.penalties.length > 0 && (
+                        <div>
+                          <div style={{
+                            fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace",
+                            letterSpacing: "2px", marginBottom: 8, textTransform: "uppercase",
+                          }}>Penalties</div>
+                          {recap.penalties.map((pen, pi) => {
+                            const isKnights = pen.team === "Knights";
+                            return (
+                              <div key={pi} style={{
+                                display: "flex", alignItems: "baseline", gap: 8,
+                                padding: "4px 0",
+                                borderLeft: `3px solid ${isKnights ? "#f87171" : C.textFaint}`,
+                                paddingLeft: 10, marginBottom: 4,
+                              }}>
+                                <span style={{ fontSize: 12, color: C.textFaint, fontFamily: "'DM Mono', monospace", minWidth: 32 }}>{pen.period}</span>
+                                <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace", minWidth: 50 }}>{pen.time}</span>
+                                <span style={{ fontSize: 14, color: C.textMid, fontWeight: 500, fontFamily: "'Outfit', sans-serif" }}>{pen.player}</span>
+                                <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>
+                                  {pen.type} ({pen.minutes}min)
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* Scoring Distribution */}
-      <ScoringDonut data={skaterData} />
     </>
   );
 }
@@ -1320,6 +1829,7 @@ export default function App() {
   const [seasonData, setSeasonData] = useState({});
   const [goalieData, setGoalieData] = useState({});
   const [gamesData, setGamesData] = useState({});
+  const [recapsData, setRecapsData] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [errors, setErrors] = useState([]);
 
@@ -1342,12 +1852,21 @@ export default function App() {
         .then((text) => ({ id: s.id, type: "games", data: parseGamesCSV(text) }))
         .catch(() => ({ id: s.id, type: "games", data: [] }))
     );
-    Promise.all([...skaterFetches, ...goalieFetches, ...gamesFetches]).then((results) => {
+    const recapsFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/recaps.json`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.json(); })
+        .then((data) => ({ id: s.id, type: "recaps", data }))
+        .catch(() => ({ id: s.id, type: "recaps", data: [] }))
+    );
+    Promise.all([...skaterFetches, ...goalieFetches, ...gamesFetches, ...recapsFetches]).then((results) => {
       const skaterMap = {};
       const goalieMap = {};
       const gamesMap = {};
+      const recapsMap = {};
       results.forEach((r) => {
-        if (r.type === "games") {
+        if (r.type === "recaps") {
+          if (r.data.length) recapsMap[r.id] = r.data;
+        } else if (r.type === "games") {
           if (r.data.length) gamesMap[r.id] = r.data;
         } else if (r.type === "goalie") {
           if (r.data.length) goalieMap[r.id] = r.data;
@@ -1358,6 +1877,7 @@ export default function App() {
       setSeasonData(skaterMap);
       setGoalieData(goalieMap);
       setGamesData(gamesMap);
+      setRecapsData(recapsMap);
       setTimeout(() => setLoaded(true), 80);
     });
   }, []);
@@ -1403,10 +1923,19 @@ export default function App() {
     ? Object.values(gamesData).flat()
     : activeTab === "current" ? (gamesData[SEASONS[0]?.id] || [])
     : (gamesData[historySeason] || []);
+  const activeRecaps = activeTab === "alltime"
+    ? Object.values(recapsData).flat()
+    : activeTab === "current" ? (recapsData[SEASONS[0]?.id] || [])
+    : (recapsData[historySeason] || []);
 
-  const activeSubtitle = activeTab === "alltime"
-    ? `${activeData.length} ${isGoalie ? "goalies" : "skaters"} · ${Object.values(isGoalie ? goalieData : seasonData).filter(d => d.length > 0).length} seasons`
-    : `${activeData.length} ${isGoalie ? "goalies" : "skaters"} · ${activeData.length ? Math.max(...activeData.map((r) => r.gp)) : 0} games played`;
+  // Enrich skater data with GWG from recaps
+  const gwgCounts = useMemo(() => computeGWG(activeRecaps), [activeRecaps]);
+  const enrichedData = useMemo(() => {
+    if (!isGoalie) {
+      return activeData.map((r) => ({ ...r, gwg: gwgCounts[r.player] || 0 }));
+    }
+    return activeData;
+  }, [activeData, gwgCounts, isGoalie]);
 
   if (!loaded) {
     return (
@@ -1509,12 +2038,13 @@ export default function App() {
           marginBottom: 32, borderBottom: `1px solid ${C.border}`,
           overflowX: "visible", WebkitOverflowScrolling: "touch", scrollbarWidth: "none",
           animation: "fadeSlideUp 0.5s ease 80ms both",
+          position: "relative", zIndex: 10,
         }}>
           <button
             className="vgk-tab"
             onClick={() => handleTabClick("current")}
             style={{
-              padding: "12px 20px", fontSize: 13, fontWeight: 500, letterSpacing: "1.5px",
+              padding: "12px 20px", fontSize: 15, fontWeight: 500, letterSpacing: "1.5px",
               textTransform: "uppercase", fontFamily: "'Outfit', sans-serif",
               border: "none", cursor: "pointer", transition: "all 0.25s ease", whiteSpace: "nowrap",
               borderBottom: activeTab === "current" ? `2px solid ${C.gold}` : "2px solid transparent",
@@ -1529,7 +2059,7 @@ export default function App() {
             className="vgk-tab"
             onClick={() => handleTabClick("alltime")}
             style={{
-              padding: "12px 20px", fontSize: 13, fontWeight: 500, letterSpacing: "1.5px",
+              padding: "12px 20px", fontSize: 15, fontWeight: 500, letterSpacing: "1.5px",
               textTransform: "uppercase", fontFamily: "'Outfit', sans-serif",
               border: "none", cursor: "pointer", transition: "all 0.25s ease", whiteSpace: "nowrap",
               borderBottom: activeTab === "alltime" ? `2px solid ${C.gold}` : "2px solid transparent",
@@ -1559,7 +2089,7 @@ export default function App() {
               key={view}
               onClick={() => setStatView(view)}
               style={{
-                padding: "8px 18px", fontSize: 12, fontWeight: 500,
+                padding: "8px 18px", fontSize: 14, fontWeight: 500,
                 letterSpacing: "1.5px", textTransform: "uppercase",
                 fontFamily: "'DM Mono', monospace",
                 border: `1px solid ${statView === view ? C.gold : C.border}`,
@@ -1576,17 +2106,101 @@ export default function App() {
 
         {/* Content */}
         {statView === "team" ? (
-          <TeamView skaterData={activeSkaterData} goalieData={activeGoalieData} games={activeGames} />
-        ) : activeData.length > 0 ? (
+          <TeamView skaterData={activeSkaterData} goalieData={activeGoalieData} games={activeGames} recaps={activeRecaps} isAllTime={activeTab === "alltime"} />
+        ) : enrichedData.length > 0 ? (
           isGoalie
             ? <>
-                <GoalieStatsView data={activeData} columns={activeCols} subtitle={activeSubtitle} />
-                <SvPctGauge data={activeData} />
+                <GoalieStatsView data={enrichedData} columns={activeCols} />
+                <SvPctGauge data={enrichedData} />
               </>
             : <>
-                <StatsView data={activeData} columns={activeCols} seasonData={seasonData} />
-                <MilestoneTracker allTimeData={allTimeData} />
-                <PointsBreakdown data={activeData} />
+                <StatsView data={enrichedData} columns={activeCols} seasonData={seasonData} />
+                {activeTab !== "alltime" && <CumulativePointsChart recaps={activeRecaps} />}
+                <ScoringDonut data={enrichedData} />
+                {activeTab !== "alltime" && <PaceProjections data={enrichedData} />}
+                {activeTab !== "alltime" && activeRecaps.length > 0 && (() => {
+                  const combos = computeScoringCombos(activeRecaps).slice(0, 10);
+                  if (!combos.length) return null;
+                  const maxCount = combos[0].count;
+                  return (
+                    <div style={{ marginTop: 40, animation: "fadeSlideUp 0.5s ease 500ms both" }}>
+                      <h3 style={{
+                        fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+                        marginBottom: 16, textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
+                      }}>Scoring Combos</h3>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                        {combos.map((c) => (
+                          <div key={`${c.scorer}-${c.assister}`} style={{
+                            display: "grid", gridTemplateColumns: "1fr 40px 60px",
+                            alignItems: "center", gap: 12,
+                            padding: "10px 14px", borderRadius: 6,
+                            background: C.surface, border: `1px solid ${C.border}`,
+                          }}>
+                            <div>
+                              <span style={{ fontSize: 15, color: C.gold, fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>{c.scorer}</span>
+                              <span style={{ fontSize: 13, color: C.textFaint, fontFamily: "'DM Mono', monospace", margin: "0 8px" }}>+</span>
+                              <span style={{ fontSize: 15, color: C.goldMuted, fontWeight: 500, fontFamily: "'Outfit', sans-serif" }}>{c.assister}</span>
+                            </div>
+                            <span style={{ fontSize: 16, fontWeight: 700, color: C.gold, fontFamily: "'DM Mono', monospace", textAlign: "center" }}>{c.count}</span>
+                            <div style={{
+                              height: 8, borderRadius: 4, background: C.bg, border: `1px solid ${C.border}`, overflow: "hidden",
+                            }}>
+                              <div style={{
+                                height: "100%", width: `${(c.count / maxCount) * 100}%`, borderRadius: 4,
+                                background: `linear-gradient(90deg, ${C.goldDim}, ${C.gold})`,
+                              }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
+                {activeTab !== "alltime" && activeRecaps.length > 0 && (() => {
+                  const leaders = computePenaltyLeaders(activeRecaps);
+                  if (!leaders.length) return null;
+                  return (
+                    <div style={{ marginTop: 40, marginBottom: 32, animation: "fadeSlideUp 0.5s ease 550ms both" }}>
+                      <h3 style={{
+                        fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+                        marginBottom: 16, textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
+                      }}>Penalty Leaders</h3>
+                      <div style={{
+                        background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, overflow: "hidden",
+                      }}>
+                        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
+                          <thead>
+                            <tr style={{ borderBottom: `1px solid ${C.gold}33` }}>
+                              {["PLAYER", "COUNT", "PIM", "TOP TYPE"].map((h) => (
+                                <th key={h} style={{
+                                  padding: "12px 10px", textAlign: h === "PLAYER" ? "left" : "center",
+                                  fontSize: 15, fontWeight: 500, letterSpacing: "1.5px", color: C.textDim,
+                                  fontFamily: "'DM Mono', monospace",
+                                }}>{h}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {leaders.map((p) => {
+                              const topType = Object.entries(p.types).sort((a, b) => b[1] - a[1])[0];
+                              return (
+                                <tr key={p.player}>
+                                  <td style={{ padding: "12px 10px", fontWeight: 600, color: C.text, fontFamily: "'Outfit', sans-serif", fontSize: 15 }}>{p.player}</td>
+                                  <td style={{ padding: "12px 10px", textAlign: "center", color: C.textMid, fontFamily: "'DM Mono', monospace" }}>{p.count}</td>
+                                  <td style={{ padding: "12px 10px", textAlign: "center", color: "#f87171", fontWeight: 600, fontFamily: "'DM Mono', monospace" }}>{p.minutes}</td>
+                                  <td style={{ padding: "12px 10px", textAlign: "center", color: C.textDim, fontFamily: "'DM Mono', monospace" }}>
+                                    {topType ? `${topType[0]} (${topType[1]})` : "–"}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })()}
+                {activeTab !== "alltime" && <MilestoneTracker allTimeData={allTimeData} />}
               </>
         ) : (
           <div style={{

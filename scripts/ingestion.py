@@ -8,7 +8,9 @@ Usage:
 """
 
 import csv
+import json
 import os
+import time
 
 import requests
 from dotenv import load_dotenv
@@ -140,6 +142,7 @@ def fetch_games():
         date = game.get("starts_at", "")[:10]
 
         rows.append({
+            "id": game.get("id"),
             "Date": date,
             "Opponent": opponent,
             "GF": str(gf),
@@ -151,6 +154,109 @@ def fetch_games():
 
     rows.sort(key=lambda r: r["Date"])
     return rows
+
+
+def fetch_game_timeline(game_id):
+    url = f"{API_BASE}/games/{game_id}/timeline"
+    resp = requests.get(url, headers=HEADERS)
+    resp.raise_for_status()
+    return resp.json()["data"]
+
+
+def build_recaps(games):
+    recaps = []
+
+    for game in games:
+        game_id = game["id"]
+        print(f"  Fetching timeline for {game['Date']} vs {game['Opponent']}...")
+
+        try:
+            tl = fetch_game_timeline(game_id)
+        except Exception as e:
+            print(f"    Skipped: {e}")
+            continue
+
+        # Build player ID → name lookup from rosters
+        player_names = {}
+        for roster in tl.get("playerRosters", []):
+            for p in roster.get("players", []):
+                first = p.get("name_first", "")
+                last = p.get("name_last", "")
+                player_names[p["id"]] = f"{first} {last}".strip()
+
+        # Build period ID → name lookup
+        period_names = {}
+        for period in tl.get("periods", []):
+            period_names[period["id"]] = period["period_type"]["name"]
+
+        # Period summary (shots/goals per period)
+        periods = []
+        for period in tl.get("periods", []):
+            is_home = True  # We need to figure out which side is home
+            # Home team shots are shots_home_count
+            periods.append({
+                "name": period["period_type"]["name"],
+                "shotsHome": period.get("shots_home_count", 0),
+                "shotsAway": period.get("shots_visiting_count", 0),
+                "goalsHome": period.get("goals_home_count", 0),
+                "goalsAway": period.get("goals_visiting_count", 0),
+            })
+
+        # Goals
+        goals = []
+        for goal in tl.get("goals", []):
+            shot = goal.get("shot", {})
+            scorer_id = shot.get("player_id")
+            scorer_name = player_names.get(scorer_id, "Unknown") if scorer_id else "Unknown"
+            is_knights = shot.get("team_id") == TEAM_ID
+
+            assists = []
+            for a in goal.get("assists", []):
+                p = a.get("player", {})
+                first = p.get("name_first", "")
+                last = p.get("name_last", "")
+                assists.append(f"{first} {last}".strip())
+
+            goals.append({
+                "period": period_names.get(goal.get("period_id"), "?"),
+                "time": goal.get("period_clock_time", ""),
+                "team": "Knights" if is_knights else game["Opponent"],
+                "scorer": scorer_name,
+                "assists": assists,
+            })
+
+        # Penalties
+        penalties = []
+        for off in tl.get("offenses", []):
+            player_id = off.get("player_id")
+            player_name = player_names.get(player_id, "Unknown") if player_id else "Unknown"
+            is_knights = off.get("team_id") == TEAM_ID
+
+            penalties.append({
+                "period": period_names.get(off.get("period_id"), "?"),
+                "time": off.get("period_clock_time", ""),
+                "team": "Knights" if is_knights else game["Opponent"],
+                "player": player_name,
+                "type": off.get("offense_type", {}).get("name", ""),
+                "severity": off.get("offense_severity", {}).get("name", ""),
+                "minutes": off.get("penalty", {}).get("amount", 0),
+            })
+
+        recaps.append({
+            "date": game["Date"],
+            "opponent": game["Opponent"],
+            "gf": int(game["GF"]),
+            "ga": int(game["GA"]),
+            "result": game["Result"],
+            "ot": game["OT"] == "1",
+            "periods": periods,
+            "goals": goals,
+            "penalties": penalties,
+        })
+
+        time.sleep(0.3)  # be polite to the API
+
+    return recaps
 
 
 def write_csv(rows, filepath, fieldnames):
@@ -191,8 +297,9 @@ if __name__ == "__main__":
 
     # Games
     games = fetch_games()
+    games_csv = [{k: v for k, v in g.items() if k != "id"} for g in games]
     write_csv(
-        games,
+        games_csv,
         OUTPUT_DIR / "games.csv",
         ["Date", "Opponent", "GF", "GA", "Result", "OT", "Home"],
     )
@@ -202,5 +309,13 @@ if __name__ == "__main__":
     print(f"\nGames: {len(games)} ({wins}W-{losses}L-{otl}OTL)")
     for r in games[-5:]:
         print(f"  {r['Date']}  vs {r['Opponent']:20s}  {r['GF']}-{r['GA']}  {r['Result']}")
+
+    # Game Recaps
+    print(f"\nFetching game timelines...")
+    recaps = build_recaps(games)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    with open(OUTPUT_DIR / "recaps.json", "w") as f:
+        json.dump(recaps, f, indent=2)
+    print(f"Wrote {len(recaps)} recaps to {OUTPUT_DIR / 'recaps.json'}")
 
     print("\nDone!")

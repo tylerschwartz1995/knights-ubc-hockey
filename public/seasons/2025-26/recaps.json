@@ -1,0 +1,3874 @@
+[
+  {
+    "date": "2025-09-21",
+    "opponent": "Puck It",
+    "gf": 1,
+    "ga": 2,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 35,
+        "shotsAway": 41,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 0,
+        "shotsAway": 1,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 1,
+        "shotsAway": 0,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:02:27",
+        "team": "Puck It",
+        "scorer": "Ryan Godfry",
+        "assists": [
+          "Michael Kostiw",
+          "Keith Forsythe"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:13",
+        "team": "Puck It",
+        "scorer": "Ryan Godfry",
+        "assists": [
+          "Trevor O conner",
+          "Michael Kostiw"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:18",
+        "team": "Knights",
+        "scorer": "Nathaniel Stuart",
+        "assists": [
+          "Matt Kolec"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:07:04",
+        "team": "Puck It",
+        "player": "Ryan Enright",
+        "type": "Bench",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:05:45",
+        "team": "Knights",
+        "player": "Dillon Crouch",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:01:15",
+        "team": "Puck It",
+        "player": "Ross Enright",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:50",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-09-26",
+    "opponent": "Benders",
+    "gf": 2,
+    "ga": 7,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 7,
+        "shotsAway": 6,
+        "goalsHome": 5,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 10,
+        "shotsAway": 14,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 0,
+        "shotsAway": 0,
+        "goalsHome": 0,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:11:06",
+        "team": "Benders",
+        "scorer": "Cameron Bird",
+        "assists": [
+          "Liam Mroueh"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:07:29",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:07:18",
+        "team": "Benders",
+        "scorer": "Glenn Tipold",
+        "assists": [
+          "Sam Harris",
+          "Patrick Kniec"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:18",
+        "team": "Benders",
+        "scorer": "Sam Harris",
+        "assists": [
+          "Cameron Bird",
+          "Glenn Tipold"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:01:19",
+        "team": "Benders",
+        "scorer": "Tom Harris",
+        "assists": [
+          "Patrick Kniec"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:00:23",
+        "team": "Benders",
+        "scorer": "Sam Harris",
+        "assists": [
+          "Miles Hoaken"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:43",
+        "team": "Benders",
+        "scorer": "Jason Macdonald",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:34",
+        "team": "Benders",
+        "scorer": "Tom Harris",
+        "assists": [
+          "Patrick Kniec"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:31",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Peter Stokes",
+          "Dillon Crouch"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:09:37",
+        "team": "Knights",
+        "player": "Dillon Crouch",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:45",
+        "team": "Benders",
+        "player": "Glenn Tipold",
+        "type": "Unsport",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:45",
+        "team": "Knights",
+        "player": "Matt Kolec",
+        "type": "Unsport",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:59",
+        "team": "Benders",
+        "player": "Cameron Bird",
+        "type": "Unsport",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:59",
+        "team": "Knights",
+        "player": "Mike Matthews",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:39",
+        "team": "Knights",
+        "player": "Mike Kari",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:04:45",
+        "team": "Knights",
+        "player": "Nick Gorse",
+        "type": "Slashing",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:57",
+        "team": "Benders",
+        "player": "Patrick Kniec",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-10-05",
+    "opponent": "Fat Tugs",
+    "gf": 5,
+    "ga": 2,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 13,
+        "shotsAway": 10,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 11,
+        "shotsAway": 9,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 9,
+        "shotsAway": 7,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:06:28",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Kelsey Regan"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:01:41",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:00:30",
+        "team": "Fat Tugs",
+        "scorer": "Scott Johnson",
+        "assists": [
+          "Max Valade",
+          "Ethan Lawrie"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:45",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:42",
+        "team": "Fat Tugs",
+        "scorer": "Scott Johnson",
+        "assists": [
+          "Chris Chebaya"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:39",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:04:26",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Mike Kari"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:01:44",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:38",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:47",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:14",
+        "team": "Fat Tugs",
+        "player": "Scott Johnson",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:52",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 4
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:52",
+        "team": "Knights",
+        "player": "Kyle Misewich",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:52",
+        "team": "Fat Tugs",
+        "player": "Max Valade",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-10-15",
+    "opponent": "Whalers",
+    "gf": 10,
+    "ga": 6,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 6,
+        "shotsAway": 3,
+        "goalsHome": 6,
+        "goalsAway": 3
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 2,
+        "shotsAway": 2,
+        "goalsHome": 2,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 18,
+        "shotsAway": 14,
+        "goalsHome": 2,
+        "goalsAway": 1
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:12:45",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Justin Stroud",
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:10:56",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:10:07",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:08:03",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Tyler Schwartz",
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:06:03",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Mike Kari",
+          "Nick Gorse"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:04:38",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Stuart Coy",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:02:52",
+        "team": "Whalers",
+        "scorer": "Jack Tadey",
+        "assists": [
+          "Todd Malus"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:00:48",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Jack Tadey"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:09:34",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:30",
+        "team": "Whalers",
+        "scorer": "Will Wright",
+        "assists": [
+          "Jack Tadey",
+          "Todd Malus"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:30",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:00",
+        "team": "Whalers",
+        "scorer": "Kalen Stewart",
+        "assists": [
+          "Henry McQueen"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:02",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Nick Gorse",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:20",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Justin Stroud",
+          "Nick Gorse"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:46",
+        "team": "Whalers",
+        "scorer": "Jack Tadey",
+        "assists": [
+          "Eli Wener"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:03",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Peter Stokes"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:12:05",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:11:55",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:11:55",
+        "team": "Whalers",
+        "player": "Kalen Stewart",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:10:48",
+        "team": "Knights",
+        "player": "Dillon Crouch",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:10:21",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:27",
+        "team": "Whalers",
+        "player": "Galen Allan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:35",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:10",
+        "team": "Whalers",
+        "player": "Galen Allan",
+        "type": "Rough Head",
+        "severity": "Misconduct",
+        "minutes": 4
+      }
+    ]
+  },
+  {
+    "date": "2025-10-22",
+    "opponent": "Benders",
+    "gf": 2,
+    "ga": 7,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 1,
+        "shotsAway": 1,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 25,
+        "shotsAway": 22,
+        "goalsHome": 4,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 2,
+        "shotsAway": 0,
+        "goalsHome": 2,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:08:33",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Mike Kari",
+          "Kyle Misewich"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:16",
+        "team": "Benders",
+        "scorer": "Tom Harris",
+        "assists": [
+          "Jason Macdonald"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:12:23",
+        "team": "Benders",
+        "scorer": "Miles Hoaken",
+        "assists": [
+          "Max Nadeau"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:50",
+        "team": "Benders",
+        "scorer": "Liam Mroueh",
+        "assists": [
+          "Jackson Aitken"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:27",
+        "team": "Benders",
+        "scorer": "Liam Mroueh",
+        "assists": [
+          "Sam Harris"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:00",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Mike Kari",
+          "Stuart Coy"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:05",
+        "team": "Benders",
+        "scorer": "Jackson Aitken",
+        "assists": [
+          "Cameron Bird",
+          "Wyatt Gilbert"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:34",
+        "team": "Benders",
+        "scorer": "Max Nadeau",
+        "assists": [
+          "Miles Hoaken",
+          "Liam Mroueh"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:01",
+        "team": "Benders",
+        "scorer": "Sam Harris",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:02:32",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:00:20",
+        "team": "Benders",
+        "player": "Sam Harris",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:00:20",
+        "team": "Knights",
+        "player": "Kyle Misewich",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:40",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:49",
+        "team": "Benders",
+        "player": "Cameron Bird",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:05",
+        "team": "Knights",
+        "player": "Dillon Crouch",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:05",
+        "team": "Benders",
+        "player": "Jackson Aitken",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:05",
+        "team": "Benders",
+        "player": "Wyatt Gilbert",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:05",
+        "team": "Benders",
+        "player": "Glenn Tipold",
+        "type": "Game Ejection",
+        "severity": "Minor",
+        "minutes": 0
+      },
+      {
+        "period": "3rd",
+        "time": "00:04:51",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-10-29",
+    "opponent": "West Coast Express",
+    "gf": 4,
+    "ga": 5,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 2,
+        "shotsAway": 1,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 0,
+        "shotsAway": 1,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 27,
+        "shotsAway": 29,
+        "goalsHome": 2,
+        "goalsAway": 3
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:10:05",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Nathaniel Stuart"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:09:00",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:07:10",
+        "team": "West Coast Express",
+        "scorer": "Matt Catellier",
+        "assists": [
+          "Max Doyle",
+          "Ross MacNab"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:58",
+        "team": "West Coast Express",
+        "scorer": "Kai Hughes",
+        "assists": [
+          "Cam Niedermeiser"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:10",
+        "team": "West Coast Express",
+        "scorer": "Max Doyle",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:45",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:24",
+        "team": "West Coast Express",
+        "scorer": "Max Doyle",
+        "assists": [
+          "Michael Gee"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:51",
+        "team": "West Coast Express",
+        "scorer": "Max Doyle",
+        "assists": [
+          "Ross MacNab"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:18",
+        "team": "Knights",
+        "scorer": "Chris Adkins",
+        "assists": [
+          "Mike Kari"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:05:21",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-11-07",
+    "opponent": "Whalers",
+    "gf": 2,
+    "ga": 9,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 1,
+        "shotsAway": 3,
+        "goalsHome": 1,
+        "goalsAway": 3
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 1,
+        "shotsAway": 2,
+        "goalsHome": 1,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 22,
+        "shotsAway": 24,
+        "goalsHome": 0,
+        "goalsAway": 4
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:12:45",
+        "team": "Whalers",
+        "scorer": "Jack Tadey",
+        "assists": [
+          "Todd Malus",
+          "Reinier Halbertsma"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:06:45",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Jack Tadey",
+          "Galen Allan"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:01",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Jack Tadey",
+          "Reinier Halbertsma"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:01:01",
+        "team": "Knights",
+        "scorer": "Dillon Crouch",
+        "assists": [
+          "Stuart Coy"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:40",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Jack Tadey",
+          "Dan Hawkins"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:00",
+        "team": "Whalers",
+        "scorer": "Galen Allan",
+        "assists": [
+          "Jack Tadey",
+          "Todd Malus"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:14",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:00",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Jack Tadey",
+          "Galen Allan"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:37",
+        "team": "Whalers",
+        "scorer": "Galen Allan",
+        "assists": [
+          "Jack Tadey",
+          "Todd Malus"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:49",
+        "team": "Whalers",
+        "scorer": "Dan Hawkins",
+        "assists": [
+          "Eli Wener"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:47",
+        "team": "Whalers",
+        "scorer": "Harry Tadey",
+        "assists": [
+          "Dan Hawkins"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:08:41",
+        "team": "Knights",
+        "player": "Sebastian Silley",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:55",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:55",
+        "team": "Whalers",
+        "player": "Todd Malus",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:44",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:44",
+        "team": "Whalers",
+        "player": "Harry Tadey",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:38",
+        "team": "Knights",
+        "player": "Matt Kolec",
+        "type": "Too Many Players",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-11-15",
+    "opponent": "Havana Outlaws",
+    "gf": 6,
+    "ga": 1,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 0,
+        "shotsAway": 2,
+        "goalsHome": 0,
+        "goalsAway": 2
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 13,
+        "shotsAway": 32,
+        "goalsHome": 0,
+        "goalsAway": 0
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 8,
+        "shotsAway": 10,
+        "goalsHome": 1,
+        "goalsAway": 4
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:04:30",
+        "team": "Knights",
+        "scorer": "Chris Adkins",
+        "assists": [
+          "Mike Matthews"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:44",
+        "team": "Knights",
+        "scorer": "Dillon Crouch",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:12:43",
+        "team": "Havana Outlaws",
+        "scorer": "Aren Buchholz",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:05",
+        "team": "Knights",
+        "scorer": "Sebastian Silley",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:04:35",
+        "team": "Knights",
+        "scorer": "Mike Matthews",
+        "assists": [
+          "Chris Adkins"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:35",
+        "team": "Knights",
+        "scorer": "Chris Adkins",
+        "assists": [
+          "Stuart Coy",
+          "Sebastian Silley"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:25",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:00:10",
+        "team": "Havana Outlaws",
+        "player": "Adam Madrussan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:00:10",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:09",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-11-23",
+    "opponent": "West Coast Express",
+    "gf": 6,
+    "ga": 3,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 2,
+        "shotsAway": 0,
+        "goalsHome": 2,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 3,
+        "shotsAway": 1,
+        "goalsHome": 3,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 20,
+        "shotsAway": 21,
+        "goalsHome": 1,
+        "goalsAway": 2
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:10:54",
+        "team": "Knights",
+        "scorer": "Kelsey Regan",
+        "assists": [
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:05:27",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:00",
+        "team": "West Coast Express",
+        "scorer": "Josh Alexander",
+        "assists": [
+          "Greg Brydon",
+          "Brad Dove"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:36",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:38",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Mike Kari",
+          "Dillon Crouch"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:34",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:29",
+        "team": "West Coast Express",
+        "scorer": "Cam Niedermeiser",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:36",
+        "team": "West Coast Express",
+        "scorer": "Cam Niedermeiser",
+        "assists": [
+          "Quinn Mell-Cobb",
+          "Greg Brydon"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:02",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:08:25",
+        "team": "Knights",
+        "player": "Sebastian Silley",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:08:25",
+        "team": "West Coast Express",
+        "player": "Brad Dove",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:21",
+        "team": "Knights",
+        "player": "Dillon Crouch",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:28",
+        "team": "West Coast Express",
+        "player": "Greg Brydon",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-11-29",
+    "opponent": "Scallywags",
+    "gf": 0,
+    "ga": 3,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 0,
+        "shotsAway": 0,
+        "goalsHome": 0,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 0,
+        "shotsAway": 1,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 23,
+        "shotsAway": 24,
+        "goalsHome": 0,
+        "goalsAway": 2
+      }
+    ],
+    "goals": [
+      {
+        "period": "2nd",
+        "time": "00:07:08",
+        "team": "Scallywags",
+        "scorer": "Adam Langill",
+        "assists": [
+          "Matty McRae"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:07",
+        "team": "Scallywags",
+        "scorer": "Matty McRae",
+        "assists": [
+          "Dan Kupp",
+          "Kent Whalley"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:17",
+        "team": "Scallywags",
+        "scorer": "Matt MaGee",
+        "assists": [
+          "Matty McRae"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:02:08",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:57",
+        "team": "Scallywags",
+        "player": "Brendan McConnachie",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:22",
+        "team": "Knights",
+        "player": "Stephen Reed",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:22",
+        "team": "Knights",
+        "player": "Justin Stroud",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:04",
+        "team": "Knights",
+        "player": "Stephen Reed",
+        "type": "Too Many Players",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-12-12",
+    "opponent": "Smoking Aces",
+    "gf": 7,
+    "ga": 4,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 14,
+        "shotsAway": 20,
+        "goalsHome": 0,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 19,
+        "shotsAway": 21,
+        "goalsHome": 1,
+        "goalsAway": 6
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 14,
+        "shotsAway": 14,
+        "goalsHome": 3,
+        "goalsAway": 1
+      }
+    ],
+    "goals": [
+      {
+        "period": "2nd",
+        "time": "00:12:39",
+        "team": "Knights",
+        "scorer": "Mark Seinen",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:47",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Stuart Coy",
+          "Justin Stroud"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:36",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:15",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:58",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Nathaniel Stuart",
+          "Nick Gorse"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:11",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:32",
+        "team": "Smoking Aces",
+        "scorer": "Adam Edwards",
+        "assists": [
+          "Achilles Porras"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:03",
+        "team": "Smoking Aces",
+        "scorer": "Donny Mckenzie",
+        "assists": [
+          "Achilles Porras"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:35",
+        "team": "Knights",
+        "scorer": "Mark Seinen",
+        "assists": [
+          "Scott Coy",
+          "Nathaniel Stuart"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:07",
+        "team": "Smoking Aces",
+        "scorer": "Junior Moar",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:49",
+        "team": "Smoking Aces",
+        "scorer": "Alexander Hernangez",
+        "assists": [
+          "Adam Edwards"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:02:35",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:12",
+        "team": "Smoking Aces",
+        "player": "Grant Mayers",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-12-16",
+    "opponent": "Havana Outlaws",
+    "gf": 8,
+    "ga": 1,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 2,
+        "shotsAway": 12,
+        "goalsHome": 0,
+        "goalsAway": 3
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 11,
+        "shotsAway": 12,
+        "goalsHome": 1,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 9,
+        "shotsAway": 12,
+        "goalsHome": 0,
+        "goalsAway": 3
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:10:22",
+        "team": "Knights",
+        "scorer": "Nathaniel Stuart",
+        "assists": [
+          "Scott Coy",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:00:31",
+        "team": "Knights",
+        "scorer": "Jason Harynuk",
+        "assists": [
+          "Scott Coy",
+          "Nathaniel Stuart"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:00:18",
+        "team": "Knights",
+        "scorer": "Nathaniel Stuart",
+        "assists": [
+          "Scott Coy",
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:02",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Tyler Schwartz",
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:36",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Stuart Coy",
+          "Nick Gorse"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:26",
+        "team": "Havana Outlaws",
+        "scorer": "Grayson Williams",
+        "assists": [
+          "Clint Cruickshank"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:12:15",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Jason Harynuk",
+          "Nathaniel Stuart"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:38",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:28",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:05:51",
+        "team": "Havana Outlaws",
+        "player": "Seth Oshea",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:51",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-12-21",
+    "opponent": "Kraken Beers",
+    "gf": 0,
+    "ga": 5,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 0,
+        "shotsAway": 4,
+        "goalsHome": 0,
+        "goalsAway": 4
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 22,
+        "shotsAway": 21,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 3,
+        "shotsAway": 3,
+        "goalsHome": 0,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:08:45",
+        "team": "Kraken Beers",
+        "scorer": "Jack McColl",
+        "assists": [
+          "Jordan Dhaliwal",
+          "Dominic Richard"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:05:56",
+        "team": "Kraken Beers",
+        "scorer": "Keimin Davis",
+        "assists": [
+          "Jordan Dhaliwal",
+          "Justin Collett"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:05:29",
+        "team": "Kraken Beers",
+        "scorer": "Josh Kinsman",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:00:35",
+        "team": "Kraken Beers",
+        "scorer": "Ryan Graves",
+        "assists": [
+          "Josh Kinsman",
+          "Ryan Tam"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:07",
+        "team": "Kraken Beers",
+        "scorer": "Ryan Graves",
+        "assists": [
+          "Ryan Tam"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:05:18",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:14",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:14",
+        "team": "Knights",
+        "player": "Mike Kari",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:14",
+        "team": "Kraken Beers",
+        "player": "Dominic Richard",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 4
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:20",
+        "team": "Kraken Beers",
+        "player": "Jordan Dhaliwal",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:20",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:06",
+        "team": "Knights",
+        "player": "Mike Kari",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:40",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 4
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:40",
+        "team": "Kraken Beers",
+        "player": "Ryan Graves",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:40",
+        "team": "Kraken Beers",
+        "player": "Justin Collett",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:40",
+        "team": "Knights",
+        "player": "Sebastian Silley",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:40",
+        "team": "Knights",
+        "player": "Matt Kolec",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 4
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:07",
+        "team": "Knights",
+        "player": "Chris Adkins",
+        "type": "Slashing",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:43",
+        "team": "Kraken Beers",
+        "player": "Jack McColl",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:34",
+        "team": "Kraken Beers",
+        "player": "Dominic Richard",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-01-11",
+    "opponent": "Whalers",
+    "gf": 4,
+    "ga": 5,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 1,
+        "shotsAway": 4,
+        "goalsHome": 1,
+        "goalsAway": 4
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 3,
+        "shotsAway": 0,
+        "goalsHome": 3,
+        "goalsAway": 0
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 20,
+        "shotsAway": 20,
+        "goalsHome": 0,
+        "goalsAway": 1
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:06:24",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Joe Tadey",
+          "Henry McQueen"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:05:27",
+        "team": "Whalers",
+        "scorer": "Galen Allan",
+        "assists": [
+          "Reinier Halbertsma",
+          "Jack Tadey"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:41",
+        "team": "Whalers",
+        "scorer": "Jack Tadey",
+        "assists": [
+          "Reinier Halbertsma",
+          "Todd Malus"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:01:36",
+        "team": "Knights",
+        "scorer": "Matt Kolec",
+        "assists": [
+          "Scott Coy",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:00:51",
+        "team": "Whalers",
+        "scorer": "Henry McQueen",
+        "assists": [
+          "Dan Hawkins"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:43",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:59",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:34",
+        "team": "Knights",
+        "scorer": "Chris Adkins",
+        "assists": [
+          "Mike Matthews",
+          "Dillon Crouch"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:15",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Jamie Hankinson"
+        ]
+      }
+    ],
+    "penalties": []
+  },
+  {
+    "date": "2026-01-18",
+    "opponent": "Kraken Beers",
+    "gf": 6,
+    "ga": 5,
+    "result": "W",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 8,
+        "shotsAway": 14,
+        "goalsHome": 1,
+        "goalsAway": 2
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 14,
+        "shotsAway": 14,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 9,
+        "shotsAway": 10,
+        "goalsHome": 2,
+        "goalsAway": 2
+      },
+      {
+        "name": "OT1",
+        "shotsHome": 3,
+        "shotsAway": 3,
+        "goalsHome": 0,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:11:39",
+        "team": "Knights",
+        "scorer": "Kyle Misewich",
+        "assists": [
+          "Dillon Crouch",
+          "Mike Matthews"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:10:28",
+        "team": "Kraken Beers",
+        "scorer": "Jack McColl",
+        "assists": [
+          "Justin Collett",
+          "Josh Kinsman"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:04:42",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:12:39",
+        "team": "Kraken Beers",
+        "scorer": "Ryan Tam",
+        "assists": [
+          "Brandon Leung",
+          "Josh Kinsman"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:47",
+        "team": "Kraken Beers",
+        "scorer": "Tyler Dhaliwal",
+        "assists": [
+          "Jordan Garay",
+          "Andrew Filipek"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:07",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Tyler Schwartz",
+          "Matt Kolec"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:02",
+        "team": "Kraken Beers",
+        "scorer": "Ryan Tam",
+        "assists": [
+          "Andrew Filipek"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:52",
+        "team": "Kraken Beers",
+        "scorer": "Justin Collett",
+        "assists": [
+          "Ryan Tam"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:33",
+        "team": "Knights",
+        "scorer": "Kyle Misewich",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:23",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Justin Stroud"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:01:57",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Cross-Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:11",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:35",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Cross-Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-01-23",
+    "opponent": "West Coast Express",
+    "gf": 6,
+    "ga": 5,
+    "result": "W",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 1,
+        "shotsAway": 3,
+        "goalsHome": 1,
+        "goalsAway": 3
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 2,
+        "shotsAway": 0,
+        "goalsHome": 2,
+        "goalsAway": 0
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 33,
+        "shotsAway": 35,
+        "goalsHome": 2,
+        "goalsAway": 2
+      },
+      {
+        "name": "OT1",
+        "shotsHome": 1,
+        "shotsAway": 0,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:12:01",
+        "team": "West Coast Express",
+        "scorer": "Kai Hughes",
+        "assists": [
+          "Joe Combey-Robertson",
+          "Stuart Speakman"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:10:10",
+        "team": "Knights",
+        "scorer": "Dillon Crouch",
+        "assists": [
+          "Kyle Misewich",
+          "Sebastian Silley"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:07:57",
+        "team": "West Coast Express",
+        "scorer": "Michael Gee",
+        "assists": [
+          "Kai Hughes",
+          "John Gellard"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:02:52",
+        "team": "West Coast Express",
+        "scorer": "Kai Hughes",
+        "assists": [
+          "Joe Combey-Robertson",
+          "Stuart Speakman"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:39",
+        "team": "Knights",
+        "scorer": "Mike Matthews",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:25",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Tyler Schwartz",
+          "Nathaniel Stuart"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:10",
+        "team": "West Coast Express",
+        "scorer": "Stuart Speakman",
+        "assists": [
+          "Kai Hughes",
+          "Michael Gee"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:37",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Kerry Regan",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:18",
+        "team": "West Coast Express",
+        "scorer": "Max Doyle",
+        "assists": [
+          "John Gellard",
+          "Quinn Mell-Cobb"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:01",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Dillon Crouch",
+          "Kyle Misewich"
+        ]
+      },
+      {
+        "period": "OT1",
+        "time": "00:00:01",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:06:18",
+        "team": "West Coast Express",
+        "player": "Joe Combey-Robertson",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:06:18",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:05:25",
+        "team": "Knights",
+        "player": "Dillon Crouch",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:28",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:28",
+        "team": "West Coast Express",
+        "player": "Joe Combey-Robertson",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:52",
+        "team": "West Coast Express",
+        "player": "Scott Alexander",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:52",
+        "team": "Knights",
+        "player": "Mike Matthews",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:01",
+        "team": "Knights",
+        "player": "Mike Kari",
+        "type": "Head Contact",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-02-01",
+    "opponent": "Whalers",
+    "gf": 2,
+    "ga": 3,
+    "result": "OTL",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 4,
+        "shotsAway": 4,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 9,
+        "shotsAway": 11,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 11,
+        "shotsAway": 17,
+        "goalsHome": 1,
+        "goalsAway": 0
+      },
+      {
+        "name": "OT1",
+        "shotsHome": 0,
+        "shotsAway": 1,
+        "goalsHome": 0,
+        "goalsAway": 1
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:02:35",
+        "team": "Whalers",
+        "scorer": "Richard Hungerford",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:13",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:32",
+        "team": "Whalers",
+        "scorer": "Steve Thorp",
+        "assists": [
+          "Dan Hawkins"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:24",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      },
+      {
+        "period": "OT1",
+        "time": "00:02:23",
+        "team": "Whalers",
+        "scorer": "Geoff Matthews",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:08:53",
+        "team": "Whalers",
+        "player": "Steve Thorp",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:23",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-02-06",
+    "opponent": "Kraken Beers",
+    "gf": 4,
+    "ga": 3,
+    "result": "W",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 2,
+        "shotsAway": 0,
+        "goalsHome": 2,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 1,
+        "shotsAway": 1,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 31,
+        "shotsAway": 30,
+        "goalsHome": 0,
+        "goalsAway": 2
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:00:12",
+        "team": "Kraken Beers",
+        "scorer": "Jonah Fialkow",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:00:03",
+        "team": "Kraken Beers",
+        "scorer": "Jordan Garay",
+        "assists": [
+          "Tyler Dhaliwal"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:27",
+        "team": "Knights",
+        "scorer": "Kyle Misewich",
+        "assists": [
+          "Chris Adkins",
+          "Matteo Mitchell"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:07",
+        "team": "Kraken Beers",
+        "scorer": "Jordan Garay",
+        "assists": [
+          "Jonah Fialkow"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:38",
+        "team": "Knights",
+        "scorer": "Sebastian Silley",
+        "assists": [
+          "Mike Kari",
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:58",
+        "team": "Knights",
+        "scorer": "Jason Harynuk",
+        "assists": [
+          "Mike Kari",
+          "Kyle Misewich"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:04:19",
+        "team": "Knights",
+        "player": "Chris Adkins",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:04",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Head Contact",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:12:10",
+        "team": "Kraken Beers",
+        "player": "Louis Evrard",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:34",
+        "team": "Kraken Beers",
+        "player": "Jonah Fialkow",
+        "type": "Head Contact",
+        "severity": "Minor",
+        "minutes": 4
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:57",
+        "team": "Kraken Beers",
+        "player": "Brandon Leung",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:26",
+        "team": "Kraken Beers",
+        "player": "Jordan Garay",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 4
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:34",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:42",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "High-Stk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:26",
+        "team": "Knights",
+        "player": "Matteo Mitchell",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 4
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:16",
+        "team": "Knights",
+        "player": "Dillon Crouch",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-02-11",
+    "opponent": "West Coast Express",
+    "gf": 6,
+    "ga": 7,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 0,
+        "shotsAway": 4,
+        "goalsHome": 0,
+        "goalsAway": 4
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 1,
+        "shotsAway": 2,
+        "goalsHome": 1,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 38,
+        "shotsAway": 36,
+        "goalsHome": 5,
+        "goalsAway": 1
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:11:33",
+        "team": "West Coast Express",
+        "scorer": "Steve Harland",
+        "assists": [
+          "Brad Dove"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:05:59",
+        "team": "West Coast Express",
+        "scorer": "Brad Dove",
+        "assists": [
+          "Quinn Mell-Cobb",
+          "Kai Hughes"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:49",
+        "team": "West Coast Express",
+        "scorer": "Kai Hughes",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:00:40",
+        "team": "West Coast Express",
+        "scorer": "Philip Larsson",
+        "assists": [
+          "Michael Gee",
+          "Steve Harland"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:41",
+        "team": "West Coast Express",
+        "scorer": "Kai Hughes",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:49",
+        "team": "West Coast Express",
+        "scorer": "Steve Harland",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:15",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:14",
+        "team": "Knights",
+        "scorer": "Chris Adkins",
+        "assists": [
+          "Mike Matthews"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:00",
+        "team": "Knights",
+        "scorer": "Dillon Crouch",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:32",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:59",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:45",
+        "team": "West Coast Express",
+        "scorer": "Brad Dove",
+        "assists": [
+          "Quinn Mell-Cobb"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:36",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:07:48",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Holding Stk",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:06:48",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:10",
+        "team": "West Coast Express",
+        "player": "Philip Larsson",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:21",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:21",
+        "team": "West Coast Express",
+        "player": "Matt Veenstra",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:53",
+        "team": "West Coast Express",
+        "player": "Derek Hinchcliffe",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-02-15",
+    "opponent": "Whalers",
+    "gf": 3,
+    "ga": 6,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 10,
+        "shotsAway": 9,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 13,
+        "shotsAway": 22,
+        "goalsHome": 2,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 8,
+        "shotsAway": 6,
+        "goalsHome": 0,
+        "goalsAway": 3
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:12:36",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Kalen Stewart",
+          "Will McQueen"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:00:49",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Chris Adkins",
+          "Dan Guolla"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:47",
+        "team": "Knights",
+        "scorer": "Mike Matthews",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:26",
+        "team": "Knights",
+        "scorer": "Nathaniel Stuart",
+        "assists": [
+          "Chris Adkins",
+          "Dillon Crouch"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:05",
+        "team": "Whalers",
+        "scorer": "Richard Hungerford",
+        "assists": [
+          "Kalen Stewart",
+          "Geoff Matthews"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:11",
+        "team": "Whalers",
+        "scorer": "Richard Hungerford",
+        "assists": [
+          "Galen Allan"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:01",
+        "team": "Whalers",
+        "scorer": "Dan Hawkins",
+        "assists": [
+          "Todd Malus"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:57",
+        "team": "Whalers",
+        "scorer": "Richard Hungerford",
+        "assists": [
+          "Todd Malus",
+          "Geoff Matthews"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:50",
+        "team": "Whalers",
+        "scorer": "Richard Hungerford",
+        "assists": [
+          "Todd Malus"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:12:39",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:59",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:07",
+        "team": "Whalers",
+        "player": "Kalen Stewart",
+        "type": "Cross-Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-02-23",
+    "opponent": "Kraken Beers",
+    "gf": 3,
+    "ga": 4,
+    "result": "OTL",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 12,
+        "shotsAway": 11,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 5,
+        "shotsAway": 13,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 2,
+        "shotsAway": 1,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "OT1",
+        "shotsHome": 9,
+        "shotsAway": 7,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:04:21",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:59",
+        "team": "Kraken Beers",
+        "scorer": "Keimin Davis",
+        "assists": [
+          "Tyler Dhaliwal",
+          "Jack McColl"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:51",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Nick Gorse"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:54",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:44",
+        "team": "Kraken Beers",
+        "scorer": "Keimin Davis",
+        "assists": [
+          "Tyler Dhaliwal"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:04:59",
+        "team": "Kraken Beers",
+        "scorer": "Ryan Graves",
+        "assists": [
+          "Louis Evrard"
+        ]
+      },
+      {
+        "period": "OT1",
+        "time": "00:01:18",
+        "team": "Kraken Beers",
+        "scorer": "Keimin Davis",
+        "assists": [
+          "Ryan Graves",
+          "Jack McColl"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:06:19",
+        "team": "Knights",
+        "player": "Nick Gorse",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:09",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:12",
+        "team": "Kraken Beers",
+        "player": "Josh Kinsman",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:10",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Cross-Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-03-15",
+    "opponent": "Whalers",
+    "gf": 7,
+    "ga": 8,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 7,
+        "shotsAway": 10,
+        "goalsHome": 2,
+        "goalsAway": 2
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 12,
+        "shotsAway": 15,
+        "goalsHome": 3,
+        "goalsAway": 4
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 11,
+        "shotsAway": 10,
+        "goalsHome": 2,
+        "goalsAway": 2
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:08:21",
+        "team": "Whalers",
+        "scorer": "Jack Tadey",
+        "assists": [
+          "Paul Peterman"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:06:18",
+        "team": "Whalers",
+        "scorer": "Jack Tadey",
+        "assists": [
+          "Todd Malus"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:05:24",
+        "team": "Knights",
+        "scorer": "Elan Swartz",
+        "assists": [
+          "Justin Stroud"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:13",
+        "team": "Knights",
+        "scorer": "Kerry Regan",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:10",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:01",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Elan Swartz",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:47",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Chris Adkins",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:40",
+        "team": "Whalers",
+        "scorer": "Jack Tadey",
+        "assists": [
+          "Evan Davies",
+          "Galen Allan"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:44",
+        "team": "Whalers",
+        "scorer": "Evan Davies",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:54",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Henry McQueen",
+          "Destry Straight"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:04",
+        "team": "Whalers",
+        "scorer": "Evan Davies",
+        "assists": [
+          "Steve Thorp",
+          "Paul Peterman"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:07",
+        "team": "Whalers",
+        "scorer": "Todd Malus",
+        "assists": [
+          "Destry Straight"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:02",
+        "team": "Whalers",
+        "scorer": "Henry McQueen",
+        "assists": [
+          "Todd Malus"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:30",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Chris Adkins",
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:04:31",
+        "team": "Knights",
+        "scorer": "Dan Guolla",
+        "assists": [
+          "Justin Stroud"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:06:34",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:37",
+        "team": "Whalers",
+        "player": "Evan Davies",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:44",
+        "team": "Whalers",
+        "player": "Galen Allan",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:44",
+        "team": "Whalers",
+        "player": "Galen Allan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:49",
+        "team": "Whalers",
+        "player": "Destry Straight",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-03-21",
+    "opponent": "Kraken Beers",
+    "gf": 3,
+    "ga": 4,
+    "result": "OTL",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 8,
+        "shotsAway": 16,
+        "goalsHome": 1,
+        "goalsAway": 2
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 10,
+        "shotsAway": 11,
+        "goalsHome": 1,
+        "goalsAway": 0
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 9,
+        "shotsAway": 7,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "OT1",
+        "shotsHome": 5,
+        "shotsAway": 7,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:09:28",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:02:51",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:07:21",
+        "team": "Kraken Beers",
+        "scorer": "Tyler Dhaliwal",
+        "assists": [
+          "Jordan Garay"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:23",
+        "team": "Kraken Beers",
+        "scorer": "Tyler Dhaliwal",
+        "assists": [
+          "Louis Evrard",
+          "Ryan Tam"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:56",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:23",
+        "team": "Kraken Beers",
+        "scorer": "Ryan Graves",
+        "assists": [
+          "Keimin Davis"
+        ]
+      },
+      {
+        "period": "OT1",
+        "time": "00:01:08",
+        "team": "Kraken Beers",
+        "scorer": "Ryan Graves",
+        "assists": [
+          "Jordan Garay",
+          "Ryan Tam"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:05:13",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:10",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:54",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Cross-Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:16",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:10",
+        "team": "Kraken Beers",
+        "player": "Josh Kinsman",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:46",
+        "team": "Kraken Beers",
+        "player": "Justin Collett",
+        "type": "Slashing",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-03-26",
+    "opponent": "West Coast Express",
+    "gf": 2,
+    "ga": 3,
+    "result": "OTL",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 12,
+        "shotsAway": 18,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 3,
+        "shotsAway": 1,
+        "goalsHome": 1,
+        "goalsAway": 0
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 10,
+        "shotsAway": 11,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "OT1",
+        "shotsHome": 10,
+        "shotsAway": 9,
+        "goalsHome": 0,
+        "goalsAway": 1
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:09:52",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Evan Kite"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:07:54",
+        "team": "West Coast Express",
+        "scorer": "Michael Gee",
+        "assists": [
+          "Brad Dove",
+          "Ross MacNab"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:14",
+        "team": "Knights",
+        "scorer": "Sebastian Silley",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:12:14",
+        "team": "West Coast Express",
+        "scorer": "Bryson Sihota",
+        "assists": [
+          "Kai Hughes",
+          "Jack Little"
+        ]
+      },
+      {
+        "period": "OT1",
+        "time": "00:01:45",
+        "team": "West Coast Express",
+        "scorer": "Matt Catellier",
+        "assists": [
+          "Kai Hughes"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:01:29",
+        "team": "West Coast Express",
+        "player": "Joe Combey-Robertson",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:29",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:11",
+        "team": "West Coast Express",
+        "player": "Brad Dove",
+        "type": "Slashing",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:29",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:06",
+        "team": "Knights",
+        "player": "Sebastian Silley",
+        "type": "Slashing",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      }
+    ]
+  }
+]
