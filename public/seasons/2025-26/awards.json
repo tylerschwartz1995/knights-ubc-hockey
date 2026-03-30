@@ -1,0 +1,49 @@
+[
+  {
+    "name": "Empty Net Assassin",
+    "description": "Most empty net goals",
+    "winner": "Mike Kari",
+    "stat": "2 EN goals"
+  },
+  {
+    "name": "Golden Shin Pads",
+    "description": "Most shot blocks",
+    "winner": "Kerry Regan",
+    "stat": "Endless SBs"
+  },
+  {
+    "name": "Glue Guy(s)",
+    "description": "Getting the most spares",
+    "winners": ["Chris Atkins", "Nick Gorse", "Sebastian Silley"]
+  },
+  {
+    "name": "Equipment Manager",
+    "description": "Managing bottles and pucks",
+    "winner": "Mike Kari"
+  },
+  {
+    "name": "Event Coordinator",
+    "description": "Organizing the annual tourney",
+    "winner": "Dillon Crouch"
+  },
+  {
+    "name": "John Daly",
+    "description": "TBD",
+    "winner": "TBD"
+  },
+  {
+    "name": "Brian Burke's Top GM",
+    "description": "Top GM",
+    "winner": "Peter Stokes"
+  },
+  {
+    "name": "Axe Murderer",
+    "description": "Most own goals",
+    "winners": ["Sebastian Silley", "Peter Stokes"]
+  },
+  {
+    "name": "Most Improved",
+    "description": "Most improved player",
+    "winner": "Matt Kolec"
+  }
+]

@@ -1,0 +1,680 @@
+[
+  {
+    "date": "2024-04-06",
+    "opponent": "Ravens",
+    "gf": 5,
+    "ga": 0,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 13,
+        "shotsAway": 7,
+        "goalsHome": 1,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 13,
+        "shotsAway": 7,
+        "goalsHome": 3,
+        "goalsAway": 0
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 14,
+        "shotsAway": 8,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:12:26",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Sebastian Silley"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:17",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Stuart Coy"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:14",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Dillon Couch"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:13:40",
+        "team": "Knights",
+        "scorer": "Mike Matthews",
+        "assists": [
+          "Justin Stroud",
+          "Stuart Coy"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:14:31",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:07:35",
+        "team": "Ravens",
+        "player": "Paul Cyr",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:00",
+        "team": "Ravens",
+        "player": "Johnson Chiu",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:49",
+        "team": "Ravens",
+        "player": "Herwig Haas",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:39",
+        "team": "Ravens",
+        "player": "Bryce Goodwin",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:19",
+        "team": "Ravens",
+        "player": "David Sud",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:14:56",
+        "team": "Knights",
+        "player": "Chris Atkins",
+        "type": "Holding",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:15:00",
+        "team": "Ravens",
+        "player": "Fred Vandenberg",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:15:00",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:03",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:13:04",
+        "team": "Ravens",
+        "player": "Fred Vandenberg",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2024-04-10",
+    "opponent": "West Coast Express",
+    "gf": 4,
+    "ga": 5,
+    "result": "OTL",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 11,
+        "shotsAway": 11,
+        "goalsHome": 1,
+        "goalsAway": 3
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 11,
+        "shotsAway": 11,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 10,
+        "shotsAway": 12,
+        "goalsHome": 2,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:03:02",
+        "team": "West Coast Express",
+        "scorer": "Jack Little",
+        "assists": [
+          "Steven Harland",
+          "Michael Gee"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:04:10",
+        "team": "West Coast Express",
+        "scorer": "Matt Williams",
+        "assists": [
+          "Jeff Desjardins",
+          "Quinn Mell Cobb"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:08:07",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Mike Kari",
+          "Nick Gorse"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:13:56",
+        "team": "West Coast Express",
+        "scorer": "Matt Williams",
+        "assists": [
+          "Jeff Desjardins",
+          "Quinn Mell Cobb"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:55",
+        "team": "Knights",
+        "scorer": "Kelsey Regan",
+        "assists": [
+          "Kerry Regan",
+          "Matt Kolec"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:29",
+        "team": "West Coast Express",
+        "scorer": "Jeff Desjardins",
+        "assists": [
+          "Matt Williams",
+          "Quinn Mell Cobb"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:13:26",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Kelsey Regan",
+          "Nick Gorse"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:13:42",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Dillon Couch",
+          "Alex Knifel"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:00",
+        "team": "West Coast Express",
+        "scorer": "Matt Williams",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:11:53",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:40",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:51",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:54",
+        "team": "West Coast Express",
+        "player": "Bryson Sihota",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:27",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Slashing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:15",
+        "team": "West Coast Express",
+        "player": "Michael Gee",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:44",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:12",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:14:17",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Slashing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:35",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2024-04-18",
+    "opponent": "Hornets",
+    "gf": 3,
+    "ga": 2,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 11,
+        "shotsAway": 9,
+        "goalsHome": 1,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 11,
+        "shotsAway": 9,
+        "goalsHome": 2,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 10,
+        "shotsAway": 9,
+        "goalsHome": 0,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:11:58",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:36",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Nick Gorse",
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:16",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Stuart Coy",
+          "Sebastian Silley"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:34",
+        "team": "Hornets",
+        "scorer": "Kaylee Kwiek",
+        "assists": [
+          "Robert Cadez",
+          "Shea Jarvis"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:48",
+        "team": "Hornets",
+        "scorer": "Shea Jarvis",
+        "assists": [
+          "Daryl Gardiner"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:08:53",
+        "team": "Hornets",
+        "player": "Darcy Holcombe",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:12:57",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:58",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Slashing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:57",
+        "team": "Knights",
+        "player": "Nathaniel Stuart",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:40",
+        "team": "Hornets",
+        "player": "Daryl Gardiner",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2024-04-26",
+    "opponent": "Scallywags",
+    "gf": 5,
+    "ga": 6,
+    "result": "OTL",
+    "ot": true,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 13,
+        "shotsAway": 12,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 13,
+        "shotsAway": 12,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 12,
+        "shotsAway": 11,
+        "goalsHome": 1,
+        "goalsAway": 3
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:06:04",
+        "team": "Knights",
+        "scorer": "Nathaniel Stuart",
+        "assists": [
+          "Sebastian Silley"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:08:57",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Sebastian Silley",
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:09:35",
+        "team": "Scallywags",
+        "scorer": "Jordy Shumay",
+        "assists": [
+          "Chris Brierley"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:18",
+        "team": "Knights",
+        "scorer": "Alex Knifel",
+        "assists": [
+          "Sebastian Silley"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:21",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Sebastian Silley"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:12:07",
+        "team": "Scallywags",
+        "scorer": "Alexander Kasminskiy",
+        "assists": [
+          "Carson Sedun"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:10",
+        "team": "Scallywags",
+        "scorer": "Matthew Mcrae",
+        "assists": [
+          "Carson Sedun"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:38",
+        "team": "Scallywags",
+        "scorer": "Matthew Magee",
+        "assists": [
+          "Matthew McRae",
+          "Carson Sedun"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:54",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Justin Stroud"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:14:25",
+        "team": "Scallywags",
+        "scorer": "Jaydon Tochkin",
+        "assists": [
+          "Matthew Magee",
+          "Kent Whalley"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:00",
+        "team": "Scallywags",
+        "scorer": "Matthew Magee",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:08:16",
+        "team": "Scallywags",
+        "player": "Jaydon Tochkin",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:13:18",
+        "team": "Scallywags",
+        "player": "Craig Hardy",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:14:48",
+        "team": "Scallywags",
+        "player": "Neil Arbogast",
+        "type": "High Sticking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:14:48",
+        "team": "Scallywags",
+        "player": "Neil Arbogast",
+        "type": "Unsportsmanlike Conduct(Misconduct",
+        "severity": "Major",
+        "minutes": 10
+      }
+    ]
+  }
+]
