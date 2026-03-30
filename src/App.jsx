@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import Papa from "papaparse";
+import { Analytics } from "@vercel/analytics/react";
 
 // ── Config ──────────────────────────────────────────────
 // Add each season file here. First entry = current season.
@@ -2433,6 +2434,7 @@ export default function App() {
           </span>
         </div>
       </div>
+      <Analytics />
     </div>
   );
 }
