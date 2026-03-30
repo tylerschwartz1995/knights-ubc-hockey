@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "knights-ubc"
+version = "0.1.0"
+description = "UBC Knights stats dashboard"
+authors = ["Tyler Schwartz <tyler.schwartz1995@gmail.com>"]
+packages = [
+    {include = "common"},
+    {include = "scripts"},
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.2.1"
+requests = "^2.32.5"
+pyyaml = "^6.0.3"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+ruff = "*"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
