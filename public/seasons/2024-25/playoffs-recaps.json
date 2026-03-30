@@ -1,0 +1,524 @@
+[
+  {
+    "date": "2025-04-06",
+    "opponent": "Puck It",
+    "gf": 0,
+    "ga": 7,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 8,
+        "shotsAway": 9,
+        "goalsHome": 0,
+        "goalsAway": 3
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 8,
+        "shotsAway": 9,
+        "goalsHome": 0,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 9,
+        "shotsAway": 9,
+        "goalsHome": 0,
+        "goalsAway": 2
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:09:38",
+        "team": "Puck It",
+        "scorer": "Nathan Ryu",
+        "assists": [
+          "Ross Enright",
+          "Jacob Malleau"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:09:42",
+        "team": "Puck It",
+        "scorer": "Eric Cislak",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:14:04",
+        "team": "Puck It",
+        "scorer": "Eric Cislak",
+        "assists": [
+          "John Luke Ard",
+          "Gregory Lawrence"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:14",
+        "team": "Puck It",
+        "scorer": "Eric Cislak",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:13:57",
+        "team": "Puck It",
+        "scorer": "Keith Forsythe",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:08",
+        "team": "Puck It",
+        "scorer": "Brandon Consorti",
+        "assists": [
+          "Eric Cislak"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:40",
+        "team": "Puck It",
+        "scorer": "Brandon Consorti",
+        "assists": [
+          "Eric Cislak"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:07:27",
+        "team": "Knights",
+        "player": "Justin Stroud",
+        "type": "Body Checking(Double Minor",
+        "severity": "Major",
+        "minutes": 4
+      },
+      {
+        "period": "2nd",
+        "time": "00:14:07",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:48",
+        "team": "Knights",
+        "player": "Nathaniel Stuart",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-04-08",
+    "opponent": "West Coast Express",
+    "gf": 7,
+    "ga": 4,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 15,
+        "shotsAway": 10,
+        "goalsHome": 2,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 15,
+        "shotsAway": 10,
+        "goalsHome": 3,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 15,
+        "shotsAway": 10,
+        "goalsHome": 2,
+        "goalsAway": 2
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:02:12",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Jason Harynuk"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:02:21",
+        "team": "Knights",
+        "scorer": "Jason Harynuk",
+        "assists": [
+          "Justin Stroud"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:35",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:00",
+        "team": "West Coast Express",
+        "scorer": "Cam Niedermeiser",
+        "assists": [
+          "James Wallace",
+          "Bryson Sihota"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:26",
+        "team": "West Coast Express",
+        "scorer": "Daniel Doulov",
+        "assists": [
+          "Tom Leung"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:50",
+        "team": "Knights",
+        "scorer": "Peter Stokes",
+        "assists": [
+          "Justin Stroud",
+          "Dillon Crouch"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:34",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:21",
+        "team": "West Coast Express",
+        "scorer": "Michael Gee",
+        "assists": [
+          "Matt Williams"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:58",
+        "team": "West Coast Express",
+        "scorer": "Daniel Doulov",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:12",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Nathaniel Stuart",
+          "Jason Harynuk"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:26",
+        "team": "Knights",
+        "scorer": "Jason Harynuk",
+        "assists": [
+          "Mike Kari"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:03:40",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:14:42",
+        "team": "West Coast Express",
+        "player": "Matt Williams",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:54",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:30",
+        "team": "Knights",
+        "player": "Nick Gorse",
+        "type": "High Sticking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:43",
+        "team": "West Coast Express",
+        "player": "Brad Dove",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2025-04-14",
+    "opponent": "Smoking Aces",
+    "gf": 5,
+    "ga": 8,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 14,
+        "shotsAway": 17,
+        "goalsHome": 3,
+        "goalsAway": 4
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 14,
+        "shotsAway": 17,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 15,
+        "shotsAway": 17,
+        "goalsHome": 0,
+        "goalsAway": 3
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:02:26",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:04:59",
+        "team": "Smoking Aces",
+        "scorer": "Achilles Porras",
+        "assists": [
+          "Graham Todd"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:05:16",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:06:48",
+        "team": "Smoking Aces",
+        "scorer": "Troy Semeniuk",
+        "assists": [
+          "Tanner Barnett"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:07:36",
+        "team": "Smoking Aces",
+        "scorer": "Tanner Barnett",
+        "assists": [
+          "Mathew Hunsberger"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:09:06",
+        "team": "Knights",
+        "scorer": "Chris Atkins",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:13:34",
+        "team": "Smoking Aces",
+        "scorer": "Graham Todd",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:01",
+        "team": "Smoking Aces",
+        "scorer": "Tanner Barnett",
+        "assists": [
+          "Jason Chin"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:44",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Jason Harynuk",
+          "Stuart Coy"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:12:12",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": [
+          "Dillon Crouch",
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:54",
+        "team": "Smoking Aces",
+        "scorer": "Cole Williams",
+        "assists": [
+          "Tanner Barnett",
+          "Troy Semeniuk"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:06",
+        "team": "Smoking Aces",
+        "scorer": "Tanner Barnett",
+        "assists": [
+          "Adrian Deo"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:14:47",
+        "team": "Smoking Aces",
+        "scorer": "Tanner Barnett",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:13:34",
+        "team": "Smoking Aces",
+        "player": "Alexander Hernandez",
+        "type": "High Sticking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:44",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:42",
+        "team": "Smoking Aces",
+        "player": "Jay Layzell",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:42",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:12:06",
+        "team": "Smoking Aces",
+        "player": "Jason Chin",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:13:32",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:40",
+        "team": "Smoking Aces",
+        "player": "Jay Layzell",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:23",
+        "team": "Smoking Aces",
+        "player": "Alexander Hernandez",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  }
+]

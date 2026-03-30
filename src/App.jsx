@@ -6,7 +6,7 @@ import Papa from "papaparse";
 const SEASONS = [
   { id: "2025-26", label: "2025–26", dir: "/seasons/2025-26" },
   { id: "2024-25", label: "2024–25", dir: "/seasons/2024-25" },
-  // { id: "2023-24", label: "2023–24", dir: "/seasons/2023-24" },
+  { id: "2023-24", label: "2023–24", dir: "/seasons/2023-24" },
 ];
 
 const CONFIG = {
@@ -1335,7 +1335,7 @@ function PaceProjections({ data }) {
 }
 
 // ── TeamView ───────────────────────────────────────────
-function TeamView({ skaterData, goalieData, games, recaps, isAllTime }) {
+function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMode }) {
   const [oppSortKey, setOppSortKey] = useState("gp");
   const [oppSortAsc, setOppSortAsc] = useState(false);
   const [expandedGame, setExpandedGame] = useState(null);
@@ -1439,7 +1439,7 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime }) {
     </div>
   );
 
-  const recentGames = [...games].reverse().slice(0, 10);
+  const recentGames = [...games].reverse();
 
   const resultColor = (r) => r === "W" ? "#4ade80" : r === "OTL" ? C.goldMuted : "#f87171";
 
@@ -1448,8 +1448,8 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime }) {
       {games.length > 0 && renderWidgetRow(statWidgets, 60)}
       {renderWidgetRow(teamWidgets, 120)}
 
-      {/* Current Form */}
-      {!isAllTime && last5.length > 0 && (
+      {/* Current Form — hidden in playoff mode */}
+      {!isAllTime && !playoffMode && last5.length > 0 && (
         <div style={{
           display: "flex", alignItems: "center", gap: 16, marginBottom: 32,
           animation: "fadeSlideUp 0.4s ease 160ms both",
@@ -1526,7 +1526,7 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime }) {
             fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
             marginBottom: 16, textTransform: "uppercase",
             fontFamily: "'DM Mono', monospace",
-          }}>Season Timeline</h3>
+          }}>{playoffMode ? "Road to the Cup" : "Season Timeline"}</h3>
           <div style={{
             background: C.surface, border: `1px solid ${C.border}`,
             borderRadius: 8, padding: "20px 16px",
@@ -1585,8 +1585,8 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime }) {
         </div>
       )}
 
-      {/* Opponent Breakdown */}
-      {!isAllTime && opponentList.length > 0 && (
+      {/* Opponent Breakdown — hidden in playoff mode */}
+      {!playoffMode && opponentList.length > 0 && (
         <div style={{ marginBottom: 32, animation: "fadeSlideUp 0.5s ease 250ms both" }}>
           <h3 style={{
             fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
@@ -1818,6 +1818,78 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime }) {
   );
 }
 
+// ── AwardsView ─────────────────────────────────────────
+const AUTO_AWARDS = [
+  { name: "Ironman", description: "Most games played", compute: (sk) => { const w = sk.reduce((a, b) => b.gp > a.gp ? b : a, sk[0]); return { winner: w.player, stat: `${w.gp} GP` }; } },
+  { name: "Cheechoo Train", description: "Most goals", compute: (sk) => { const w = sk.reduce((a, b) => b.g > a.g ? b : a, sk[0]); return { winner: w.player, stat: `${w.g} G` }; } },
+  { name: "Adam Banks", description: "Most points", compute: (sk) => { const w = sk.reduce((a, b) => b.p > a.p ? b : a, sk[0]); return { winner: w.player, stat: `${w.p} PTS` }; } },
+  { name: "Jumbo Joe", description: "Most assists", compute: (sk) => { const w = sk.reduce((a, b) => b.a > a.a ? b : a, sk[0]); return { winner: w.player, stat: `${w.a} A` }; } },
+  { name: "Frequent Flyer", description: "Most penalty minutes", compute: (sk) => { const w = sk.reduce((a, b) => b.pm > a.pm ? b : a, sk[0]); return { winner: w.player, stat: `${w.pm} PIM` }; } },
+  { name: "Ghost Checker", description: "Fewest penalty minutes", compute: (sk) => { const eligible = sk.filter((s) => s.gp > 0); const w = eligible.reduce((a, b) => b.pm < a.pm ? b : a, eligible[0]); return { winner: w.player, stat: `${w.pm} PIM` }; } },
+  { name: "Heartbeat Hero", description: "Goalie never taking a night off", computeGoalie: (gl) => { if (!gl.length) return null; const w = gl.reduce((a, b) => b.gp > a.gp ? b : a, gl[0]); return { winner: w.player, stat: `${w.gp} GP` }; } },
+];
+
+function AwardsView({ skaterData, goalieData, manualAwards }) {
+  const allAwards = useMemo(() => {
+    const awards = [];
+    if (skaterData.length > 0) {
+      AUTO_AWARDS.forEach((def) => {
+        let result = null;
+        if (def.compute) result = def.compute(skaterData);
+        else if (def.computeGoalie) result = def.computeGoalie(goalieData);
+        if (result) awards.push({ name: def.name, description: def.description, ...result });
+      });
+    }
+    manualAwards.forEach((a) => {
+      awards.push({
+        name: a.name,
+        description: a.description,
+        winner: a.winners ? a.winners.join(", ") : a.winner,
+        stat: a.stat || "",
+      });
+    });
+    return awards;
+  }, [skaterData, goalieData, manualAwards]);
+
+  if (allAwards.length === 0) return null;
+
+  return (
+    <div style={{ animation: "fadeSlideUp 0.5s ease 100ms both" }}>
+      <div style={{
+        display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+        gap: 12,
+      }}>
+        {allAwards.map((award) => (
+          <div key={award.name} style={{
+            background: C.surface, border: `1px solid ${C.border}`,
+            borderRadius: 8, padding: "20px 18px",
+            display: "flex", flexDirection: "column", gap: 8,
+          }}>
+            <div style={{
+              fontSize: 13, color: C.gold, fontWeight: 600, letterSpacing: "2px",
+              textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
+            }}>{award.name}</div>
+            <div style={{
+              fontSize: 11, color: C.textDim, fontFamily: "'DM Mono', monospace",
+              letterSpacing: "0.5px",
+            }}>{award.description}</div>
+            <div style={{
+              fontSize: 18, color: C.text, fontWeight: 600,
+              fontFamily: "'Outfit', sans-serif", marginTop: 4,
+            }}>{award.winner}</div>
+            {award.stat && (
+              <div style={{
+                fontSize: 14, color: C.goldMuted, fontWeight: 500,
+                fontFamily: "'DM Mono', monospace",
+              }}>{award.stat}</div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── App ─────────────────────────────────────────────────
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -1830,6 +1902,12 @@ export default function App() {
   const [goalieData, setGoalieData] = useState({});
   const [gamesData, setGamesData] = useState({});
   const [recapsData, setRecapsData] = useState({});
+  const [playoffMode, setPlayoffMode] = useState(false);
+  const [playoffSeasonData, setPlayoffSeasonData] = useState({});
+  const [playoffGoalieData, setPlayoffGoalieData] = useState({});
+  const [playoffGamesData, setPlayoffGamesData] = useState({});
+  const [playoffRecapsData, setPlayoffRecapsData] = useState({});
+  const [awardsData, setAwardsData] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [errors, setErrors] = useState([]);
 
@@ -1858,11 +1936,46 @@ export default function App() {
         .then((data) => ({ id: s.id, type: "recaps", data }))
         .catch(() => ({ id: s.id, type: "recaps", data: [] }))
     );
-    Promise.all([...skaterFetches, ...goalieFetches, ...gamesFetches, ...recapsFetches]).then((results) => {
+    const playoffSkaterFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/playoffs-skaters.csv`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.text(); })
+        .then((text) => ({ id: s.id, type: "playoff-skater", data: parseCSV(text) }))
+        .catch(() => ({ id: s.id, type: "playoff-skater", data: [] }))
+    );
+    const playoffGoalieFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/playoffs-goalies.csv`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.text(); })
+        .then((text) => ({ id: s.id, type: "playoff-goalie", data: parseGoalieCSV(text) }))
+        .catch(() => ({ id: s.id, type: "playoff-goalie", data: [] }))
+    );
+    const playoffGamesFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/playoffs-games.csv`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.text(); })
+        .then((text) => ({ id: s.id, type: "playoff-games", data: parseGamesCSV(text) }))
+        .catch(() => ({ id: s.id, type: "playoff-games", data: [] }))
+    );
+    const playoffRecapsFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/playoffs-recaps.json`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.json(); })
+        .then((data) => ({ id: s.id, type: "playoff-recaps", data }))
+        .catch(() => ({ id: s.id, type: "playoff-recaps", data: [] }))
+    );
+    const awardsFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/awards.json`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.json(); })
+        .then((data) => ({ id: s.id, type: "awards", data }))
+        .catch(() => ({ id: s.id, type: "awards", data: [] }))
+    );
+    Promise.all([...skaterFetches, ...goalieFetches, ...gamesFetches, ...recapsFetches, ...playoffSkaterFetches, ...playoffGoalieFetches, ...playoffGamesFetches, ...playoffRecapsFetches, ...awardsFetches]).then((results) => {
       const skaterMap = {};
       const goalieMap = {};
       const gamesMap = {};
       const recapsMap = {};
+      const pSkaterMap = {};
+      const pGoalieMap = {};
+      const pGamesMap = {};
+      const pRecapsMap = {};
+      const awardsMap = {};
       results.forEach((r) => {
         if (r.type === "recaps") {
           if (r.data.length) recapsMap[r.id] = r.data;
@@ -1870,6 +1983,16 @@ export default function App() {
           if (r.data.length) gamesMap[r.id] = r.data;
         } else if (r.type === "goalie") {
           if (r.data.length) goalieMap[r.id] = r.data;
+        } else if (r.type === "playoff-skater") {
+          if (r.data.length) pSkaterMap[r.id] = r.data;
+        } else if (r.type === "playoff-goalie") {
+          if (r.data.length) pGoalieMap[r.id] = r.data;
+        } else if (r.type === "playoff-games") {
+          if (r.data.length) pGamesMap[r.id] = r.data;
+        } else if (r.type === "playoff-recaps") {
+          if (r.data.length) pRecapsMap[r.id] = r.data;
+        } else if (r.type === "awards") {
+          if (r.data.length) awardsMap[r.id] = r.data;
         } else {
           if (r.data.length) skaterMap[r.id] = r.data;
         }
@@ -1878,55 +2001,85 @@ export default function App() {
       setGoalieData(goalieMap);
       setGamesData(gamesMap);
       setRecapsData(recapsMap);
+      setPlayoffSeasonData(pSkaterMap);
+      setPlayoffGoalieData(pGoalieMap);
+      setPlayoffGamesData(pGamesMap);
+      setPlayoffRecapsData(pRecapsMap);
+      setAwardsData(awardsMap);
       setTimeout(() => setLoaded(true), 80);
     });
   }, []);
 
   const allTimeData = useMemo(() => aggregateAllTime(seasonData), [seasonData]);
   const allTimeGoalieData = useMemo(() => aggregateGoalieAllTime(goalieData), [goalieData]);
-  const currentData = seasonData[SEASONS[0]?.id] || [];
-  const currentGoalieData = goalieData[SEASONS[0]?.id] || [];
+  const allTimePlayoffData = useMemo(() => aggregateAllTime(playoffSeasonData), [playoffSeasonData]);
+  const allTimePlayoffGoalieData = useMemo(() => aggregateGoalieAllTime(playoffGoalieData), [playoffGoalieData]);
   const pastSeasons = SEASONS.slice(1);
+
+  // Determine if playoff data exists for the currently viewed season
+  const viewedSeasonId = activeTab === "current" ? SEASONS[0]?.id
+    : activeTab === "history" ? historySeason
+    : null;
+  const hasPlayoffData = activeTab === "alltime"
+    ? Object.keys(playoffSeasonData).length > 0 || Object.keys(playoffGoalieData).length > 0
+    : viewedSeasonId ? !!(playoffSeasonData[viewedSeasonId] || playoffGoalieData[viewedSeasonId] || playoffGamesData[viewedSeasonId])
+    : false;
 
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
     if (tabId !== "history") setHistorySeason(null);
+    if (tabId === "alltime" && statView === "awards") setStatView("skaters");
+    setPlayoffMode(false);
   };
   const handleHistorySelect = (seasonId) => {
     setActiveTab("history");
     setHistorySeason(seasonId);
+    setPlayoffMode(false);
   };
 
   const isGoalie = statView === "goalies";
 
+  // Pick data source based on playoff toggle
+  const skData = playoffMode ? playoffSeasonData : seasonData;
+  const glData = playoffMode ? playoffGoalieData : goalieData;
+  const gmData = playoffMode ? playoffGamesData : gamesData;
+  const rcData = playoffMode ? playoffRecapsData : recapsData;
+  const atSkData = playoffMode ? allTimePlayoffData : allTimeData;
+  const atGlData = playoffMode ? allTimePlayoffGoalieData : allTimeGoalieData;
+  const curSkData = skData[SEASONS[0]?.id] || [];
+  const curGlData = glData[SEASONS[0]?.id] || [];
+
   const activeData = isGoalie
-    ? (activeTab === "current" ? currentGoalieData
-      : activeTab === "alltime" ? allTimeGoalieData
-      : activeTab === "history" && historySeason ? goalieData[historySeason] || []
+    ? (activeTab === "current" ? curGlData
+      : activeTab === "alltime" ? atGlData
+      : activeTab === "history" && historySeason ? glData[historySeason] || []
       : [])
-    : (activeTab === "current" ? currentData
-      : activeTab === "alltime" ? allTimeData
-      : activeTab === "history" && historySeason ? seasonData[historySeason] || []
+    : (activeTab === "current" ? curSkData
+      : activeTab === "alltime" ? atSkData
+      : activeTab === "history" && historySeason ? skData[historySeason] || []
       : []);
 
   const activeCols = isGoalie
     ? (activeTab === "alltime" ? GOALIE_ALLTIME_COLS : GOALIE_COLS)
     : (activeTab === "alltime" ? ALLTIME_COLS : BASE_COLS);
 
-  const activeSkaterData = activeTab === "current" ? currentData
-    : activeTab === "alltime" ? allTimeData
-    : seasonData[historySeason] || [];
-  const activeGoalieData = activeTab === "current" ? currentGoalieData
-    : activeTab === "alltime" ? allTimeGoalieData
-    : goalieData[historySeason] || [];
+  const activeSkaterData = activeTab === "current" ? curSkData
+    : activeTab === "alltime" ? atSkData
+    : skData[historySeason] || [];
+  const activeGoalieData = activeTab === "current" ? curGlData
+    : activeTab === "alltime" ? atGlData
+    : glData[historySeason] || [];
   const activeGames = activeTab === "alltime"
-    ? Object.values(gamesData).flat()
-    : activeTab === "current" ? (gamesData[SEASONS[0]?.id] || [])
-    : (gamesData[historySeason] || []);
+    ? Object.values(gmData).flat()
+    : activeTab === "current" ? (gmData[SEASONS[0]?.id] || [])
+    : (gmData[historySeason] || []);
   const activeRecaps = activeTab === "alltime"
-    ? Object.values(recapsData).flat()
-    : activeTab === "current" ? (recapsData[SEASONS[0]?.id] || [])
-    : (recapsData[historySeason] || []);
+    ? Object.values(rcData).flat()
+    : activeTab === "current" ? (rcData[SEASONS[0]?.id] || [])
+    : (rcData[historySeason] || []);
+  const activeAwards = activeTab === "current" ? (awardsData[SEASONS[0]?.id] || [])
+    : activeTab === "history" && historySeason ? (awardsData[historySeason] || [])
+    : [];
 
   // Enrich skater data with GWG from recaps
   const gwgCounts = useMemo(() => computeGWG(activeRecaps), [activeRecaps]);
@@ -2012,7 +2165,26 @@ export default function App() {
               animation: "lineGrow 0.8s ease 0.3s both",
             }} />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <a
+              href="https://open.spotify.com/playlist/2pqv2kXaxSSaZhbUqxdw1r"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: C.surface, border: `1px solid ${C.border}`,
+                borderRadius: 20, padding: "8px 14px", cursor: "pointer",
+                display: "flex", alignItems: "center", gap: 8,
+                transition: "all 0.3s ease", textDecoration: "none",
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill={C.textDim}>
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+              </svg>
+              <span style={{
+                fontSize: 11, color: C.textDim, fontFamily: "'DM Mono', monospace",
+                letterSpacing: "1px",
+              }}>PLAYLIST</span>
+            </a>
             <button
               onClick={() => setDarkMode(!darkMode)}
               style={{
@@ -2079,34 +2251,67 @@ export default function App() {
           )}
         </div>
 
-        {/* Skaters / Goalies Toggle */}
+        {/* Playoff Toggle + Stat View Toggle */}
         <div style={{
-          display: "flex", gap: 4, marginBottom: 28,
+          display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap",
+          gap: 12, marginBottom: 28,
           animation: "fadeSlideUp 0.5s ease 120ms both",
         }}>
-          {["skaters", "goalies", "team"].map((view) => (
-            <button
-              key={view}
-              onClick={() => setStatView(view)}
-              style={{
-                padding: "8px 18px", fontSize: 14, fontWeight: 500,
-                letterSpacing: "1.5px", textTransform: "uppercase",
-                fontFamily: "'DM Mono', monospace",
-                border: `1px solid ${statView === view ? C.gold : C.border}`,
-                borderRadius: 4, cursor: "pointer",
-                background: statView === view ? `${C.gold}15` : "transparent",
-                color: statView === view ? C.gold : C.textDim,
-                transition: "all 0.2s ease",
-              }}
-            >
-              {view}
-            </button>
-          ))}
+          <div style={{ display: "flex", gap: 4 }}>
+            {["skaters", "goalies", "team", "awards"].filter((view) => view !== "awards" || (activeTab !== "alltime" && !playoffMode)).map((view) => (
+              <button
+                key={view}
+                onClick={() => setStatView(view)}
+                style={{
+                  padding: "8px 18px", fontSize: 14, fontWeight: 500,
+                  letterSpacing: "1.5px", textTransform: "uppercase",
+                  fontFamily: "'DM Mono', monospace",
+                  border: `1px solid ${statView === view ? C.gold : C.border}`,
+                  borderRadius: 4, cursor: "pointer",
+                  background: statView === view ? `${C.gold}15` : "transparent",
+                  color: statView === view ? C.gold : C.textDim,
+                  transition: "all 0.2s ease",
+                }}
+              >
+                {view}
+              </button>
+            ))}
+          </div>
+          {hasPlayoffData && (
+            <div style={{
+              display: "flex", borderRadius: 4, overflow: "hidden",
+              border: `1px solid ${C.border}`,
+            }}>
+              {["Regular", "Playoffs"].map((label) => {
+                const isActive = label === "Playoffs" ? playoffMode : !playoffMode;
+                return (
+                  <button
+                    key={label}
+                    onClick={() => { setPlayoffMode(label === "Playoffs"); if (label === "Playoffs" && statView === "awards") setStatView("skaters"); }}
+                    style={{
+                      padding: "6px 14px", fontSize: 12, fontWeight: 500,
+                      letterSpacing: "1px", textTransform: "uppercase",
+                      fontFamily: "'DM Mono', monospace",
+                      border: "none", cursor: "pointer",
+                      background: isActive ? `${C.gold}20` : "transparent",
+                      color: isActive ? C.gold : C.textDim,
+                      transition: "all 0.2s ease",
+                      borderRight: label === "Regular" ? `1px solid ${C.border}` : "none",
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Content */}
-        {statView === "team" ? (
-          <TeamView skaterData={activeSkaterData} goalieData={activeGoalieData} games={activeGames} recaps={activeRecaps} isAllTime={activeTab === "alltime"} />
+        {statView === "awards" ? (
+          <AwardsView skaterData={activeSkaterData} goalieData={activeGoalieData} manualAwards={activeAwards} />
+        ) : statView === "team" ? (
+          <TeamView skaterData={activeSkaterData} goalieData={activeGoalieData} games={activeGames} recaps={activeRecaps} isAllTime={activeTab === "alltime"} playoffMode={playoffMode} />
         ) : enrichedData.length > 0 ? (
           isGoalie
             ? <>
@@ -2117,7 +2322,7 @@ export default function App() {
                 <StatsView data={enrichedData} columns={activeCols} seasonData={seasonData} />
                 {activeTab !== "alltime" && <CumulativePointsChart recaps={activeRecaps} />}
                 <ScoringDonut data={enrichedData} />
-                {activeTab !== "alltime" && <PaceProjections data={enrichedData} />}
+                {activeTab === "current" && <PaceProjections data={enrichedData} />}
                 {activeTab !== "alltime" && activeRecaps.length > 0 && (() => {
                   const combos = computeScoringCombos(activeRecaps).slice(0, 10);
                   if (!combos.length) return null;
@@ -2200,7 +2405,7 @@ export default function App() {
                     </div>
                   );
                 })()}
-                {activeTab !== "alltime" && <MilestoneTracker allTimeData={allTimeData} />}
+                {activeTab === "current" && <MilestoneTracker allTimeData={allTimeData} />}
               </>
         ) : (
           <div style={{
