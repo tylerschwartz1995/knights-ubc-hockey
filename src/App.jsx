@@ -2032,9 +2032,9 @@ function TeamView({ goalieData, games, recaps, isAllTime, playoffMode }) {
             fontFamily: "'DM Mono', monospace",
           }}>vs Opponents</h3>
           <div style={{
-            background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, overflow: "hidden",
+            background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, overflowX: "auto",
           }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15, minWidth: 520 }}>
               <thead>
                 <tr style={{ borderBottom: `1px solid ${C.gold}33` }}>
                   {[{k:"name",l:"OPPONENT"},{k:"gp",l:"GP"},{k:"w",l:"W"},{k:"l",l:"L"},{k:"otl",l:"OTL"},{k:"gf",l:"GF"},{k:"ga",l:"GA"},{k:"diff",l:"DIFF"}].map((h) => (
