@@ -191,6 +191,19 @@ function computeScoringCombos(recaps) {
   return Object.values(combos).sort((a, b) => b.count - a.count);
 }
 
+const PENALTY_ABBREV = {
+  "Interference": "INT", "Cross-Checking": "X-CHK", "Cross Checking": "X-CHK",
+  "Hooking": "HOOK", "Tripping": "TRIP", "Slashing": "SLASH", "Roughing": "ROUGH",
+  "Holding": "HOLD", "High-Sticking": "H-STK", "High Sticking": "H-STK",
+  "Boarding": "BOARD", "Delay of Game": "DOG", "Too Many Men": "TMM",
+  "Unsportsmanlike Conduct": "USC", "Elbowing": "ELBOW", "Charging": "CHRG",
+  "Kneeing": "KNEE", "Misconduct": "MISC", "Fighting": "FIGHT",
+  "Head Contact": "Head Cont.", "Too Many Players": "Too Many", "Too Many Men on the Ice": "Too Many",
+};
+function shortenPenalty(type) {
+  return PENALTY_ABBREV[type] || type;
+}
+
 function computePenaltyLeaders(recaps) {
   const players = {};
   recaps.forEach((game) => {
@@ -234,6 +247,78 @@ function computeComebacks(recaps) {
   return comebacks.sort((a, b) => b.deficit - a.deficit);
 }
 
+function computeSpecialTeams(recaps) {
+  const periodLen = 1200; // 20-min periods for timeline spacing
+  function toSec(period, time) {
+    const p = period === "1st" ? 0 : period === "2nd" ? 1 : period === "3rd" ? 2 : 3;
+    const parts = time.split(":").map(Number);
+    return p * periodLen + (parts.length === 3 ? parts[0] * 3600 + parts[1] * 60 + parts[2] : parts[0] * 60 + parts[1]);
+  }
+
+  let ppOpp = 0, ppGoals = 0, pkSit = 0, pkGA = 0;
+  const playerPPP = {}; // per-player power play points
+
+  recaps.forEach((game) => {
+    const kPens = []; // expiry times of active Knights penalties (sorted ascending)
+    const oPens = []; // expiry times of active opponent penalties (sorted ascending)
+    const adv = () => oPens.length - kPens.length; // positive = Knights PP, negative = Knights PK
+
+    const events = [];
+    (game.penalties || []).forEach((pen) => {
+      const t = toSec(pen.period, pen.time);
+      const team = pen.team === "Knights" ? "k" : "o";
+      const dur = (pen.minutes || 2) * 60;
+      events.push({ time: t, kind: "pen", team, expiry: t + dur });
+      events.push({ time: t + dur, kind: "pen_end", team, expiry: t + dur });
+    });
+    (game.goals || []).forEach((goal) => {
+      events.push({ time: toSec(goal.period, goal.time), kind: "goal", team: goal.team === "Knights" ? "k" : "o", scorer: goal.scorer, assists: goal.assists || [] });
+    });
+
+    // pen_end processes before other events at same time
+    events.sort((a, b) => a.time - b.time || (a.kind === "pen_end" ? -1 : 1));
+
+    events.forEach((ev) => {
+      const advBefore = adv();
+
+      if (ev.kind === "pen") {
+        if (ev.team === "k") { kPens.push(ev.expiry); kPens.sort((a, b) => a - b); }
+        else { oPens.push(ev.expiry); oPens.sort((a, b) => a - b); }
+      } else if (ev.kind === "pen_end") {
+        const arr = ev.team === "k" ? kPens : oPens;
+        const idx = arr.indexOf(ev.expiry);
+        if (idx !== -1) arr.splice(idx, 1);
+      } else if (ev.kind === "goal") {
+        const a = adv();
+        if (ev.team === "k" && a > 0) {
+          ppGoals++;
+          playerPPP[ev.scorer] = (playerPPP[ev.scorer] || 0) + 1;
+          ev.assists.forEach((ast) => { playerPPP[ast] = (playerPPP[ast] || 0) + 1; });
+          oPens.shift(); // PP goal ends earliest opponent penalty
+        } else if (ev.team === "o" && a < 0) {
+          pkGA++;
+          kPens.shift(); // PK goal against ends earliest Knights penalty
+        }
+      }
+
+      const advAfter = adv();
+      // Detect new PP/PK situations (including 5-on-3 extensions)
+      if (advAfter > 0 && advBefore <= 0) ppOpp++;
+      if (advAfter > advBefore && advBefore > 0) ppOpp++;
+      if (advAfter < 0 && advBefore >= 0) pkSit++;
+      if (advAfter < advBefore && advBefore < 0) pkSit++;
+    });
+  });
+
+  return {
+    ppGoals, ppOpp,
+    ppPct: ppOpp > 0 ? (ppGoals / ppOpp * 100) : 0,
+    pkGA, pkSit,
+    pkPct: pkSit > 0 ? ((1 - pkGA / pkSit) * 100) : 0,
+    playerPPP,
+  };
+}
+
 // ── Columns ─────────────────────────────────────────────
 const BASE_COLS = [
   { key: "player", label: "PLAYER", align: "left" },
@@ -241,7 +326,8 @@ const BASE_COLS = [
   { key: "g", label: "G" },
   { key: "a", label: "A" },
   { key: "p", label: "PTS" },
-  { key: "ppg", label: "PPG", format: (v) => v.toFixed(2) },
+  { key: "ppp", label: "PPP" },
+  { key: "ppg", label: "P/GP", format: (v) => v.toFixed(2) },
   { key: "gwg", label: "GWG" },
   { key: "pm", label: "PIM" },
 ];
@@ -253,7 +339,8 @@ const ALLTIME_COLS = [
   { key: "g", label: "G" },
   { key: "a", label: "A" },
   { key: "p", label: "PTS" },
-  { key: "ppg", label: "PPG", format: (v) => v.toFixed(2) },
+  { key: "ppp", label: "PPP" },
+  { key: "ppg", label: "P/GP", format: (v) => v.toFixed(2) },
   { key: "gwg", label: "GWG" },
   { key: "pm", label: "PIM" },
 ];
@@ -384,6 +471,7 @@ function HistoryDropdown({ seasons, activeId, onSelect }) {
 // ── Cumulative Points Chart ────────────────────────────
 function CumulativePointsChart({ recaps }) {
   const [hoveredPlayer, setHoveredPlayer] = useState(null);
+  const [hoveredPoint, setHoveredPoint] = useState(null); // { player, gameIdx, x, y, val }
 
   if (!recaps.length) return null;
 
@@ -472,9 +560,9 @@ function CumulativePointsChart({ recaps }) {
       }}>Points Race <span style={{ fontSize: 13, color: C.textFaint, fontWeight: 400 }}>(Top 5 Scorers)</span></h3>
       <div style={{
         background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8,
-        padding: "20px 12px", overflowX: "auto",
+        padding: "20px 12px",
       }}>
-        <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: "block", margin: "0 auto" }}>
+        <svg viewBox={`0 0 ${w} ${h}`} style={{ display: "block", margin: "0 auto", width: "100%", height: "auto" }}>
           {/* Grid lines */}
           {[0, 0.25, 0.5, 0.75, 1].map((pct) => {
             const y = padT + chartH * (1 - pct);
@@ -530,19 +618,53 @@ function CumulativePointsChart({ recaps }) {
                 {isHovered && points.map((val, i) => {
                   const x = padL + (i / (totalGames - 1 || 1)) * chartW;
                   const y = padT + chartH * (1 - val / maxPoints);
+                  const prevVal = i > 0 ? points[i - 1] : 0;
+                  const gameGain = val - prevVal;
                   return (
-                    <circle key={i} cx={x} cy={y} r="3.5" fill={color} stroke={C.surface} strokeWidth="1.5"
-                      style={{ pointerEvents: "none" }}>
-                      <title>{`G${i + 1}: ${player} — ${val} pts`}</title>
-                    </circle>
+                    <circle key={i} cx={x} cy={y} r={hoveredPoint && hoveredPoint.gameIdx === i && hoveredPoint.player === player ? 6 : 3.5}
+                      fill={color} stroke={C.surface} strokeWidth="1.5"
+                      style={{ cursor: "pointer", transition: "r 0.15s" }}
+                      onMouseEnter={() => { setHoveredPlayer(player); setHoveredPoint({ player, gameIdx: i, x, y, val, gameGain, opponent: sorted[i]?.opponent || "" }); }}
+                      onMouseLeave={() => setHoveredPoint(null)} />
                   );
                 })}
               </g>
             );
           })}
           {/* X axis */}
-          <text x={padL} y={h - 6} fill={C.textFaint} fontSize="13" fontFamily="DM Mono, monospace">G1</text>
-          <text x={padL + chartW} y={h - 6} fill={C.textFaint} fontSize="13" fontFamily="DM Mono, monospace" textAnchor="end">G{totalGames}</text>
+          {Array.from({ length: totalGames }, (_, i) => i + 1)
+            .filter((g) => g === 1 || g === totalGames || g % 5 === 0)
+            .map((g) => {
+              const x = padL + ((g - 1) / (totalGames - 1 || 1)) * chartW;
+              return (
+                <text key={g} x={x} y={h - 6} fill={C.textFaint} fontSize="13"
+                  fontFamily="DM Mono, monospace" textAnchor="middle">G{g}</text>
+              );
+            })}
+          {/* Tooltip */}
+          {hoveredPoint && (() => {
+            const tt = hoveredPoint;
+            const tooltipW = 150, tooltipH = 58;
+            let tx = tt.x + 12;
+            let ty = tt.y - tooltipH - 8;
+            if (tx + tooltipW > w - padR) tx = tt.x - tooltipW - 12;
+            if (ty < 0) ty = tt.y + 12;
+            return (
+              <g style={{ pointerEvents: "none" }}>
+                <rect x={tx} y={ty} width={tooltipW} height={tooltipH} rx="6"
+                  fill={C.bg} stroke={C.border} strokeWidth="1" opacity="0.95" />
+                <text x={tx + 10} y={ty + 18} fill={C.text} fontSize="13" fontFamily="Outfit, sans-serif" fontWeight="600">
+                  {tt.player}
+                </text>
+                <text x={tx + 10} y={ty + 35} fill={C.textDim} fontSize="12" fontFamily="DM Mono, monospace">
+                  Game {tt.gameIdx + 1}{tt.opponent ? ` vs ${tt.opponent}` : ""}
+                </text>
+                <text x={tx + 10} y={ty + 50} fill={C.gold} fontSize="12" fontFamily="DM Mono, monospace">
+                  {tt.val} pts total{tt.gameGain > 0 ? ` (+${tt.gameGain})` : ""}
+                </text>
+              </g>
+            );
+          })()}
         </svg>
       </div>
     </div>
@@ -559,53 +681,36 @@ function PlayerCard({ player, seasonData }) {
 
   if (!seasons.length) return null;
 
-  const maxP = Math.max(...seasons.map((s) => s.p), 1);
-
   return (
     <div style={{
-      padding: "16px 20px 16px 46px",
       animation: "fadeSlideUp 0.25s ease both",
     }}>
       <div style={{
-        fontSize: 12, color: C.textDim, letterSpacing: "2px", marginBottom: 10,
+        fontSize: 12, color: C.textFaint, letterSpacing: "1.5px", marginBottom: 12,
         fontFamily: "'DM Mono', monospace", textTransform: "uppercase",
       }}>
         Season Breakdown
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {seasons.map((s) => (
           <div key={s.label} style={{
-            display: "grid", gridTemplateColumns: "60px 30px 30px 30px 30px 1fr",
-            alignItems: "center", gap: 8,
+            display: "flex", alignItems: "center", gap: 10,
           }}>
             <span style={{
-              fontSize: 11, color: C.textMid, fontFamily: "'DM Mono', monospace",
+              fontSize: 13, color: C.textMid, fontFamily: "'DM Mono', monospace", minWidth: 64,
             }}>{s.label}</span>
-            <span style={{ fontSize: 11, color: C.textDim, fontFamily: "'DM Mono', monospace", textAlign: "center" }}>
-              {s.gp}<span style={{ fontSize: 8, color: C.textFaint, marginLeft: 2 }}>GP</span>
+            <span style={{ fontSize: 13, color: C.textDim, fontFamily: "'DM Mono', monospace", textAlign: "center", minWidth: 34 }}>
+              {s.gp}<span style={{ fontSize: 9, color: C.textFaint, marginLeft: 2 }}>GP</span>
             </span>
-            <span style={{ fontSize: 11, color: C.goldBright, fontFamily: "'DM Mono', monospace", textAlign: "center" }}>
-              {s.g}<span style={{ fontSize: 8, color: C.textFaint, marginLeft: 2 }}>G</span>
+            <span style={{ fontSize: 13, color: C.goldBright, fontFamily: "'DM Mono', monospace", textAlign: "center", minWidth: 34 }}>
+              {s.g}<span style={{ fontSize: 9, color: C.textFaint, marginLeft: 2 }}>G</span>
             </span>
-            <span style={{ fontSize: 11, color: C.goldMuted, fontFamily: "'DM Mono', monospace", textAlign: "center" }}>
-              {s.a}<span style={{ fontSize: 8, color: C.textFaint, marginLeft: 2 }}>A</span>
+            <span style={{ fontSize: 13, color: C.goldMuted, fontFamily: "'DM Mono', monospace", textAlign: "center", minWidth: 34 }}>
+              {s.a}<span style={{ fontSize: 9, color: C.textFaint, marginLeft: 2 }}>A</span>
             </span>
-            <span style={{ fontSize: 11, color: C.gold, fontWeight: 600, fontFamily: "'DM Mono', monospace", textAlign: "center" }}>
-              {s.p}<span style={{ fontSize: 8, color: C.textFaint, marginLeft: 2 }}>P</span>
+            <span style={{ fontSize: 13, color: C.gold, fontWeight: 600, fontFamily: "'DM Mono', monospace", textAlign: "center", minWidth: 34 }}>
+              {s.p}<span style={{ fontSize: 9, color: C.textFaint, marginLeft: 2 }}>P</span>
             </span>
-            <div style={{
-              height: 8, borderRadius: 2, overflow: "hidden",
-              background: C.border, display: "flex",
-            }}>
-              <div style={{
-                width: `${(s.g / maxP) * 100}%`, height: "100%",
-                background: `linear-gradient(90deg, ${C.gold}, ${C.goldBright})`,
-              }} />
-              <div style={{
-                width: `${(s.a / maxP) * 100}%`, height: "100%",
-                background: `linear-gradient(90deg, ${C.goldDim}, ${C.goldMuted})`,
-              }} />
-            </div>
           </div>
         ))}
       </div>
@@ -647,6 +752,86 @@ function StatsView({ data, columns, seasonData }) {
     { label: "GOAL LEADER", player: topGoals.player, value: topGoals.g, unit: "G" },
     { label: "ASSIST LEADER", player: topAssists.player, value: topAssists.a, unit: "A" },
   ];
+
+  // Radar chart config
+  const radarAxes = [
+    { key: "g", label: "G" },
+    { key: "a", label: "A" },
+    { key: "ppg", label: "P/GP" },
+    { key: "ppp", label: "PPP" },
+    { key: "gwg", label: "GWG" },
+    { key: "pm", label: "PIM" },
+  ];
+  const radarMaxes = {};
+  radarAxes.forEach(({ key }) => {
+    radarMaxes[key] = Math.max(...data.map((d) => d[key] || 0), 1);
+  });
+
+  const RadarChart = ({ player }) => {
+    const size = 220, cx = size / 2, cy = size / 2, r = 55;
+    const n = radarAxes.length;
+    const angleStep = (Math.PI * 2) / n;
+    const startAngle = -Math.PI / 2;
+
+    const getPoint = (i, pct) => ({
+      x: cx + r * pct * Math.cos(startAngle + i * angleStep),
+      y: cy + r * pct * Math.sin(startAngle + i * angleStep),
+    });
+
+    const values = radarAxes.map(({ key }) => {
+      const val = player[key] || 0;
+      return Math.min(val / radarMaxes[key], 1);
+    });
+
+    const polyPoints = values.map((v, i) => {
+      const pt = getPoint(i, v);
+      return `${pt.x},${pt.y}`;
+    }).join(" ");
+
+    return (
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {/* Grid rings */}
+        {[0.25, 0.5, 0.75, 1].map((pct) => (
+          <polygon key={pct} points={
+            Array.from({ length: n }, (_, i) => {
+              const pt = getPoint(i, pct);
+              return `${pt.x},${pt.y}`;
+            }).join(" ")
+          } fill="none" stroke={C.border} strokeWidth="1" opacity={pct === 1 ? 0.6 : 0.3} />
+        ))}
+        {/* Axis lines */}
+        {radarAxes.map((_, i) => {
+          const pt = getPoint(i, 1);
+          return <line key={i} x1={cx} y1={cy} x2={pt.x} y2={pt.y} stroke={C.border} strokeWidth="1" opacity="0.3" />;
+        })}
+        {/* Player shape */}
+        <polygon points={polyPoints} fill={`${C.gold}30`} stroke={C.gold} strokeWidth="2" />
+        {/* Dots at vertices */}
+        {values.map((v, i) => {
+          const pt = getPoint(i, v);
+          return <circle key={i} cx={pt.x} cy={pt.y} r="3" fill={C.gold} />;
+        })}
+        {/* Labels */}
+        {radarAxes.map(({ label, key }, i) => {
+          const pt = getPoint(i, 1.45);
+          const val = player[key] || 0;
+          const displayVal = typeof val === "number" && val % 1 !== 0 ? val.toFixed(1) : val;
+          return (
+            <g key={i}>
+              <text x={pt.x} y={pt.y - 6} textAnchor="middle" dominantBaseline="central"
+                fill={C.textFaint} fontSize="9" fontFamily="DM Mono, monospace" letterSpacing="1">
+                {label}
+              </text>
+              <text x={pt.x} y={pt.y + 7} textAnchor="middle" dominantBaseline="central"
+                fill={C.gold} fontSize="12" fontFamily="DM Mono, monospace" fontWeight="600">
+                {displayVal}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    );
+  };
 
   return (
     <>
@@ -801,7 +986,19 @@ function StatsView({ data, columns, seasonData }) {
                     {isExpanded && seasonData && (
                       <tr>
                         <td colSpan={columns.length + 1} style={{ padding: 0, background: `${C.bg}cc` }}>
-                          <PlayerCard player={row.player} seasonData={seasonData} />
+                          <div className="vgk-player-expand" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", padding: "16px 20px", gap: 32 }}>
+                            <div style={{ flex: "0 0 auto" }}>
+                              <PlayerCard player={row.player} seasonData={seasonData} />
+                            </div>
+                            <div style={{
+                              flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "center",
+                            }}>
+                              <div style={{ fontSize: 12, color: C.textFaint, fontFamily: "'DM Mono', monospace", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 4 }}>
+                                Player Profile
+                              </div>
+                              <RadarChart player={row} />
+                            </div>
+                          </div>
                         </td>
                       </tr>
                     )}
@@ -819,6 +1016,8 @@ function StatsView({ data, columns, seasonData }) {
 
 // ── Scoring Distribution (Donut Chart) ─────────────────
 function ScoringDonut({ data }) {
+  const [hoveredSeg, setHoveredSeg] = useState(null);
+
   if (!data.length) return null;
 
   const totalGoals = data.reduce((s, r) => s + r.g, 0);
@@ -857,14 +1056,25 @@ function ScoringDonut({ data }) {
     const y1i = cy + innerR * Math.sin(startAngle);
     const largeArc = angle > Math.PI ? 1 : 0;
 
+    const midAngle = (startAngle + endAngle) / 2;
+    const isHovered = hoveredSeg === i;
+    const isDimmed = hoveredSeg !== null && !isHovered;
+    // Push slice outward slightly on hover
+    const offset = isHovered ? 6 : 0;
+    const ox = offset * Math.cos(midAngle);
+    const oy = offset * Math.sin(midAngle);
+
     return (
       <path
         key={i}
-        d={`M${x1o},${y1o} A${outerR},${outerR} 0 ${largeArc} 1 ${x2o},${y2o} L${x2i},${y2i} A${innerR},${innerR} 0 ${largeArc} 0 ${x1i},${y1i} Z`}
+        d={`M${x1o + ox},${y1o + oy} A${outerR},${outerR} 0 ${largeArc} 1 ${x2o + ox},${y2o + oy} L${x2i + ox},${y2i + oy} A${innerR},${innerR} 0 ${largeArc} 0 ${x1i + ox},${y1i + oy} Z`}
         fill={goldShades[i % goldShades.length]}
-        opacity={0.85}
+        opacity={isDimmed ? 0.4 : 0.85}
         stroke={C.bg}
         strokeWidth="1"
+        style={{ cursor: "pointer", transition: "opacity 0.2s" }}
+        onMouseEnter={() => setHoveredSeg(i)}
+        onMouseLeave={() => setHoveredSeg(null)}
       />
     );
   });
@@ -881,26 +1091,50 @@ function ScoringDonut({ data }) {
       <div style={{ display: "flex", alignItems: "center", gap: 32, flexWrap: "wrap", justifyContent: "center" }}>
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
           {paths}
-          <text x={cx} y={cy - 6} textAnchor="middle" fill={C.gold}
-            fontSize="24" fontWeight="700" fontFamily="Outfit, sans-serif">{totalGoals}</text>
-          <text x={cx} y={cy + 12} textAnchor="middle" fill={C.textDim}
-            fontSize="9" letterSpacing="2" fontFamily="DM Mono, monospace">GOALS</text>
+          {hoveredSeg !== null ? (
+            <>
+              <text x={cx} y={cy - 6} textAnchor="middle" fill={C.gold}
+                fontSize="22" fontWeight="700" fontFamily="Outfit, sans-serif">
+                {segments[hoveredSeg].value} ({Math.round((segments[hoveredSeg].value / totalGoals) * 100)}%)
+              </text>
+              <text x={cx} y={cy + 12} textAnchor="middle" fill={C.textDim}
+                fontSize="8" letterSpacing="1.5" fontFamily="DM Mono, monospace">
+                {segments[hoveredSeg].label.split(" ")[1] || segments[hoveredSeg].label}
+              </text>
+            </>
+          ) : (
+            <>
+              <text x={cx} y={cy - 6} textAnchor="middle" fill={C.gold}
+                fontSize="24" fontWeight="700" fontFamily="Outfit, sans-serif">{totalGoals}</text>
+              <text x={cx} y={cy + 12} textAnchor="middle" fill={C.textDim}
+                fontSize="9" letterSpacing="2" fontFamily="DM Mono, monospace">GOALS</text>
+            </>
+          )}
         </svg>
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          {segments.map((seg, i) => (
-            <div key={seg.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{
-                width: 10, height: 10, borderRadius: 2,
-                background: goldShades[i % goldShades.length], opacity: 0.85, flexShrink: 0,
-              }} />
-              <span style={{
-                fontSize: 14, color: C.textMid, fontFamily: "'Outfit', sans-serif", fontWeight: 500,
-              }}>{seg.label}</span>
-              <span style={{
-                fontSize: 14, color: C.textDim, fontFamily: "'DM Mono', monospace", marginLeft: "auto",
-              }}>{seg.value} ({Math.round((seg.value / totalGoals) * 100)}%)</span>
-            </div>
-          ))}
+          {segments.map((seg, i) => {
+            const isLegendHovered = hoveredSeg === i;
+            const isLegendDimmed = hoveredSeg !== null && !isLegendHovered;
+            return (
+              <div key={seg.label} style={{
+                display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
+                opacity: isLegendDimmed ? 0.4 : 1, transition: "opacity 0.2s",
+              }}
+                onMouseEnter={() => setHoveredSeg(i)}
+                onMouseLeave={() => setHoveredSeg(null)}>
+                <div style={{
+                  width: 10, height: 10, borderRadius: 2,
+                  background: goldShades[i % goldShades.length], opacity: 0.85, flexShrink: 0,
+                }} />
+                <span style={{
+                  fontSize: 14, color: C.textMid, fontFamily: "'Outfit', sans-serif", fontWeight: isLegendHovered ? 700 : 500,
+                }}>{seg.label}</span>
+                <span style={{
+                  fontSize: 14, color: C.textDim, fontFamily: "'DM Mono', monospace", marginLeft: "auto",
+                }}>{seg.value} ({Math.round((seg.value / totalGoals) * 100)}%)</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -908,6 +1142,217 @@ function ScoringDonut({ data }) {
 }
 
 // ── Milestone Tracker ──────────────────────────────────
+// ── Records View ──────────────────────────────────────
+function RecordsView({ seasonData, goalieData, gamesData, recapsData, allTimeData }) {
+  const records = useMemo(() => {
+    const result = { season: [], game: [], team: [], alltime: [] };
+
+    // ── Single-Season Records ──
+    const playerSeasons = [];
+    Object.entries(seasonData).forEach(([sid, rows]) => {
+      rows.forEach((r) => playerSeasons.push({ ...r, season: sid }));
+    });
+
+    const best = (label, key, fmt) => {
+      const sorted = [...playerSeasons].filter((r) => r.gp > 0).sort((a, b) => b[key] - a[key]);
+      if (sorted.length) {
+        const r = sorted[0];
+        result.season.push({ label, player: r.player, value: fmt ? fmt(r[key]) : r[key], season: r.season });
+      }
+    };
+    best("Most Goals", "g");
+    best("Most Assists", "a");
+    best("Most Points", "p");
+    best("Most PIM", "pm");
+
+    // Goalie single-season records (min 8 GP)
+    const goalieSeasons = [];
+    Object.entries(goalieData).forEach(([sid, rows]) => {
+      rows.forEach((r) => goalieSeasons.push({ ...r, season: sid }));
+    });
+    const eligibleGoalies = goalieSeasons.filter((r) => r.gp >= 8);
+    if (eligibleGoalies.length) {
+      const bestGAA = [...eligibleGoalies].sort((a, b) => a.gaa - b.gaa)[0];
+      result.season.push({ label: "Best GAA", player: bestGAA.player, value: bestGAA.gaa.toFixed(2), season: bestGAA.season });
+      const bestSV = [...eligibleGoalies].sort((a, b) => b.svPct - a.svPct)[0];
+      result.season.push({ label: "Best SV%", player: bestSV.player, value: bestSV.svPct.toFixed(3), season: bestSV.season });
+    }
+
+    // ── Single-Game Records ──
+    const allRecaps = Object.values(recapsData).flat();
+    let bestGameGoals = { player: "", count: 0, game: null };
+    let bestGameAssists = { player: "", count: 0, game: null };
+    let bestGamePoints = { player: "", count: 0, game: null };
+    let bestGamePIM = { player: "", count: 0, game: null };
+    allRecaps.forEach((game) => {
+      const gameGoals = {};
+      const gameAssists = {};
+      const gamePoints = {};
+      (game.goals || []).forEach((goal) => {
+        if (goal.team !== "Knights") return;
+        gameGoals[goal.scorer] = (gameGoals[goal.scorer] || 0) + 1;
+        gamePoints[goal.scorer] = (gamePoints[goal.scorer] || 0) + 1;
+        (goal.assists || []).forEach((a) => {
+          gameAssists[a] = (gameAssists[a] || 0) + 1;
+          gamePoints[a] = (gamePoints[a] || 0) + 1;
+        });
+      });
+      const gamePIM = {};
+      (game.penalties || []).forEach((pen) => {
+        if (pen.team !== "Knights") return;
+        gamePIM[pen.player] = (gamePIM[pen.player] || 0) + (pen.minutes || 2);
+      });
+      Object.entries(gameGoals).forEach(([player, count]) => {
+        if (count > bestGameGoals.count) bestGameGoals = { player, count, game };
+      });
+      Object.entries(gameAssists).forEach(([player, count]) => {
+        if (count > bestGameAssists.count) bestGameAssists = { player, count, game };
+      });
+      Object.entries(gamePoints).forEach(([player, count]) => {
+        if (count > bestGamePoints.count) bestGamePoints = { player, count, game };
+      });
+      Object.entries(gamePIM).forEach(([player, count]) => {
+        if (count > bestGamePIM.count) bestGamePIM = { player, count, game };
+      });
+    });
+    if (bestGameGoals.count > 0) {
+      result.game.push({ label: "Most Goals", player: bestGameGoals.player, value: bestGameGoals.count, detail: `vs ${bestGameGoals.game.opponent} (${bestGameGoals.game.date})` });
+    }
+    if (bestGameAssists.count > 0) {
+      result.game.push({ label: "Most Assists", player: bestGameAssists.player, value: bestGameAssists.count, detail: `vs ${bestGameAssists.game.opponent} (${bestGameAssists.game.date})` });
+    }
+    if (bestGamePoints.count > 0) {
+      result.game.push({ label: "Most Points", player: bestGamePoints.player, value: bestGamePoints.count, detail: `vs ${bestGamePoints.game.opponent} (${bestGamePoints.game.date})` });
+    }
+    if (bestGamePIM.count > 0) {
+      result.game.push({ label: "Most PIM", player: bestGamePIM.player, value: bestGamePIM.count, detail: `vs ${bestGamePIM.game.opponent} (${bestGamePIM.game.date})` });
+    }
+
+    // ── Team Season Records ──
+    Object.entries(gamesData).forEach(([sid, games]) => {
+      if (!games.length) return;
+      const wins = games.filter((g) => g.result === "W").length;
+      const gf = games.reduce((s, g) => s + g.gf, 0);
+      const ga = games.reduce((s, g) => s + g.ga, 0);
+
+      let longestStreak = 0, cur = 0;
+      [...games].sort((a, b) => a.date.localeCompare(b.date)).forEach((g) => {
+        if (g.result === "W") { cur++; longestStreak = Math.max(longestStreak, cur); }
+        else cur = 0;
+      });
+
+      result.team.push({ label: "Most Wins", value: wins, season: sid, sortKey: wins });
+      result.team.push({ label: "Most Goals For", value: gf, season: sid, sortKey: gf });
+      result.team.push({ label: "Fewest Goals Against", value: ga, season: sid, sortKey: -ga });
+      result.team.push({ label: "Best Win Streak", value: `${longestStreak}W`, season: sid, sortKey: longestStreak });
+    });
+
+    // Biggest win & biggest comeback across all recaps
+    let biggestWin = null;
+    allRecaps.forEach((game) => {
+      if (game.result !== "W") return;
+      const margin = game.gf - game.ga;
+      if (!biggestWin || margin > biggestWin.margin) biggestWin = { ...game, margin };
+    });
+    if (biggestWin) {
+      result.team.push({ label: "Biggest Win", value: `${biggestWin.gf}-${biggestWin.ga}`, detail: `vs ${biggestWin.opponent} (${biggestWin.date})`, sortKey: biggestWin.margin });
+    }
+
+    const comebacks = computeComebacks(allRecaps);
+    if (comebacks.length) {
+      const c = comebacks[0];
+      result.team.push({ label: "Biggest Comeback", value: `Down ${c.deficit}`, detail: `${c.gf}-${c.ga} vs ${c.opponent}`, sortKey: c.deficit });
+    }
+
+    // Deduplicate team records: keep best per label
+    const teamBest = {};
+    result.team.forEach((r) => {
+      if (!teamBest[r.label] || r.sortKey > teamBest[r.label].sortKey) teamBest[r.label] = r;
+    });
+    result.team = ["Most Wins", "Most Goals For", "Fewest Goals Against", "Best Win Streak", "Biggest Win", "Biggest Comeback"]
+      .map((l) => teamBest[l]).filter(Boolean);
+
+    // ── All-Time Career Leaders ──
+    const sorted = [...allTimeData].filter((r) => r.gp > 0);
+    const goalLeader = [...sorted].sort((a, b) => b.g - a.g)[0];
+    const assistLeader = [...sorted].sort((a, b) => b.a - a.a)[0];
+    const pointLeader = [...sorted].sort((a, b) => b.p - a.p)[0];
+    if (goalLeader) result.alltime.push({ label: "Goals Leader", player: goalLeader.player, value: goalLeader.g, detail: `${goalLeader.seasons} season${goalLeader.seasons > 1 ? "s" : ""}` });
+    if (assistLeader) result.alltime.push({ label: "Assists Leader", player: assistLeader.player, value: assistLeader.a, detail: `${assistLeader.seasons} season${assistLeader.seasons > 1 ? "s" : ""}` });
+    if (pointLeader) result.alltime.push({ label: "Points Leader", player: pointLeader.player, value: pointLeader.p, detail: `${pointLeader.seasons} season${pointLeader.seasons > 1 ? "s" : ""}` });
+
+    return result;
+  }, [seasonData, goalieData, gamesData, recapsData, allTimeData]);
+
+  const sectionStyle = {
+    marginBottom: 36,
+    animation: "fadeSlideUp 0.5s ease 100ms both",
+  };
+
+  const sectionTitle = (text, delay) => (
+    <h3 style={{
+      fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
+      marginBottom: 16, textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
+      animation: `fadeSlideUp 0.4s ease ${delay}ms both`,
+    }}>{text}</h3>
+  );
+
+  const RecordCard = ({ record, index, showPlayer = true }) => (
+    <div style={{
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      padding: "14px 16px", borderRadius: 8,
+      background: C.surface, border: `1px solid ${C.border}`,
+      animation: `fadeSlideUp 0.3s ease ${80 + index * 40}ms both`,
+    }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 13, color: C.textFaint, fontFamily: "'DM Mono', monospace", letterSpacing: "1px", textTransform: "uppercase", marginBottom: 4 }}>
+          {record.label}
+        </div>
+        {showPlayer && record.player && (
+          <div style={{ fontSize: 16, color: C.text, fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>
+            {record.player}
+          </div>
+        )}
+        {(record.season || record.detail) && (
+          <div style={{ fontSize: showPlayer ? 12 : 15, color: showPlayer ? C.textFaint : C.text, fontFamily: showPlayer ? "'DM Mono', monospace" : "'Outfit', sans-serif", fontWeight: showPlayer ? 400 : 600, marginTop: 2 }}>
+            {record.season && SEASONS.find((s) => s.id === record.season)?.label}{record.season && record.detail ? " · " : ""}{record.detail || ""}
+          </div>
+        )}
+      </div>
+      <div style={{
+        fontSize: 28, fontWeight: 700, color: C.gold,
+        fontFamily: "'Outfit', sans-serif", marginLeft: 16, whiteSpace: "nowrap", flexShrink: 0,
+      }}>
+        {record.value}
+      </div>
+    </div>
+  );
+
+  return (
+    <div>
+      {sectionTitle("All-Time Leaders", 60)}
+      <div style={{ ...sectionStyle, display: "flex", flexDirection: "column", gap: 8 }}>
+        {records.alltime.map((r, i) => <RecordCard key={r.label} record={r} index={i} />)}
+      </div>
+
+      {sectionTitle("Season Records", 200)}
+      <div style={{ ...sectionStyle, display: "flex", flexDirection: "column", gap: 8 }}>
+        {records.season.map((r, i) => <RecordCard key={r.label} record={r} index={i} />)}
+      </div>
+
+      {sectionTitle("Game Records", 340)}
+      <div style={{ ...sectionStyle, display: "flex", flexDirection: "column", gap: 8 }}>
+        {records.game.map((r, i) => <RecordCard key={r.label} record={r} index={i} />)}
+      </div>
+
+      {sectionTitle("Team Records", 480)}
+      <div style={{ ...sectionStyle, display: "flex", flexDirection: "column", gap: 8 }}>
+        {records.team.map((r, i) => <RecordCard key={r.label} record={r} index={i} showPlayer={false} />)}
+      </div>
+    </div>
+  );
+}
+
 function MilestoneTracker({ allTimeData }) {
   if (!allTimeData.length) return null;
 
@@ -1336,7 +1781,7 @@ function PaceProjections({ data }) {
 }
 
 // ── TeamView ───────────────────────────────────────────
-function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMode }) {
+function TeamView({ goalieData, games, recaps, isAllTime, playoffMode }) {
   const [oppSortKey, setOppSortKey] = useState("gp");
   const [oppSortAsc, setOppSortAsc] = useState(false);
   const [expandedGame, setExpandedGame] = useState(null);
@@ -1344,8 +1789,6 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMod
     if (oppSortKey === key) setOppSortAsc(!oppSortAsc);
     else { setOppSortKey(key); setOppSortAsc(false); }
   };
-  const totalGoals = skaterData.reduce((s, r) => s + r.g, 0);
-  const totalPIM = skaterData.reduce((s, r) => s + r.pm, 0);
   const topGoalie = goalieData.length
     ? goalieData.reduce((a, b) => (a.gp >= b.gp ? a : b))
     : null;
@@ -1390,13 +1833,6 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMod
       return oppSortAsc ? av - bv : bv - av;
     });
 
-  const statWidgets = [
-    { label: "RECORD", value: `${wins}-${losses}-${otl}` },
-    { label: "GOALS FOR", value: gf },
-    { label: "GOALS AGAINST", value: ga },
-    { label: "DIFF", value: gf - ga >= 0 ? `+${gf - ga}` : `${gf - ga}` },
-  ];
-
   // Longest winning streak
   let longestWinStreak = 0, currentStreak = 0;
   [...games].sort((a, b) => a.date.localeCompare(b.date)).forEach((g) => {
@@ -1404,21 +1840,23 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMod
     else currentStreak = 0;
   });
 
-  const teamWidgets = [
-    { label: "TOTAL GOALS", value: totalGoals },
-    { label: "PIM", value: totalPIM },
+  const st = recaps.length > 0 ? computeSpecialTeams(recaps) : null;
+
+  const allWidgets = [
+    { label: "RECORD", value: `${wins}-${losses}-${otl}` },
+    { label: "DIFF", value: gf - ga >= 0 ? `+${gf - ga}` : `${gf - ga}` },
+    { label: "GOALS FOR", value: gf },
+    { label: "GOALS AGAINST", value: ga },
+    ...(games.length > 0 ? [{ label: "BEST STREAK", value: `${longestWinStreak}W` }] : []),
+    ...(topGoalie ? [{ label: "TEAM SV%", value: topGoalie.svPct.toFixed(3) }] : []),
+    ...(st && st.ppOpp > 0 ? [{ label: "PP%", value: `${st.ppPct.toFixed(1)}%` }] : []),
+    ...(st && st.pkSit > 0 ? [{ label: "PK%", value: `${st.pkPct.toFixed(1)}%` }] : []),
   ];
-  if (topGoalie) {
-    teamWidgets.push({ label: "TEAM SV%", value: topGoalie.svPct.toFixed(3) });
-  }
-  if (games.length > 0) {
-    teamWidgets.push({ label: "BEST STREAK", value: `${longestWinStreak}W` });
-  }
 
   const renderWidgetRow = (widgets, delay = 0) => (
     <div className="vgk-widget-row" style={{
       display: "grid",
-      gridTemplateColumns: `repeat(${widgets.length}, 1fr)`,
+      gridTemplateColumns: "repeat(4, 1fr)",
       gap: 10, marginBottom: 20,
       animation: `fadeSlideUp 0.4s ease ${delay}ms both`,
     }}>
@@ -1446,8 +1884,7 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMod
 
   return (
     <>
-      {games.length > 0 && renderWidgetRow(statWidgets, 60)}
-      {renderWidgetRow(teamWidgets, 120)}
+      {allWidgets.length > 0 && renderWidgetRow(allWidgets, 60)}
 
       {/* Current Form — hidden in playoff mode */}
       {!isAllTime && !playoffMode && last5.length > 0 && (
@@ -1695,8 +2132,8 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMod
                   <div
                     onClick={() => setExpandedGame(isExpanded ? null : gameKey)}
                     style={{
-                      display: "grid", gridTemplateColumns: "90px 40px 1fr 60px 40px",
-                      alignItems: "center", gap: 12,
+                      display: "grid", gridTemplateColumns: "70px 40px 1fr 50px 36px",
+                      alignItems: "center", gap: 8,
                       padding: "10px 14px", borderRadius: isExpanded ? "6px 6px 0 0" : 6,
                       background: C.surface, border: `1px solid ${C.border}`,
                       cursor: recap ? "pointer" : "default",
@@ -1760,20 +2197,22 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMod
                           {recap.goals.map((goal, gi) => {
                             const isKnights = goal.team === "Knights";
                             return (
-                              <div key={gi} style={{
+                              <div key={gi} className="vgk-recap-row" style={{
                                 display: "flex", alignItems: "baseline", gap: 8,
                                 padding: "4px 0",
                                 borderLeft: `3px solid ${isKnights ? C.gold : C.textFaint}`,
-                                paddingLeft: 10, marginBottom: 4,
+                                paddingLeft: 16, marginBottom: 4,
                               }}>
                                 <span style={{ fontSize: 12, color: C.textFaint, fontFamily: "'DM Mono', monospace", minWidth: 32 }}>{goal.period}</span>
-                                <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace", minWidth: 50 }}>{goal.time}</span>
-                                <span style={{ fontSize: 14, color: isKnights ? C.gold : C.textMid, fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>{goal.scorer}</span>
-                                {goal.assists.length > 0 && (
-                                  <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>
-                                    ({goal.assists.join(", ")})
-                                  </span>
-                                )}
+                                <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace", minWidth: 50 }}>{goal.time.replace(/^00:/, "")}</span>
+                                <span style={{ display: "inline-flex", flexDirection: "column" }}>
+                                  <span className="vgk-recap-name" style={{ fontSize: 14, color: isKnights ? C.gold : C.textMid, fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>{goal.scorer}</span>
+                                  {goal.assists.length > 0 && (
+                                    <span style={{ fontSize: 11, color: C.textDim, fontFamily: "'DM Mono', monospace", marginTop: 1 }}>
+                                      {goal.assists.join(", ")}
+                                    </span>
+                                  )}
+                                </span>
                               </div>
                             );
                           })}
@@ -1789,17 +2228,17 @@ function TeamView({ skaterData, goalieData, games, recaps, isAllTime, playoffMod
                           {recap.penalties.map((pen, pi) => {
                             const isKnights = pen.team === "Knights";
                             return (
-                              <div key={pi} style={{
+                              <div key={pi} className="vgk-recap-row" style={{
                                 display: "flex", alignItems: "baseline", gap: 8,
                                 padding: "4px 0",
                                 borderLeft: `3px solid ${isKnights ? "#f87171" : C.textFaint}`,
-                                paddingLeft: 10, marginBottom: 4,
+                                paddingLeft: 16, marginBottom: 4,
                               }}>
                                 <span style={{ fontSize: 12, color: C.textFaint, fontFamily: "'DM Mono', monospace", minWidth: 32 }}>{pen.period}</span>
-                                <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace", minWidth: 50 }}>{pen.time}</span>
-                                <span style={{ fontSize: 14, color: C.textMid, fontWeight: 500, fontFamily: "'Outfit', sans-serif" }}>{pen.player}</span>
+                                <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace", minWidth: 50 }}>{pen.time.replace(/^00:/, "")}</span>
+                                <span className="vgk-recap-name" style={{ fontSize: 14, color: C.textMid, fontWeight: 500, fontFamily: "'Outfit', sans-serif" }}>{pen.player}</span>
                                 <span style={{ fontSize: 12, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>
-                                  {pen.type} ({pen.minutes}min)
+                                  {shortenPenalty(pen.type)} ({pen.minutes}min)
                                 </span>
                               </div>
                             );
@@ -2082,14 +2521,15 @@ export default function App() {
     : activeTab === "history" && historySeason ? (awardsData[historySeason] || [])
     : [];
 
-  // Enrich skater data with GWG from recaps
+  // Enrich skater data with GWG and PPP from recaps
   const gwgCounts = useMemo(() => computeGWG(activeRecaps), [activeRecaps]);
+  const stData = useMemo(() => computeSpecialTeams(activeRecaps), [activeRecaps]);
   const enrichedData = useMemo(() => {
     if (!isGoalie) {
-      return activeData.map((r) => ({ ...r, gwg: gwgCounts[r.player] || 0 }));
+      return activeData.map((r) => ({ ...r, gwg: gwgCounts[r.player] || 0, ppp: stData.playerPPP[r.player] || 0 }));
     }
     return activeData;
-  }, [activeData, gwgCounts, isGoalie]);
+  }, [activeData, gwgCounts, stData, isGoalie]);
 
   if (!loaded) {
     return (
@@ -2139,6 +2579,10 @@ export default function App() {
           .vgk-widget-value { font-size: 20px !important; }
           .vgk-widget-label { font-size: 11px !important; letter-spacing: 1px !important; }
           .vgk-widget-card { padding: 12px 8px !important; }
+          .vgk-widget-row { grid-template-columns: repeat(2, 1fr) !important; }
+          .vgk-player-expand { flex-direction: column !important; align-items: flex-start !important; }
+          .vgk-recap-row span { font-size: 11px !important; }
+          .vgk-recap-row .vgk-recap-name { font-size: 13px !important; }
         }
       `}</style>
 
@@ -2270,7 +2714,7 @@ export default function App() {
           animation: "fadeSlideUp 0.5s ease 120ms both",
         }}>
           <div style={{ display: "flex", gap: 4, overflowX: "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" }}>
-            {["skaters", "goalies", "team", "awards"].filter((view) => view !== "awards" || (activeTab !== "alltime" && !playoffMode)).map((view) => (
+            {["skaters", "goalies", "team", "records", "awards"].filter((view) => (view !== "awards" || (activeTab !== "alltime" && !playoffMode)) && (view !== "records" || activeTab === "alltime")).map((view) => (
               <button
                 key={view}
                 className="vgk-stat-view-btn"
@@ -2321,7 +2765,9 @@ export default function App() {
         </div>
 
         {/* Content */}
-        {statView === "awards" ? (
+        {statView === "records" ? (
+          <RecordsView seasonData={playoffMode ? playoffSeasonData : seasonData} goalieData={playoffMode ? playoffGoalieData : goalieData} gamesData={playoffMode ? playoffGamesData : gamesData} recapsData={playoffMode ? playoffRecapsData : recapsData} allTimeData={playoffMode ? allTimePlayoffData : allTimeData} />
+        ) : statView === "awards" ? (
           <AwardsView skaterData={activeSkaterData} goalieData={activeGoalieData} manualAwards={activeAwards} />
         ) : statView === "team" ? (
           <TeamView skaterData={activeSkaterData} goalieData={activeGoalieData} games={activeGames} recaps={activeRecaps} isAllTime={activeTab === "alltime"} playoffMode={playoffMode} />
@@ -2346,6 +2792,10 @@ export default function App() {
                         fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
                         marginBottom: 16, textTransform: "uppercase", fontFamily: "'DM Mono', monospace",
                       }}>Scoring Combos</h3>
+                      <p style={{
+                        fontSize: 14, color: C.textFaint, fontFamily: "'DM Mono', monospace",
+                        marginBottom: 16, marginTop: -8,
+                      }}>Most frequent scorer + assist combinations</p>
                       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                         {combos.map((c) => (
                           <div key={`${c.scorer}-${c.assister}`} style={{
@@ -2407,7 +2857,7 @@ export default function App() {
                                   <td style={{ padding: "12px 10px", textAlign: "center", color: C.textMid, fontFamily: "'DM Mono', monospace" }}>{p.count}</td>
                                   <td style={{ padding: "12px 10px", textAlign: "center", color: "#f87171", fontWeight: 600, fontFamily: "'DM Mono', monospace" }}>{p.minutes}</td>
                                   <td style={{ padding: "12px 10px", textAlign: "center", color: C.textDim, fontFamily: "'DM Mono', monospace" }}>
-                                    {topType ? `${topType[0]} (${topType[1]})` : "–"}
+                                    {topType ? `${shortenPenalty(topType[0])} (${topType[1]})` : "–"}
                                   </td>
                                 </tr>
                               );
