@@ -1,3 +1,3 @@
-Player,GP,GAA,SV%,SV,GA,SA,MIN,OTL
-Shawn Rassekh,22,3.97,0.873,630,92,722,1044,0
-Zach Darowski,1,1.00,0.950,19,1,20,45,0
+Player,GP,W,L,GAA,SV%,SV,GA,SA,MIN,OTL,SO
+Shawn Rassekh,22,10,12,3.97,0.873,630,92,722,1044,0,2
+Zach Darowski,1,1,0,1.00,0.950,19,1,20,45,0,0

@@ -90,6 +90,9 @@ function parseGoalieCSV(text) {
       sa: parseInt(norm.sa || 0) || 0,
       min: parseInt(norm.min || 0) || 0,
       otl: parseInt(norm.otl || 0) || 0,
+      w: parseInt(norm.w || 0) || 0,
+      l: parseInt(norm.l || 0) || 0,
+      so: parseInt(norm.so || 0) || 0,
     };
   }).filter((r) => !GOALIE_EXCLUDE.includes(r.player));
 }
@@ -138,13 +141,16 @@ function aggregateGoalieAllTime(seasonDataMap) {
   Object.values(seasonDataMap).forEach((rows) => {
     rows.forEach((r) => {
       const key = r.player;
-      if (!totals[key]) totals[key] = { player: key, gp: 0, sv: 0, ga: 0, sa: 0, min: 0, otl: 0, seasons: 0 };
+      if (!totals[key]) totals[key] = { player: key, gp: 0, sv: 0, ga: 0, sa: 0, min: 0, otl: 0, w: 0, l: 0, so: 0, seasons: 0 };
       totals[key].gp += r.gp;
       totals[key].sv += r.sv;
       totals[key].ga += r.ga;
       totals[key].sa += r.sa;
       totals[key].min += r.min;
       totals[key].otl += r.otl;
+      totals[key].w += r.w;
+      totals[key].l += r.l;
+      totals[key].so += r.so;
       totals[key].seasons += 1;
     });
   });
@@ -348,26 +354,32 @@ const ALLTIME_COLS = [
 const GOALIE_COLS = [
   { key: "player", label: "PLAYER", align: "left" },
   { key: "gp", label: "GP" },
+  { key: "w", label: "W" },
+  { key: "l", label: "L" },
+  { key: "otl", label: "OTL" },
+  { key: "so", label: "SO" },
   { key: "gaa", label: "GAA", format: (v) => v.toFixed(2) },
   { key: "svPct", label: "SV%", format: (v) => v.toFixed(3) },
   { key: "sv", label: "SV" },
   { key: "ga", label: "GA" },
   { key: "sa", label: "SA" },
   { key: "min", label: "MIN" },
-  { key: "otl", label: "OTL" },
 ];
 
 const GOALIE_ALLTIME_COLS = [
   { key: "player", label: "PLAYER", align: "left" },
   { key: "seasons", label: "SZN" },
   { key: "gp", label: "GP" },
+  { key: "w", label: "W" },
+  { key: "l", label: "L" },
+  { key: "otl", label: "OTL" },
+  { key: "so", label: "SO" },
   { key: "gaa", label: "GAA", format: (v) => v.toFixed(2) },
   { key: "svPct", label: "SV%", format: (v) => v.toFixed(3) },
   { key: "sv", label: "SV" },
   { key: "ga", label: "GA" },
   { key: "sa", label: "SA" },
   { key: "min", label: "MIN" },
-  { key: "otl", label: "OTL" },
 ];
 
 // ── Knight Logo SVG ─────────────────────────────────────
@@ -1356,7 +1368,7 @@ function RecordsView({ seasonData, goalieData, gamesData, recapsData, allTimeDat
 function MilestoneTracker({ allTimeData }) {
   if (!allTimeData.length) return null;
 
-  const thresholds = [25, 50, 75, 100, 150, 200, 250, 500];
+  const thresholds = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
   const milestones = [];
   allTimeData.forEach((p) => {
@@ -2839,7 +2851,7 @@ export default function App() {
                         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
                           <thead>
                             <tr style={{ borderBottom: `1px solid ${C.gold}33` }}>
-                              {["PLAYER", "COUNT", "PIM", "TOP TYPE"].map((h) => (
+                              {["PLAYER", "PIM", "TOP TYPE"].map((h) => (
                                 <th key={h} style={{
                                   padding: "12px 10px", textAlign: h === "PLAYER" ? "left" : "center",
                                   fontSize: 15, fontWeight: 500, letterSpacing: "1.5px", color: C.textDim,
@@ -2854,7 +2866,6 @@ export default function App() {
                               return (
                                 <tr key={p.player}>
                                   <td style={{ padding: "12px 10px", fontWeight: 600, color: C.text, fontFamily: "'Outfit', sans-serif", fontSize: 15 }}>{p.player}</td>
-                                  <td style={{ padding: "12px 10px", textAlign: "center", color: C.textMid, fontFamily: "'DM Mono', monospace" }}>{p.count}</td>
                                   <td style={{ padding: "12px 10px", textAlign: "center", color: "#f87171", fontWeight: 600, fontFamily: "'DM Mono', monospace" }}>{p.minutes}</td>
                                   <td style={{ padding: "12px 10px", textAlign: "center", color: C.textDim, fontFamily: "'DM Mono', monospace" }}>
                                     {topType ? `${shortenPenalty(topType[0])} (${topType[1]})` : "–"}
