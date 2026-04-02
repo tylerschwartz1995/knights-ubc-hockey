@@ -91,6 +91,8 @@ def fetch_goalies():
         rows.append({
             "Player": name,
             "GP": stats.get("GP", "0"),
+            "W": stats.get("W", "0"),
+            "L": stats.get("L", "0"),
             "GAA": stats.get("GAA", "0.00"),
             "SV%": stats.get("SV%", "0.000"),
             "SV": stats.get("SV", "0"),
@@ -98,6 +100,7 @@ def fetch_goalies():
             "SA": stats.get("SA", "0"),
             "MIN": stats.get("MIN", "0"),
             "OTL": stats.get("OTL", "0"),
+            "SO": stats.get("SO", "0"),
         })
 
     return rows
@@ -287,7 +290,7 @@ if __name__ == "__main__":
     write_csv(
         goalies,
         OUTPUT_DIR / "goalies.csv",
-        ["Player", "GP", "GAA", "SV%", "SV", "GA", "SA", "MIN", "OTL"],
+        ["Player", "GP", "W", "L", "GAA", "SV%", "SV", "GA", "SA", "MIN", "OTL", "SO"],
     )
     print("\nGoalies preview:")
     for r in goalies[:5]:

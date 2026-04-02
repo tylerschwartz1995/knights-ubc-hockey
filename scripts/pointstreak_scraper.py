@@ -1,12 +1,13 @@
 """
-Pointstreak Box Score Scraper
-One-time script to build recaps.json for 2023-24 and 2024-25 seasons
-from Pointstreak box score pages.
+Pointstreak Scraper
+Builds recaps.json from box score pages and updates goalie CSVs with
+W, L, OTL, SO from team roster pages for 2023-24 and 2024-25 seasons.
 
 Usage:
     python scripts/pointstreak_scraper.py
 """
 
+import csv
 import json
 import re
 import time
@@ -16,6 +17,15 @@ from urllib.request import urlopen, Request
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "public" / "seasons"
 
 TEAM_NAME = "Knights"
+
+# Pointstreak team roster IDs per season for goalie stats scraping
+# (season_dir, game_type): (teamid, seasonid)
+GOALIE_ROSTER_IDS = {
+    ("2023-24", "regular"): (799108, 21262),
+    ("2023-24", "playoffs"): (799108, 21385),
+    ("2024-25", "regular"): (807571, 21465),
+    ("2024-25", "playoffs"): (807571, 21560),
+}
 
 # All game IDs mapped to seasons, keyed by (season_dir, type)
 SEASONS = {
@@ -337,8 +347,118 @@ def scrape_season(season_dir, game_type, game_ids):
     return recaps
 
 
+def fetch_goalie_stats(team_id, season_id):
+    """Scrape goalie W/L/T/SO from Pointstreak team roster page."""
+    url = (
+        f"https://pointstreak.com/players/players-team-roster.html"
+        f"?teamid={team_id}&seasonid={season_id}"
+    )
+    req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urlopen(req, timeout=15) as resp:
+        html = resp.read().decode("utf-8", errors="replace")
+
+    goalie_marker = re.search(r'Goalie Stats', html, re.IGNORECASE)
+    if not goalie_marker:
+        print("  WARNING: No goalie stats section found")
+        return {}
+
+    table_html = html[goalie_marker.end():]
+    table_match = re.search(r'<table[^>]*>(.*?)</table>', table_html, re.DOTALL)
+    if not table_match:
+        print("  WARNING: No goalie table found")
+        return {}
+
+    table = table_match.group(1)
+
+    # Columns: #, NAME, GP, MIN, W, L, T, SO, GA, GAA, SV, SV%
+    stats = []
+    for row_match in re.finditer(r'<tr class="lightGrey">(.*?)</tr>', table, re.DOTALL):
+        cells = re.findall(r'<td[^>]*>(.*?)</td>', row_match.group(1), re.DOTALL)
+        if len(cells) < 12:
+            continue
+
+        name_match = re.search(r'<a[^>]*>([^<]+)</a>', cells[1])
+        name = name_match.group(1).strip() if name_match else re.sub(r'<[^>]+>', '', cells[1]).strip()
+
+        def val(cell):
+            return re.sub(r'<[^>]+>', '', cell).strip()
+
+        stats.append({
+            "name": name,
+            "GP": val(cells[2]),
+            "W": val(cells[4]),
+            "L": val(cells[5]),
+            "OTL": val(cells[6]),  # T column = OTL in rec league
+            "SO": val(cells[7]),
+        })
+
+    return stats
+
+
+def update_goalie_csv(season_dir, game_type, goalie_stats):
+    """Update existing goalie CSV with W, L, OTL, SO from Pointstreak."""
+    csv_filename = "playoffs-goalies.csv" if game_type == "playoffs" else "goalies.csv"
+    csv_path = OUTPUT_DIR / season_dir / csv_filename
+    if not csv_path.exists():
+        print(f"  CSV not found: {csv_path}")
+        return
+
+    with open(csv_path, "r") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+
+    fieldnames = ["Player", "GP", "W", "L", "GAA", "SV%", "SV", "GA", "SA", "MIN", "OTL", "SO"]
+
+    # Build lookup by name and by GP for fuzzy matching
+    by_name = {ps["name"]: ps for ps in goalie_stats}
+    by_gp = {ps["GP"]: ps for ps in goalie_stats}
+
+    for row in rows:
+        name = row["Player"]
+        gp = row.get("GP", "0")
+
+        # Try exact name match first, then fall back to GP match
+        ps = by_name.get(name) or by_gp.get(gp)
+
+        if ps:
+            matched_via = "name" if name in by_name else f"GP={gp} (Pointstreak name: {ps['name']})"
+            row["W"] = ps["W"]
+            row["L"] = ps["L"]
+            row["OTL"] = ps["OTL"]
+            row["SO"] = ps["SO"]
+            print(f"    {name}: W={ps['W']} L={ps['L']} OTL={ps['OTL']} SO={ps['SO']} (matched via {matched_via})")
+        else:
+            row.setdefault("W", "0")
+            row.setdefault("L", "0")
+            row.setdefault("SO", "0")
+            row.setdefault("OTL", row.get("OTL", "0"))
+            print(f"    {name}: not found on Pointstreak, defaulting to 0")
+
+    with open(csv_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    print(f"  Updated {csv_path}")
+
+
 if __name__ == "__main__":
+    # Scrape box scores for recaps
     for (season_dir, game_type), game_ids in SEASONS.items():
         scrape_season(season_dir, game_type, game_ids)
+
+    # Update goalie CSVs with W/L/OTL/SO from roster pages
+    print(f"\n{'='*50}")
+    print("Updating goalie stats from Pointstreak roster pages")
+    print(f"{'='*50}")
+    for (season_dir, game_type), (team_id, season_id) in GOALIE_ROSTER_IDS.items():
+        print(f"\n  {season_dir} {game_type} (team={team_id}, season={season_id})")
+        goalie_stats = fetch_goalie_stats(team_id, season_id)
+        if goalie_stats:
+            print(f"  Found {len(goalie_stats)} goalies")
+            update_goalie_csv(season_dir, game_type, goalie_stats)
+        else:
+            print(f"  No goalie stats found, skipping")
+        time.sleep(0.5)
 
     print("\nDone!")
