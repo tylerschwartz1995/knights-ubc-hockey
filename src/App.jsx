@@ -161,6 +161,29 @@ function aggregateGoalieAllTime(seasonDataMap) {
   }));
 }
 
+// Merge multiple season-data maps (e.g. regular + tournament) so totals aggregate cleanly
+function mergeSeasonMaps(...maps) {
+  const out = {};
+  maps.forEach((m) => {
+    Object.entries(m || {}).forEach(([seasonId, rows]) => {
+      if (!out[seasonId]) out[seasonId] = {};
+      rows.forEach((r) => {
+        const ex = out[seasonId][r.player];
+        if (!ex) { out[seasonId][r.player] = { ...r }; return; }
+        Object.keys(r).forEach((k) => {
+          if (k === "player") return;
+          if (typeof r[k] === "number") ex[k] = (ex[k] || 0) + r[k];
+        });
+      });
+    });
+  });
+  const result = {};
+  Object.entries(out).forEach(([seasonId, playerMap]) => {
+    result[seasonId] = Object.values(playerMap);
+  });
+  return result;
+}
+
 // ── Recap-derived stats ────────────────────────────────
 function computeGWG(recaps) {
   const gwgCounts = {};
@@ -1793,7 +1816,7 @@ function PaceProjections({ data }) {
 }
 
 // ── TeamView ───────────────────────────────────────────
-function TeamView({ goalieData, games, recaps, isAllTime, playoffMode }) {
+function TeamView({ goalieData, games, recaps, isAllTime, playoffMode, tournamentMode }) {
   const [oppSortKey, setOppSortKey] = useState("gp");
   const [oppSortAsc, setOppSortAsc] = useState(false);
   const [expandedGame, setExpandedGame] = useState(null);
@@ -1976,7 +1999,7 @@ function TeamView({ goalieData, games, recaps, isAllTime, playoffMode }) {
             fontSize: 17, color: C.textDim, letterSpacing: "3px", fontWeight: 500,
             marginBottom: 16, textTransform: "uppercase",
             fontFamily: "'DM Mono', monospace",
-          }}>{playoffMode ? "Road to the Cup" : "Season Timeline"}</h3>
+          }}>{tournamentMode ? "Tournament Run" : playoffMode ? "Road to the Cup" : "Season Timeline"}</h3>
           <div style={{
             background: C.surface, border: `1px solid ${C.border}`,
             borderRadius: 8, padding: "20px 16px",
@@ -2354,11 +2377,17 @@ export default function App() {
   const [goalieData, setGoalieData] = useState({});
   const [gamesData, setGamesData] = useState({});
   const [recapsData, setRecapsData] = useState({});
-  const [playoffMode, setPlayoffMode] = useState(false);
+  const [gameMode, setGameMode] = useState("regular"); // "regular" | "playoffs" | "tournament"
+  const playoffMode = gameMode === "playoffs";
+  const tournamentMode = gameMode === "tournament";
   const [playoffSeasonData, setPlayoffSeasonData] = useState({});
   const [playoffGoalieData, setPlayoffGoalieData] = useState({});
   const [playoffGamesData, setPlayoffGamesData] = useState({});
   const [playoffRecapsData, setPlayoffRecapsData] = useState({});
+  const [tournamentSeasonData, setTournamentSeasonData] = useState({});
+  const [tournamentGoalieData, setTournamentGoalieData] = useState({});
+  const [tournamentGamesData, setTournamentGamesData] = useState({});
+  const [tournamentRecapsData, setTournamentRecapsData] = useState({});
   const [awardsData, setAwardsData] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -2412,13 +2441,37 @@ export default function App() {
         .then((data) => ({ id: s.id, type: "playoff-recaps", data }))
         .catch(() => ({ id: s.id, type: "playoff-recaps", data: [] }))
     );
+    const tournamentSkaterFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/tournaments-skaters.csv`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.text(); })
+        .then((text) => ({ id: s.id, type: "tournament-skater", data: parseCSV(text) }))
+        .catch(() => ({ id: s.id, type: "tournament-skater", data: [] }))
+    );
+    const tournamentGoalieFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/tournaments-goalies.csv`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.text(); })
+        .then((text) => ({ id: s.id, type: "tournament-goalie", data: parseGoalieCSV(text) }))
+        .catch(() => ({ id: s.id, type: "tournament-goalie", data: [] }))
+    );
+    const tournamentGamesFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/tournaments-games.csv`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.text(); })
+        .then((text) => ({ id: s.id, type: "tournament-games", data: parseGamesCSV(text) }))
+        .catch(() => ({ id: s.id, type: "tournament-games", data: [] }))
+    );
+    const tournamentRecapsFetches = SEASONS.map((s) =>
+      fetch(`${s.dir}/tournaments-recaps.json`)
+        .then((r) => { if (!r.ok) throw new Error(s.dir); return r.json(); })
+        .then((data) => ({ id: s.id, type: "tournament-recaps", data }))
+        .catch(() => ({ id: s.id, type: "tournament-recaps", data: [] }))
+    );
     const awardsFetches = SEASONS.map((s) =>
       fetch(`${s.dir}/awards.json`)
         .then((r) => { if (!r.ok) throw new Error(s.dir); return r.json(); })
         .then((data) => ({ id: s.id, type: "awards", data }))
         .catch(() => ({ id: s.id, type: "awards", data: [] }))
     );
-    Promise.all([...skaterFetches, ...goalieFetches, ...gamesFetches, ...recapsFetches, ...playoffSkaterFetches, ...playoffGoalieFetches, ...playoffGamesFetches, ...playoffRecapsFetches, ...awardsFetches]).then((results) => {
+    Promise.all([...skaterFetches, ...goalieFetches, ...gamesFetches, ...recapsFetches, ...playoffSkaterFetches, ...playoffGoalieFetches, ...playoffGamesFetches, ...playoffRecapsFetches, ...tournamentSkaterFetches, ...tournamentGoalieFetches, ...tournamentGamesFetches, ...tournamentRecapsFetches, ...awardsFetches]).then((results) => {
       const skaterMap = {};
       const goalieMap = {};
       const gamesMap = {};
@@ -2427,6 +2480,10 @@ export default function App() {
       const pGoalieMap = {};
       const pGamesMap = {};
       const pRecapsMap = {};
+      const tSkaterMap = {};
+      const tGoalieMap = {};
+      const tGamesMap = {};
+      const tRecapsMap = {};
       const awardsMap = {};
       results.forEach((r) => {
         if (r.type === "recaps") {
@@ -2443,6 +2500,14 @@ export default function App() {
           if (r.data.length) pGamesMap[r.id] = r.data;
         } else if (r.type === "playoff-recaps") {
           if (r.data.length) pRecapsMap[r.id] = r.data;
+        } else if (r.type === "tournament-skater") {
+          if (r.data.length) tSkaterMap[r.id] = r.data;
+        } else if (r.type === "tournament-goalie") {
+          if (r.data.length) tGoalieMap[r.id] = r.data;
+        } else if (r.type === "tournament-games") {
+          if (r.data.length) tGamesMap[r.id] = r.data;
+        } else if (r.type === "tournament-recaps") {
+          if (r.data.length) tRecapsMap[r.id] = r.data;
         } else if (r.type === "awards") {
           if (r.data.length) awardsMap[r.id] = r.data;
         } else {
@@ -2457,6 +2522,10 @@ export default function App() {
       setPlayoffGoalieData(pGoalieMap);
       setPlayoffGamesData(pGamesMap);
       setPlayoffRecapsData(pRecapsMap);
+      setTournamentSeasonData(tSkaterMap);
+      setTournamentGoalieData(tGoalieMap);
+      setTournamentGamesData(tGamesMap);
+      setTournamentRecapsData(tRecapsMap);
       setAwardsData(awardsMap);
       setTimeout(() => setLoaded(true), 80);
     });
@@ -2466,6 +2535,8 @@ export default function App() {
   const allTimeGoalieData = useMemo(() => aggregateGoalieAllTime(goalieData), [goalieData]);
   const allTimePlayoffData = useMemo(() => aggregateAllTime(playoffSeasonData), [playoffSeasonData]);
   const allTimePlayoffGoalieData = useMemo(() => aggregateGoalieAllTime(playoffGoalieData), [playoffGoalieData]);
+  const allTimeTournamentData = useMemo(() => aggregateAllTime(tournamentSeasonData), [tournamentSeasonData]);
+  const allTimeTournamentGoalieData = useMemo(() => aggregateGoalieAllTime(tournamentGoalieData), [tournamentGoalieData]);
   const pastSeasons = SEASONS.slice(1);
 
   // Determine if playoff data exists for the currently viewed season
@@ -2476,28 +2547,32 @@ export default function App() {
     ? Object.keys(playoffSeasonData).length > 0 || Object.keys(playoffGoalieData).length > 0
     : viewedSeasonId ? !!(playoffSeasonData[viewedSeasonId] || playoffGoalieData[viewedSeasonId] || playoffGamesData[viewedSeasonId])
     : false;
+  const hasTournamentData = activeTab === "alltime"
+    ? Object.keys(tournamentSeasonData).length > 0 || Object.keys(tournamentGoalieData).length > 0
+    : viewedSeasonId ? !!(tournamentSeasonData[viewedSeasonId] || tournamentGoalieData[viewedSeasonId] || tournamentGamesData[viewedSeasonId])
+    : false;
 
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
     if (tabId !== "history") setHistorySeason(null);
     if (tabId === "alltime" && statView === "awards") setStatView("skaters");
-    setPlayoffMode(false);
+    setGameMode("regular");
   };
   const handleHistorySelect = (seasonId) => {
     setActiveTab("history");
     setHistorySeason(seasonId);
-    setPlayoffMode(false);
+    setGameMode("regular");
   };
 
   const isGoalie = statView === "goalies";
 
-  // Pick data source based on playoff toggle
-  const skData = playoffMode ? playoffSeasonData : seasonData;
-  const glData = playoffMode ? playoffGoalieData : goalieData;
-  const gmData = playoffMode ? playoffGamesData : gamesData;
-  const rcData = playoffMode ? playoffRecapsData : recapsData;
-  const atSkData = playoffMode ? allTimePlayoffData : allTimeData;
-  const atGlData = playoffMode ? allTimePlayoffGoalieData : allTimeGoalieData;
+  // Pick data source based on game mode
+  const skData = tournamentMode ? tournamentSeasonData : playoffMode ? playoffSeasonData : seasonData;
+  const glData = tournamentMode ? tournamentGoalieData : playoffMode ? playoffGoalieData : goalieData;
+  const gmData = tournamentMode ? tournamentGamesData : playoffMode ? playoffGamesData : gamesData;
+  const rcData = tournamentMode ? tournamentRecapsData : playoffMode ? playoffRecapsData : recapsData;
+  const atSkData = tournamentMode ? allTimeTournamentData : playoffMode ? allTimePlayoffData : allTimeData;
+  const atGlData = tournamentMode ? allTimeTournamentGoalieData : playoffMode ? allTimePlayoffGoalieData : allTimeGoalieData;
   const curSkData = skData[SEASONS[0]?.id] || [];
   const curGlData = glData[SEASONS[0]?.id] || [];
 
@@ -2726,7 +2801,7 @@ export default function App() {
           animation: "fadeSlideUp 0.5s ease 120ms both",
         }}>
           <div style={{ display: "flex", gap: 4, overflowX: "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" }}>
-            {["skaters", "goalies", "team", "records", "awards"].filter((view) => (view !== "awards" || (activeTab !== "alltime" && !playoffMode)) && (view !== "records" || activeTab === "alltime")).map((view) => (
+            {["skaters", "goalies", "team", "records", "awards"].filter((view) => (view !== "awards" || (activeTab !== "alltime" && !playoffMode && !tournamentMode)) && (view !== "records" || activeTab === "alltime")).map((view) => (
               <button
                 key={view}
                 className="vgk-stat-view-btn"
@@ -2746,43 +2821,48 @@ export default function App() {
               </button>
             ))}
           </div>
-          {hasPlayoffData && (
-            <div style={{
-              display: "flex", borderRadius: 4, overflow: "hidden",
-              border: `1px solid ${C.border}`,
-            }}>
-              {["Regular", "Playoffs"].map((label) => {
-                const isActive = label === "Playoffs" ? playoffMode : !playoffMode;
-                return (
-                  <button
-                    key={label}
-                    onClick={() => { setPlayoffMode(label === "Playoffs"); if (label === "Playoffs" && statView === "awards") setStatView("skaters"); }}
-                    style={{
-                      padding: "6px 14px", fontSize: 12, fontWeight: 500,
-                      letterSpacing: "1px", textTransform: "uppercase",
-                      fontFamily: "'DM Mono', monospace",
-                      border: "none", cursor: "pointer",
-                      background: isActive ? `${C.gold}20` : "transparent",
-                      color: isActive ? C.gold : C.textDim,
-                      transition: "all 0.2s ease",
-                      borderRight: label === "Regular" ? `1px solid ${C.border}` : "none",
-                    }}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          {(hasPlayoffData || hasTournamentData) && (() => {
+            const segments = [{ label: "Regular", mode: "regular" }];
+            if (hasTournamentData) segments.push({ label: "Tournament", mode: "tournament" });
+            if (hasPlayoffData) segments.push({ label: "Playoffs", mode: "playoffs" });
+            return (
+              <div style={{
+                display: "flex", borderRadius: 4, overflow: "hidden",
+                border: `1px solid ${C.border}`,
+              }}>
+                {segments.map((seg, i) => {
+                  const isActive = gameMode === seg.mode;
+                  return (
+                    <button
+                      key={seg.mode}
+                      onClick={() => { setGameMode(seg.mode); if (seg.mode !== "regular" && statView === "awards") setStatView("skaters"); }}
+                      style={{
+                        padding: "6px 14px", fontSize: 12, fontWeight: 500,
+                        letterSpacing: "1px", textTransform: "uppercase",
+                        fontFamily: "'DM Mono', monospace",
+                        border: "none", cursor: "pointer",
+                        background: isActive ? `${C.gold}20` : "transparent",
+                        color: isActive ? C.gold : C.textDim,
+                        transition: "all 0.2s ease",
+                        borderRight: i < segments.length - 1 ? `1px solid ${C.border}` : "none",
+                      }}
+                    >
+                      {seg.label}
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Content */}
         {statView === "records" ? (
-          <RecordsView seasonData={playoffMode ? playoffSeasonData : seasonData} goalieData={playoffMode ? playoffGoalieData : goalieData} gamesData={playoffMode ? playoffGamesData : gamesData} recapsData={playoffMode ? playoffRecapsData : recapsData} allTimeData={playoffMode ? allTimePlayoffData : allTimeData} />
+          <RecordsView seasonData={tournamentMode ? tournamentSeasonData : playoffMode ? playoffSeasonData : seasonData} goalieData={tournamentMode ? tournamentGoalieData : playoffMode ? playoffGoalieData : goalieData} gamesData={tournamentMode ? tournamentGamesData : playoffMode ? playoffGamesData : gamesData} recapsData={tournamentMode ? tournamentRecapsData : playoffMode ? playoffRecapsData : recapsData} allTimeData={tournamentMode ? allTimeTournamentData : playoffMode ? allTimePlayoffData : allTimeData} />
         ) : statView === "awards" ? (
           <AwardsView skaterData={activeSkaterData} goalieData={activeGoalieData} manualAwards={activeAwards} />
         ) : statView === "team" ? (
-          <TeamView skaterData={activeSkaterData} goalieData={activeGoalieData} games={activeGames} recaps={activeRecaps} isAllTime={activeTab === "alltime"} playoffMode={playoffMode} />
+          <TeamView skaterData={activeSkaterData} goalieData={activeGoalieData} games={activeGames} recaps={activeRecaps} isAllTime={activeTab === "alltime"} playoffMode={playoffMode} tournamentMode={tournamentMode} />
         ) : enrichedData.length > 0 ? (
           isGoalie
             ? <>
@@ -2791,9 +2871,9 @@ export default function App() {
               </>
             : <>
                 <StatsView data={enrichedData} columns={activeCols} seasonData={seasonData} />
-                {activeTab !== "alltime" && <CumulativePointsChart recaps={activeRecaps} />}
+                {activeTab !== "alltime" && !playoffMode && !tournamentMode && <CumulativePointsChart recaps={activeRecaps} />}
                 <ScoringDonut data={enrichedData} />
-                {activeTab === "current" && <PaceProjections data={enrichedData} />}
+                {activeTab === "current" && !tournamentMode && <PaceProjections data={enrichedData} />}
                 {activeTab !== "alltime" && activeRecaps.length > 0 && (() => {
                   const combos = computeScoringCombos(activeRecaps).slice(0, 10);
                   if (!combos.length) return null;
@@ -2879,7 +2959,7 @@ export default function App() {
                     </div>
                   );
                 })()}
-                {activeTab === "current" && <MilestoneTracker allTimeData={allTimeData} />}
+                {activeTab === "current" && !playoffMode && !tournamentMode && <MilestoneTracker allTimeData={allTimeData} />}
               </>
         ) : (
           <div style={{
