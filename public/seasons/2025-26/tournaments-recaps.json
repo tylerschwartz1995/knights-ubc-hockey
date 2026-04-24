@@ -1,0 +1,261 @@
+[
+  {
+    "date": "2026-04-17",
+    "opponent": "Royals",
+    "gf": 5,
+    "ga": 3,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 0,
+        "shotsAway": 0,
+        "goalsHome": 1,
+        "goalsAway": 2
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 0,
+        "shotsAway": 0,
+        "goalsHome": 0,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 0,
+        "shotsAway": 0,
+        "goalsHome": 2,
+        "goalsAway": 1
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:07:03",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:27",
+        "team": "Royals",
+        "scorer": "Kholby Courchesne",
+        "assists": [
+          "Austin Roberts",
+          "Manjot Mundal"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:03:03",
+        "team": "Knights",
+        "scorer": "Alex Kneifel",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:24",
+        "team": "Knights",
+        "scorer": "Justin Stroud",
+        "assists": [
+          "Tyler Schwartz",
+          "Matt Kolec"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:54",
+        "team": "Knights",
+        "scorer": "Matt Kolec",
+        "assists": [
+          "Justin Stroud",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:41",
+        "team": "Royals",
+        "scorer": "Dakota Courchesne",
+        "assists": [
+          "Austin Roberts"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:33",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Alex Kneifel"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:04:44",
+        "team": "Royals",
+        "scorer": "Nicolas Drolet",
+        "assists": [
+          "Dustin Wolfe"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:04:20",
+        "team": "Knights",
+        "player": "Nathaniel Stuart",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:02",
+        "team": "Knights",
+        "player": "Sebastian Silley",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:45",
+        "team": "Knights",
+        "player": "Mike Kari",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "date": "2026-04-18",
+    "opponent": "St. John's Seals",
+    "gf": 2,
+    "ga": 5,
+    "result": "L",
+    "ot": false,
+    "periods": [],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "",
+        "team": "Knights",
+        "scorer": "Peter Stokes",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": []
+      }
+    ],
+    "penalties": []
+  },
+  {
+    "date": "2026-04-18",
+    "opponent": "Thoroughbreds",
+    "gf": 0,
+    "ga": 3,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 0,
+        "shotsAway": 0,
+        "goalsHome": 1,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 0,
+        "shotsAway": 0,
+        "goalsHome": 0,
+        "goalsAway": 0
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 0,
+        "shotsAway": 0,
+        "goalsHome": 2,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:01:02",
+        "team": "Thoroughbreds",
+        "scorer": "Dan Sileny",
+        "assists": [
+          "Eric Lord"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:09",
+        "team": "Thoroughbreds",
+        "scorer": "Pete Bellari",
+        "assists": [
+          "Marc Cassie"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:07",
+        "team": "Thoroughbreds",
+        "scorer": "Michael Cameron",
+        "assists": [
+          "Dan Sileny"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:03:32",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "High Sticking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:45",
+        "team": "Thoroughbreds",
+        "player": "Eric Lord",
+        "type": "Obstruction",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:56",
+        "team": "Thoroughbreds",
+        "player": "Pete Bellari",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:04",
+        "team": "Thoroughbreds",
+        "player": "Dan Sileny",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  }
+]

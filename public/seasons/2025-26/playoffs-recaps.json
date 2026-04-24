@@ -1,0 +1,204 @@
+[
+  {
+    "date": "2026-04-09",
+    "opponent": "West Coast Express",
+    "gf": 2,
+    "ga": 3,
+    "result": "L",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 12,
+        "shotsAway": 11,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 12,
+        "shotsAway": 11,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 12,
+        "shotsAway": 11,
+        "goalsHome": 0,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:01:31",
+        "team": "West Coast Express",
+        "scorer": "Brad Dove",
+        "assists": [
+          "Kai Hughes",
+          "Greg Brydon"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:06:10",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Scott Coy",
+          "Justin Stroud"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:12:15",
+        "team": "West Coast Express",
+        "scorer": "Daniel Doulov",
+        "assists": [
+          "Brad Dove",
+          "Kai Hughes"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:26",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Kelsey Regan",
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:16",
+        "team": "West Coast Express",
+        "scorer": "Jack Little",
+        "assists": [
+          "Stuart Speakman",
+          "Joe Combey-Robertson"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:03:18",
+        "team": "Knights",
+        "player": "Sebastian Silley",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:07:19",
+        "team": "West Coast Express",
+        "player": "Aidan Pelton",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:09:38",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:33",
+        "team": "West Coast Express",
+        "player": "Matt Catellier",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:33",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:13",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Too Many Players",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:39",
+        "team": "West Coast Express",
+        "player": "Aidan Pelton",
+        "type": "Slashing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:39",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Body Checking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:27",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:59",
+        "team": "West Coast Express",
+        "player": "Derek Hinchcliffe",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:25",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:30",
+        "team": "West Coast Express",
+        "player": "Aidan Pelton",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:30",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  }
+]
