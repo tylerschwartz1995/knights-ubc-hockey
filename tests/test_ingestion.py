@@ -206,10 +206,6 @@ class IngestionTests(unittest.TestCase):
         self.assertEqual(json.loads(snapshot['recaps.json']), [])
         self.assertEqual(json.loads(snapshot['upcoming.json'])['games'], [])
 
-
-if __name__ == '__main__':
-    unittest.main()
-
 class RecapClockTests(unittest.TestCase):
     def test_import_preserves_countdown_clock_and_actual_period_duration(self):
         c = client()
@@ -221,3 +217,37 @@ class RecapClockTests(unittest.TestCase):
             recaps = c.build_recaps([dict(id='g', Date='2026-09-19', Opponent='Other', GF='0', GA='0', Result='L', OT='0')])
         self.assertEqual(recaps[0]['clockDirection'], 'remaining')
         self.assertEqual(recaps[0]['periods'][0]['durationSeconds'], 780)
+
+
+class RefreshPreservationTests(unittest.TestCase):
+    def test_each_fetch_failure_preserves_entire_published_season(self):
+        for failed_stage in ('fetch_skaters', 'fetch_goalies', 'fetch_games', 'build_recaps'):
+            with self.subTest(stage=failed_stage), tempfile.TemporaryDirectory() as tmp:
+                directory = Path(tmp)
+                originals = {
+                    'skaters.csv': b'original skaters', 'goalies.csv': b'original goalies',
+                    'games.csv': b'original games', 'recaps.json': b'[]',
+                    'awards.json': b'[{"name":"Manual"}]', 'playoffs-skaters.csv': b'playoff data',
+                }
+                for name, content in originals.items():
+                    (directory / name).write_bytes(content)
+                c = empty_client()
+                getattr(c, failed_stage).side_effect = RuntimeError('injected failure')
+                with self.assertRaisesRegex(RuntimeError, 'injected failure'):
+                    refresh(c, directory)
+                self.assertEqual({p.name: p.read_bytes() for p in directory.iterdir()}, originals)
+
+    def test_tournament_refresh_does_not_change_regular_or_playoff_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            originals = {'skaters.csv': b'regular', 'playoffs-skaters.csv': b'playoffs', 'awards.json': b'[]'}
+            for name, content in originals.items():
+                (directory / name).write_bytes(content)
+            refresh(empty_client(), directory, mode='tournament')
+            for name, content in originals.items():
+                self.assertEqual((directory / name).read_bytes(), content)
+            self.assertEqual((directory / 'tournaments-skaters.csv').read_text().strip(), 'Player,GP,G,A,P,PM')
+
+
+if __name__ == '__main__':
+    unittest.main()

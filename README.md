@@ -54,11 +54,38 @@ scripts/
   ingestion.py               ← pulls stats from SportNinja API (current season)
   pointstreak_scraper.py     ← one-time scraper for older seasons from Pointstreak
 src/
-  App.jsx                    ← dashboard
-  UpcomingSchedule.jsx       ← upcoming games and refresh status
+  App.jsx                     ← dashboard navigation, selected data, and page layout
+  components/                 ← skater, goalie, team, records, awards, and chart views
+  data/
+    parsers.js                ← CSV parsing
+    calculations.js           ← career totals and recap-derived statistics
+    seasons.js                ← parallel season loading and competition isolation
+    columns.js                ← table column definitions
+  hooks/useSeasonData.js       ← loading lifecycle and React state
+  theme.js                    ← shared palettes and React theme context
+  config.js                   ← team identity and season registry
+  stats.js                    ← file loading and weighted team save percentage
+  specialTeams.js             ← game clocks and special-teams calculations
   awards.js                   ← preseason-safe award calculations
+  UpcomingSchedule.jsx        ← unused schedule component (not shown in dashboard)
   schedule.js                 ← timezone formatting and future-game selection
 ```
+
+## Frontend boundaries
+
+`App.jsx` owns navigation and chooses the season and competition to display.
+`useSeasonData` loads one snapshot through `data/seasons.js`; regular, playoff,
+and tournament files remain in separate maps, including their error states.
+The components render that selected data and read colors through `ThemeContext`.
+CSV parsing and statistics calculations have no React dependency, so they can be
+tested directly with Node's built-in test runner. There is no new database,
+backend service, or state-management library.
+
+The regression suite checks weighted career averages, competition-specific
+player totals, empty seasons, malformed and failed downloads, game-clock
+boundaries, and preservation of published files after import failures. Browser
+checks should cover navigation, player expansion, sorting, both themes, and
+phone-width layouts when changing components.
 
 ## CSV Formats
 
@@ -286,15 +313,15 @@ All Time, and phone-width layout before publishing changes.
 
 ## Customize
 
-In `src/App.jsx`, edit the config at the top:
+In `src/config.js`, edit the team config:
 ```js
-const CONFIG = {
+export const CONFIG = {
   teamName: "UBC Knights",
   established: "2023",
 };
 ```
 
-The knight helmet logo is an SVG component (`KnightLogo`). To use your own logo, replace it with `<img src="/logo.png" />` and drop the image in `public/`.
+The knight helmet logo is an SVG component (`src/components/KnightLogo.jsx`). To use your own logo, replace it with `<img src="/logo.png" />` and drop the image in `public/`.
 
 ## Deploy to Vercel
 

@@ -67,7 +67,7 @@ test('data downloads distinguish failures, optional missing files, and empty sta
 });
 
 test('September 19 countdown timeline yields one goal against in three penalty kills', () => {
-  const recaps = JSON.parse(readFileSync(new URL('../public/seasons/2026-27/recaps.json', import.meta.url)));
+  const recaps = JSON.parse(readFileSync(new URL('./fixtures/confirmed-game.json', import.meta.url)));
   const stats = computeSpecialTeams(recaps);
   assert.equal(stats.available, true);
   assert.equal(stats.pkGA, 1);
