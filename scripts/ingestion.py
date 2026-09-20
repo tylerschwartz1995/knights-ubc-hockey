@@ -278,6 +278,7 @@ class SportNinjaClient:
                 # Home team shots are shots_home_count
                 periods.append({
                     "name": period["period_type"]["name"],
+                    "durationSeconds": period.get("duration", 0) / 1000,
                     "shotsHome": period.get("shots_home_count", 0),
                     "shotsAway": period.get("shots_visiting_count", 0),
                     "goalsHome": period.get("goals_home_count", 0),
@@ -332,6 +333,7 @@ class SportNinjaClient:
                 "ga": int(game["GA"]),
                 "result": game["Result"],
                 "ot": game["OT"] == "1",
+                "clockDirection": "remaining",
                 "periods": periods,
                 "goals": goals,
                 "penalties": penalties,

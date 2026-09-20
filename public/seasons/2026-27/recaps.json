@@ -13,21 +13,24 @@
         "shotsHome": 10,
         "shotsAway": 14,
         "goalsHome": 0,
-        "goalsAway": 1
+        "goalsAway": 1,
+        "durationSeconds": 780
       },
       {
         "name": "2nd",
         "shotsHome": 4,
         "shotsAway": 14,
         "goalsHome": 0,
-        "goalsAway": 3
+        "goalsAway": 3,
+        "durationSeconds": 780
       },
       {
         "name": "3rd",
         "shotsHome": 19,
         "shotsAway": 10,
         "goalsHome": 2,
-        "goalsAway": 4
+        "goalsAway": 4,
+        "durationSeconds": 780
       }
     ],
     "goals": [
@@ -142,6 +145,7 @@
         "severity": "Minor",
         "minutes": 2
       }
-    ]
+    ],
+    "clockDirection": "remaining"
   }
 ]

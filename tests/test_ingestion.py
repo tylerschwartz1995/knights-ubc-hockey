@@ -209,3 +209,15 @@ class IngestionTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class RecapClockTests(unittest.TestCase):
+    def test_import_preserves_countdown_clock_and_actual_period_duration(self):
+        c = client()
+        c.fetch_game_timeline = Mock(return_value={
+            'playerRosters': [], 'goals': [], 'offenses': [],
+            'periods': [{'id': 'first', 'period_type': {'name': '1st'}, 'duration': 780000}],
+        })
+        with patch('scripts.ingestion.time.sleep'):
+            recaps = c.build_recaps([dict(id='g', Date='2026-09-19', Opponent='Other', GF='0', GA='0', Result='L', OT='0')])
+        self.assertEqual(recaps[0]['clockDirection'], 'remaining')
+        self.assertEqual(recaps[0]['periods'][0]['durationSeconds'], 780)
