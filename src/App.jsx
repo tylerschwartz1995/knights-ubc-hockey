@@ -2733,10 +2733,6 @@ export default function App() {
           </p>
         )}
 
-        {activeErrors.length === 0 && !stData.available && !isGoalie && statView !== "awards" && (
-          <p style={{ color: C.textMid, fontSize: 13 }}>Special-teams stats are unavailable until game clock details are verified.</p>
-        )}
-
         {/* Content */}
         {activeErrors.length > 0 ? null : statView === "records" ? (
           <RecordsView seasonData={tournamentMode ? tournamentSeasonData : playoffMode ? playoffSeasonData : seasonData} goalieData={tournamentMode ? tournamentGoalieData : playoffMode ? playoffGoalieData : goalieData} gamesData={tournamentMode ? tournamentGamesData : playoffMode ? playoffGamesData : gamesData} recapsData={tournamentMode ? tournamentRecapsData : playoffMode ? playoffRecapsData : recapsData} allTimeData={tournamentMode ? allTimeTournamentData : playoffMode ? allTimePlayoffData : allTimeData} />
