@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import Papa from "papaparse";
+import { computeAwards } from "./awards.js";
+import seasonConfig from "../config/seasons.json";
+import { UpcomingSchedule } from "./UpcomingSchedule.jsx";
 import { Analytics } from "@vercel/analytics/react";
 
 // ── Config ──────────────────────────────────────────────
-// Add each season file here. First entry = current season.
-const SEASONS = [
-  { id: "2025-26", label: "2025–26", dir: "/seasons/2025-26" },
-  { id: "2024-25", label: "2024–25", dir: "/seasons/2024-25" },
-  { id: "2023-24", label: "2023–24", dir: "/seasons/2023-24" },
-];
+// Season order is configured in config/seasons.json. First entry = current season.
+const SEASONS = seasonConfig.seasons;
 
 const CONFIG = {
   teamName: "UBC Knights",
   established: "2023",
-  totalGames: 24, // regular season games per team
 };
 
 // ── Colors ──────────────────────────────────────────────
@@ -53,8 +51,17 @@ let C = DARK;
 const GOALIE_EXCLUDE = ["Stuart Coy"];
 
 // ── CSV parsing ─────────────────────────────────────────
-function parseCSV(text) {
+function parseTable(text, requiredHeaders) {
   const result = Papa.parse(text.trim(), { header: true, skipEmptyLines: true });
+  const fields = (result.meta.fields || []).map((field) => field.trim().toLowerCase());
+  if (!requiredHeaders.some((field) => fields.includes(field)) || result.errors.length) {
+    throw new Error("Invalid stats CSV");
+  }
+  return result;
+}
+
+function parseCSV(text) {
+  const result = parseTable(text, ["player", "name"]);
   return result.data.map((row) => {
     const norm = {};
     Object.entries(row).forEach(([k, v]) => {
@@ -74,7 +81,7 @@ function parseCSV(text) {
 }
 
 function parseGoalieCSV(text) {
-  const result = Papa.parse(text.trim(), { header: true, skipEmptyLines: true });
+  const result = parseTable(text, ["player", "name"]);
   return result.data.map((row) => {
     const norm = {};
     Object.entries(row).forEach(([k, v]) => {
@@ -98,7 +105,7 @@ function parseGoalieCSV(text) {
 }
 
 function parseGamesCSV(text) {
-  const result = Papa.parse(text.trim(), { header: true, skipEmptyLines: true });
+  const result = parseTable(text, ["date"]);
   return result.data.map((row) => {
     const norm = {};
     Object.entries(row).forEach(([k, v]) => {
@@ -1725,10 +1732,8 @@ function GoalieStatsView({ data, columns }) {
 }
 
 // ── Pace Projections ───────────────────────────────────
-function PaceProjections({ data }) {
-  if (!data.length) return null;
-
-  const totalGames = CONFIG.totalGames;
+function PaceProjections({ data, totalGames }) {
+  if (!data.length || !Number.isInteger(totalGames) || totalGames <= 0) return null;
   const top = [...data]
     .filter((r) => r.gp >= 3) // minimum 3 games to project
     .sort((a, b) => b.ppg - a.ppg)
@@ -2294,39 +2299,18 @@ function TeamView({ goalieData, games, recaps, isAllTime, playoffMode, tournamen
 }
 
 // ── AwardsView ─────────────────────────────────────────
-const AUTO_AWARDS = [
-  { name: "Ironman", description: "Most games played", compute: (sk) => { const w = sk.reduce((a, b) => b.gp > a.gp ? b : a, sk[0]); return { winner: w.player, stat: `${w.gp} GP` }; } },
-  { name: "Cheechoo Train", description: "Most goals", compute: (sk) => { const w = sk.reduce((a, b) => b.g > a.g ? b : a, sk[0]); return { winner: w.player, stat: `${w.g} G` }; } },
-  { name: "Adam Banks", description: "Most points", compute: (sk) => { const w = sk.reduce((a, b) => b.p > a.p ? b : a, sk[0]); return { winner: w.player, stat: `${w.p} PTS` }; } },
-  { name: "Jumbo Joe", description: "Most assists", compute: (sk) => { const w = sk.reduce((a, b) => b.a > a.a ? b : a, sk[0]); return { winner: w.player, stat: `${w.a} A` }; } },
-  { name: "Frequent Flyer", description: "Most penalty minutes", compute: (sk) => { const w = sk.reduce((a, b) => b.pm > a.pm ? b : a, sk[0]); return { winner: w.player, stat: `${w.pm} PIM` }; } },
-  { name: "Ghost Checker", description: "Fewest penalty minutes", compute: (sk) => { const eligible = sk.filter((s) => s.gp > 0); const w = eligible.reduce((a, b) => b.pm < a.pm ? b : a, eligible[0]); return { winner: w.player, stat: `${w.pm} PIM` }; } },
-  { name: "Heartbeat Hero", description: "Goalie never taking a night off", computeGoalie: (gl) => { if (!gl.length) return null; const w = gl.reduce((a, b) => b.gp > a.gp ? b : a, gl[0]); return { winner: w.player, stat: `${w.gp} GP` }; } },
-];
 
 function AwardsView({ skaterData, goalieData, manualAwards }) {
-  const allAwards = useMemo(() => {
-    const awards = [];
-    if (skaterData.length > 0) {
-      AUTO_AWARDS.forEach((def) => {
-        let result = null;
-        if (def.compute) result = def.compute(skaterData);
-        else if (def.computeGoalie) result = def.computeGoalie(goalieData);
-        if (result) awards.push({ name: def.name, description: def.description, ...result });
-      });
-    }
-    manualAwards.forEach((a) => {
-      awards.push({
-        name: a.name,
-        description: a.description,
-        winner: a.winners ? a.winners.join(", ") : a.winner,
-        stat: a.stat || "",
-      });
-    });
-    return awards;
-  }, [skaterData, goalieData, manualAwards]);
+  const allAwards = useMemo(
+    () => computeAwards(skaterData, goalieData, manualAwards),
+    [skaterData, goalieData, manualAwards],
+  );
 
-  if (allAwards.length === 0) return null;
+  if (allAwards.length === 0) return (
+    <p style={{ textAlign: "center", padding: 40, color: C.textDim }}>
+      Awards will appear once games have been played.
+    </p>
+  );
 
   return (
     <div style={{ animation: "fadeSlideUp 0.5s ease 100ms both" }}>
@@ -2555,10 +2539,11 @@ export default function App() {
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
     if (tabId !== "history") setHistorySeason(null);
-    if (tabId === "alltime" && statView === "awards") setStatView("skaters");
+    if ((tabId === "alltime" && statView === "awards") || (tabId !== "alltime" && statView === "records")) setStatView("skaters");
     setGameMode("regular");
   };
   const handleHistorySelect = (seasonId) => {
+    if (statView === "records") setStatView("skaters");
     setActiveTab("history");
     setHistorySeason(seasonId);
     setGameMode("regular");
@@ -2856,6 +2841,15 @@ export default function App() {
           })()}
         </div>
 
+        {errors.length > 0 && (
+          <p role="alert" style={{ color: C.gold, padding: "12px 0" }}>
+            Some stats could not be loaded ({[...new Set(errors)].join(", ")}). Reload the page to try again.
+          </p>
+        )}
+        {activeTab === "current" && (
+          <UpcomingSchedule key={gameMode} season={SEASONS[0]} mode={gameMode} colors={C} />
+        )}
+
         {/* Content */}
         {statView === "records" ? (
           <RecordsView seasonData={tournamentMode ? tournamentSeasonData : playoffMode ? playoffSeasonData : seasonData} goalieData={tournamentMode ? tournamentGoalieData : playoffMode ? playoffGoalieData : goalieData} gamesData={tournamentMode ? tournamentGamesData : playoffMode ? playoffGamesData : gamesData} recapsData={tournamentMode ? tournamentRecapsData : playoffMode ? playoffRecapsData : recapsData} allTimeData={tournamentMode ? allTimeTournamentData : playoffMode ? allTimePlayoffData : allTimeData} />
@@ -2873,7 +2867,7 @@ export default function App() {
                 <StatsView data={enrichedData} columns={activeCols} seasonData={seasonData} />
                 {activeTab !== "alltime" && !playoffMode && !tournamentMode && <CumulativePointsChart recaps={activeRecaps} />}
                 <ScoringDonut data={enrichedData} />
-                {activeTab === "current" && !tournamentMode && <PaceProjections data={enrichedData} />}
+                {activeTab === "current" && gameMode === "regular" && <PaceProjections data={enrichedData} totalGames={SEASONS[0].totalGames} />}
                 {activeTab !== "alltime" && activeRecaps.length > 0 && (() => {
                   const combos = computeScoringCombos(activeRecaps).slice(0, 10);
                   if (!combos.length) return null;
@@ -2966,9 +2960,11 @@ export default function App() {
             textAlign: "center", padding: 60, color: C.textFaint,
             fontFamily: "'Outfit', sans-serif",
           }}>
-            <p style={{ fontSize: 15 }}>No data available</p>
+            <p style={{ fontSize: 15 }}>No stats available yet</p>
             <p style={{ fontSize: 13, marginTop: 8, color: C.textDim }}>
-              Select a season from the History menu
+              {activeTab === "current"
+                ? "Stats will appear after the first completed game is imported. Past seasons are available in History."
+                : "There are no player stats for this selection."}
             </p>
           </div>
         )}

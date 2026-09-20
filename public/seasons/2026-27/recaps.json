@@ -1,0 +1,147 @@
+[
+  {
+    "id": "421ajaRC5CqOWcpC",
+    "date": "2026-09-19",
+    "opponent": "Havana Outlaws",
+    "gf": 8,
+    "ga": 2,
+    "result": "W",
+    "ot": false,
+    "periods": [
+      {
+        "name": "1st",
+        "shotsHome": 10,
+        "shotsAway": 14,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "shotsHome": 4,
+        "shotsAway": 14,
+        "goalsHome": 0,
+        "goalsAway": 3
+      },
+      {
+        "name": "3rd",
+        "shotsHome": 19,
+        "shotsAway": 10,
+        "goalsHome": 2,
+        "goalsAway": 4
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:03:36",
+        "team": "Knights",
+        "scorer": "James Deady",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:27",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": [
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:31",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:19",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Stuart Coy"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:19",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:46",
+        "team": "Havana Outlaws",
+        "scorer": "Nick Harriss",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:48",
+        "team": "Knights",
+        "scorer": "Peter Stokes",
+        "assists": [
+          "Mike Kari"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:04:40",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:21",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:51",
+        "team": "Havana Outlaws",
+        "scorer": "Grayson Williams",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:08:56",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "High Sticking - Accidental",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:01:56",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Cross-Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:09:02",
+        "team": "Knights",
+        "player": "Mike Kari",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
+  }
+]

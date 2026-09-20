@@ -1,4 +1,13 @@
-schedule_id: "oLtOPiBmSkBVNlIo"
+# Team and competition from the SportNinja link supplied for the new season.
 team_id: "vzPOLIu6nhIQ8GXh"
-season: "2025-26"
+season: "2026-27"
 api_base: "https://metal-api.sportninja.net/v1"
+timezone: "America/Vancouver"
+schedules:
+  regular: "QFp35Jr1ctPw0GZX"
+  playoffs: null
+  tournament: null
+# Temporary, explicitly confirmed final by the team owner. Ignored once SportNinja
+# marks this game final; remove after the next successful official-stats refresh.
+confirmed_final_games:
+  - "421ajaRC5CqOWcpC"

@@ -1,0 +1,28 @@
+{
+  "seasons": [
+    {
+      "id": "2026-27",
+      "label": "2026\u201327",
+      "dir": "/seasons/2026-27",
+      "totalGames": null
+    },
+    {
+      "id": "2025-26",
+      "label": "2025\u201326",
+      "dir": "/seasons/2025-26",
+      "totalGames": 24
+    },
+    {
+      "id": "2024-25",
+      "label": "2024\u201325",
+      "dir": "/seasons/2024-25",
+      "totalGames": null
+    },
+    {
+      "id": "2023-24",
+      "label": "2023\u201324",
+      "dir": "/seasons/2023-24",
+      "totalGames": null
+    }
+  ]
+}
