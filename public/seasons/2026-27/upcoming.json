@@ -1,0 +1,15 @@
+{
+  "games": [
+    {
+      "id": "HAuSwxjd3p09MYD1",
+      "startsAt": "2026-09-27T05:15:00+00:00",
+      "opponent": "West Coast Express",
+      "home": true,
+      "venue": "Protrans Arena",
+      "facility": "Doug Mitchell Thunderbird Sports Center"
+    }
+  ],
+  "pendingGames": [],
+  "statsSource": "scoring-summary",
+  "updatedAt": "2026-09-20T19:16:33.711726+00:00"
+}
