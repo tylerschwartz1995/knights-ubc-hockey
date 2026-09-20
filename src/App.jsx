@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import Papa from "papaparse";
 import { computeAwards } from "./awards.js";
 import seasonConfig from "../config/seasons.json";
-import { UpcomingSchedule } from "./UpcomingSchedule.jsx";
 import { Analytics } from "@vercel/analytics/react";
 
 // ── Config ──────────────────────────────────────────────
@@ -2539,7 +2538,7 @@ export default function App() {
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
     if (tabId !== "history") setHistorySeason(null);
-    if ((tabId === "alltime" && statView === "awards") || (tabId !== "alltime" && statView === "records")) setStatView("skaters");
+    if ((tabId !== "history" && statView === "awards") || (tabId !== "alltime" && statView === "records")) setStatView("skaters");
     setGameMode("regular");
   };
   const handleHistorySelect = (seasonId) => {
@@ -2786,7 +2785,7 @@ export default function App() {
           animation: "fadeSlideUp 0.5s ease 120ms both",
         }}>
           <div style={{ display: "flex", gap: 4, overflowX: "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" }}>
-            {["skaters", "goalies", "team", "records", "awards"].filter((view) => (view !== "awards" || (activeTab !== "alltime" && !playoffMode && !tournamentMode)) && (view !== "records" || activeTab === "alltime")).map((view) => (
+            {["skaters", "goalies", "team", "records", "awards"].filter((view) => (view !== "awards" || (activeTab === "history" && !playoffMode && !tournamentMode)) && (view !== "records" || activeTab === "alltime")).map((view) => (
               <button
                 key={view}
                 className="vgk-stat-view-btn"
@@ -2845,9 +2844,6 @@ export default function App() {
           <p role="alert" style={{ color: C.gold, padding: "12px 0" }}>
             Some stats could not be loaded ({[...new Set(errors)].join(", ")}). Reload the page to try again.
           </p>
-        )}
-        {activeTab === "current" && (
-          <UpcomingSchedule key={gameMode} season={SEASONS[0]} mode={gameMode} colors={C} />
         )}
 
         {/* Content */}
