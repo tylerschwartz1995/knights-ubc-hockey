@@ -2861,7 +2861,7 @@ export default function App() {
               </>
             : <>
                 <StatsView data={enrichedData} columns={activeCols} seasonData={seasonData} />
-                {activeTab !== "alltime" && !playoffMode && !tournamentMode && <CumulativePointsChart recaps={activeRecaps} />}
+                {activeTab !== "alltime" && !playoffMode && !tournamentMode && (activeTab !== "current" || activeGames.length >= 5) && <CumulativePointsChart recaps={activeRecaps} />}
                 <ScoringDonut data={enrichedData} />
                 {activeTab === "current" && gameMode === "regular" && <PaceProjections data={enrichedData} totalGames={SEASONS[0].totalGames} />}
                 {activeTab !== "alltime" && activeRecaps.length > 0 && (() => {
