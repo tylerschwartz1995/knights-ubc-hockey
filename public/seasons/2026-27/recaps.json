@@ -147,5 +147,310 @@
       }
     ],
     "clockDirection": "remaining"
+  },
+  {
+    "id": "HAuSwxjd3p09MYD1",
+    "date": "2026-09-26",
+    "opponent": "West Coast Express",
+    "gf": 0,
+    "ga": 8,
+    "result": "L",
+    "ot": false,
+    "clockDirection": "remaining",
+    "periods": [
+      {
+        "name": "1st",
+        "durationSeconds": 780.0,
+        "shotsHome": 7,
+        "shotsAway": 14,
+        "goalsHome": 0,
+        "goalsAway": 2
+      },
+      {
+        "name": "2nd",
+        "durationSeconds": 780.0,
+        "shotsHome": 12,
+        "shotsAway": 15,
+        "goalsHome": 0,
+        "goalsAway": 2
+      },
+      {
+        "name": "3rd",
+        "durationSeconds": 780.0,
+        "shotsHome": 0,
+        "shotsAway": 4,
+        "goalsHome": 0,
+        "goalsAway": 4
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:10:12",
+        "team": "West Coast Express",
+        "scorer": "Joe Combey-Robertson",
+        "assists": [
+          "Steve Harland"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:01:43",
+        "team": "West Coast Express",
+        "scorer": "Steve Harland",
+        "assists": [
+          "Simrat Dhindsa"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:16",
+        "team": "West Coast Express",
+        "scorer": "Josh Alexander",
+        "assists": [
+          "Bryson Sihota"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:29",
+        "team": "West Coast Express",
+        "scorer": "Ben Morris",
+        "assists": [
+          "Quinn Mell-Cobb"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:15",
+        "team": "West Coast Express",
+        "scorer": "Quinn Mell-Cobb",
+        "assists": [
+          "Ben Morris",
+          "Josh Alexander"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:18",
+        "team": "West Coast Express",
+        "scorer": "Joe Combey-Robertson",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:23",
+        "team": "West Coast Express",
+        "scorer": "Ben Morris",
+        "assists": [
+          "Quinn Mell-Cobb"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:31",
+        "team": "West Coast Express",
+        "scorer": "Bryson Sihota",
+        "assists": [
+          "Jack Little"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:00:09",
+        "team": "West Coast Express",
+        "player": "Greg Brydon",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:16",
+        "team": "West Coast Express",
+        "player": "Joe Combey-Robertson",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:07",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Body Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:26",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:05:16",
+        "team": "Knights",
+        "player": "Kerry Regan",
+        "type": "Cross-Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:18",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Body Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      }
+    ]
+  },
+  {
+    "id": "jc5ujMMZ0CyO4Qze",
+    "date": "2026-10-01",
+    "opponent": "Fat Tugs",
+    "gf": 5,
+    "ga": 3,
+    "result": "W",
+    "ot": false,
+    "clockDirection": "remaining",
+    "periods": [
+      {
+        "name": "1st",
+        "durationSeconds": 780.0,
+        "shotsHome": 10,
+        "shotsAway": 10,
+        "goalsHome": 1,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "durationSeconds": 780.0,
+        "shotsHome": 21,
+        "shotsAway": 13,
+        "goalsHome": 2,
+        "goalsAway": 0
+      },
+      {
+        "name": "3rd",
+        "durationSeconds": 780.0,
+        "shotsHome": 11,
+        "shotsAway": 18,
+        "goalsHome": 2,
+        "goalsAway": 3
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:00:53",
+        "team": "Knights",
+        "scorer": "Matt Kolec",
+        "assists": [
+          "Tyler Schwartz",
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:40",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Tyler Schwartz",
+          "Matt Kolec"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:15",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Kelsey Regan"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:11:10",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Matt Kolec"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:21",
+        "team": "Fat Tugs",
+        "scorer": "Chris Chebaya",
+        "assists": [
+          "Connor Jung"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:30",
+        "team": "Fat Tugs",
+        "scorer": "Connor Jung",
+        "assists": [
+          "Max Valade"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:41",
+        "team": "Fat Tugs",
+        "scorer": "Connor Jung",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:08",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": [
+          "Mike Kari",
+          "James Deady"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:11:34",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:34",
+        "team": "Fat Tugs",
+        "player": "Chris Chebaya",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:07:36",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
   }
 ]

@@ -1,15 +1,39 @@
 {
   "games": [
     {
-      "id": "HAuSwxjd3p09MYD1",
-      "startsAt": "2026-09-27T05:15:00+00:00",
+      "id": "zAxw7OZWxBjoMwwI",
+      "startsAt": "2026-10-07T04:00:00+00:00",
+      "opponent": "Havana Outlaws",
+      "home": false,
+      "venue": "Protrans Arena",
+      "facility": ""
+    },
+    {
+      "id": "UuXZH0ww8AmIRwET",
+      "startsAt": "2026-10-16T03:30:00+00:00",
+      "opponent": "West Coast Express",
+      "home": true,
+      "venue": "Father Bauer Arena",
+      "facility": ""
+    },
+    {
+      "id": "7AjoJiGGAPs8PEDB",
+      "startsAt": "2026-10-21T04:00:00+00:00",
       "opponent": "West Coast Express",
       "home": true,
       "venue": "Protrans Arena",
-      "facility": "Doug Mitchell Thunderbird Sports Center"
+      "facility": ""
+    },
+    {
+      "id": "c0J2u3kim5FjQSMi",
+      "startsAt": "2026-11-02T03:15:00+00:00",
+      "opponent": "Kraken Beers",
+      "home": false,
+      "venue": "Protrans Arena",
+      "facility": ""
     }
   ],
   "pendingGames": [],
   "statsSource": "scoring-summary",
-  "updatedAt": "2026-09-20T19:16:33.711726+00:00"
+  "updatedAt": "2026-10-02T06:46:34.576682+00:00"
 }

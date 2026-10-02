@@ -1,8 +1,9 @@
 [
   {
-    "gameId": "421ajaRC5CqOWcpC",
-    "reason": "Owner confirmed final; SportNinja status is incorrect",
-    "source": "SportNinja scoring timeline and active game roster",
-    "goalieMinutes": "Sum of recorded regulation period durations; full game confirmed by owner"
+    "gameId": "HAuSwxjd3p09MYD1",
+    "reason": "Owner confirmed 0\u20138 final; SportNinja status is incorrect",
+    "source": "Official season totals for finalized games plus SportNinja scoring timeline and active roster for this game",
+    "goalieMinutes": "39 minutes from three recorded 13-minute periods; one active goalie and no goalie changes",
+    "reconciliation": "Official totals were verified against both finalized game timelines before adding this game. Default refresh removal checks prevent overwriting this correction until SportNinja finalizes the game."
   }
 ]
