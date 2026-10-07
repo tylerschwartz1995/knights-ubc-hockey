@@ -1,14 +1,6 @@
 {
   "games": [
     {
-      "id": "zAxw7OZWxBjoMwwI",
-      "startsAt": "2026-10-07T04:00:00+00:00",
-      "opponent": "Havana Outlaws",
-      "home": false,
-      "venue": "Protrans Arena",
-      "facility": ""
-    },
-    {
       "id": "UuXZH0ww8AmIRwET",
       "startsAt": "2026-10-16T03:30:00+00:00",
       "opponent": "West Coast Express",
@@ -35,5 +27,5 @@
   ],
   "pendingGames": [],
   "statsSource": "scoring-summary",
-  "updatedAt": "2026-10-02T06:46:34.576682+00:00"
+  "updatedAt": "2026-10-07T07:41:06.805569+00:00"
 }

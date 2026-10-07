@@ -4,6 +4,6 @@
     "reason": "Owner confirmed 0\u20138 final; SportNinja status is incorrect",
     "source": "Official season totals for finalized games plus SportNinja scoring timeline and active roster for this game",
     "goalieMinutes": "39 minutes from three recorded 13-minute periods; one active goalie and no goalie changes",
-    "reconciliation": "Official totals were verified against both finalized game timelines before adding this game. Default refresh removal checks prevent overwriting this correction until SportNinja finalizes the game."
+    "reconciliation": "Official totals were verified against all three finalized game timelines before adding this game. Default refresh removal checks prevent overwriting this correction until SportNinja finalizes the game."
   }
 ]
