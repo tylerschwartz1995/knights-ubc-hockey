@@ -1,14 +1,6 @@
 {
   "games": [
     {
-      "id": "UuXZH0ww8AmIRwET",
-      "startsAt": "2026-10-16T03:30:00+00:00",
-      "opponent": "West Coast Express",
-      "home": true,
-      "venue": "Father Bauer Arena",
-      "facility": ""
-    },
-    {
       "id": "7AjoJiGGAPs8PEDB",
       "startsAt": "2026-10-21T04:00:00+00:00",
       "opponent": "West Coast Express",
@@ -27,5 +19,5 @@
   ],
   "pendingGames": [],
   "statsSource": "scoring-summary",
-  "updatedAt": "2026-10-07T07:41:06.805569+00:00"
+  "updatedAt": "2026-10-16T18:44:02.359212+00:00"
 }

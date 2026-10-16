@@ -569,5 +569,142 @@
         "minutes": 2
       }
     ]
+  },
+  {
+    "id": "UuXZH0ww8AmIRwET",
+    "date": "2026-10-15",
+    "opponent": "West Coast Express",
+    "gf": 4,
+    "ga": 2,
+    "result": "W",
+    "ot": false,
+    "clockDirection": "remaining",
+    "periods": [
+      {
+        "name": "1st",
+        "durationSeconds": 780.0,
+        "shotsHome": 9,
+        "shotsAway": 6,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "durationSeconds": 780.0,
+        "shotsHome": 15,
+        "shotsAway": 15,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "durationSeconds": 780.0,
+        "shotsHome": 11,
+        "shotsAway": 7,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:04:39",
+        "team": "West Coast Express",
+        "scorer": "Josh Alexander",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:05:08",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:29",
+        "team": "West Coast Express",
+        "scorer": "Jack Little",
+        "assists": [
+          "Bryson Sihota",
+          "Brendan Sprague"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:23",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Nathaniel Stuart"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:01",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "James Deady",
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:54",
+        "team": "Knights",
+        "scorer": "Mark Seinen",
+        "assists": []
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:02:59",
+        "team": "Knights",
+        "player": "Tyler Schwartz",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:44",
+        "team": "Knights",
+        "player": "Kyle Misewich",
+        "type": "Interference",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:55",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:06:30",
+        "team": "West Coast Express",
+        "player": "Joe Combey-Robertson",
+        "type": "Slashing",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:55",
+        "team": "West Coast Express",
+        "player": "Jack Little",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
   }
 ]
