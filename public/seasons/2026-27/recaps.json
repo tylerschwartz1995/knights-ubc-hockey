@@ -706,5 +706,214 @@
         "minutes": 2
       }
     ]
+  },
+  {
+    "id": "7AjoJiGGAPs8PEDB",
+    "date": "2026-10-20",
+    "opponent": "West Coast Express",
+    "gf": 3,
+    "ga": 9,
+    "result": "L",
+    "ot": false,
+    "clockDirection": "remaining",
+    "periods": [
+      {
+        "name": "1st",
+        "durationSeconds": 780.0,
+        "shotsHome": 4,
+        "shotsAway": 1,
+        "goalsHome": 0,
+        "goalsAway": 1
+      },
+      {
+        "name": "2nd",
+        "durationSeconds": 780.0,
+        "shotsHome": 2,
+        "shotsAway": 14,
+        "goalsHome": 1,
+        "goalsAway": 5
+      },
+      {
+        "name": "3rd",
+        "durationSeconds": 780.0,
+        "shotsHome": 26,
+        "shotsAway": 20,
+        "goalsHome": 2,
+        "goalsAway": 3
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:09:15",
+        "team": "West Coast Express",
+        "scorer": "Cam Forbes",
+        "assists": [
+          "Josh Alexander"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:12:00",
+        "team": "West Coast Express",
+        "scorer": "Cam Forbes",
+        "assists": [
+          "Kai Hughes"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:57",
+        "team": "West Coast Express",
+        "scorer": "Brad Dove",
+        "assists": [
+          "Jack Little"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:07:39",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Stuart Coy",
+          "Scott Coy"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:39",
+        "team": "West Coast Express",
+        "scorer": "Jack Little",
+        "assists": [
+          "Scott Alexander",
+          "Oliver Colbourne"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:03:52",
+        "team": "West Coast Express",
+        "scorer": "Oliver Colbourne",
+        "assists": [
+          "Jack Little",
+          "Josh Alexander"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:04",
+        "team": "West Coast Express",
+        "scorer": "Kai Hughes",
+        "assists": [
+          "Oliver Colbourne"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:56",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Scott Coy",
+          "Kelsey Regan"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:00",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Kelsey Regan",
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:12:22",
+        "team": "West Coast Express",
+        "scorer": "Oliver Colbourne",
+        "assists": [
+          "Brad Dove"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:12:07",
+        "team": "West Coast Express",
+        "scorer": "Michael Gee",
+        "assists": [
+          "Jack Little",
+          "Josh Alexander"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:05:13",
+        "team": "West Coast Express",
+        "scorer": "Kai Hughes",
+        "assists": [
+          "Oliver Colbourne",
+          "Derek Hinchcliffe"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:06:25",
+        "team": "West Coast Express",
+        "player": "Bryson Sihota",
+        "type": "Chk Behind",
+        "severity": "Major",
+        "minutes": 5
+      },
+      {
+        "period": "2nd",
+        "time": "00:08:15",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:27",
+        "team": "West Coast Express",
+        "player": "Josh Alexander",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:56",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Slashing",
+        "severity": "Major",
+        "minutes": 5
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:56",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Head Contact",
+        "severity": "Major",
+        "minutes": 5
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:56",
+        "team": "West Coast Express",
+        "player": "Oliver Colbourne",
+        "type": "Slashing",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
   }
 ]

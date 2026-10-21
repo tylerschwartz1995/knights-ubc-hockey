@@ -12,5 +12,12 @@
     "source": "SportNinja finalized scoring timeline and active game roster",
     "goalieMinutes": "39 minutes from three recorded 13-minute periods; one active goalie and no goalie changes",
     "reconciliation": "Added this game once to the previously verified four-game totals. Reconcile with official season totals on the next authenticated refresh; preserve the September 26 correction while that game remains unfinalized."
+  },
+  {
+    "gameId": "7AjoJiGGAPs8PEDB",
+    "reason": "Finalized game added from public timeline, continuing the scoring-summary refresh",
+    "source": "SportNinja finalized scoring timeline and active game roster",
+    "goalieMinutes": "39 minutes from recorded regulation periods; one active goalie and no goalie changes",
+    "reconciliation": "Added this game once to the previously verified five-game totals. Reconcile with official season totals on the next authenticated refresh; preserve the September 26 correction while that game remains unfinalized."
   }
 ]
