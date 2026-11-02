@@ -1,15 +1,6 @@
 {
-  "games": [
-    {
-      "id": "c0J2u3kim5FjQSMi",
-      "startsAt": "2026-11-02T03:15:00+00:00",
-      "opponent": "Kraken Beers",
-      "home": false,
-      "venue": "Protrans Arena",
-      "facility": ""
-    }
-  ],
+  "games": [],
   "pendingGames": [],
   "statsSource": "scoring-summary",
-  "updatedAt": "2026-10-21T07:04:51.537666+00:00"
+  "updatedAt": "2026-11-02T17:27:32.127240+00:00"
 }

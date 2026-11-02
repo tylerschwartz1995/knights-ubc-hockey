@@ -915,5 +915,113 @@
         "minutes": 2
       }
     ]
+  },
+  {
+    "id": "c0J2u3kim5FjQSMi",
+    "date": "2026-11-01",
+    "opponent": "Kraken Beers",
+    "gf": 1,
+    "ga": 3,
+    "result": "L",
+    "ot": false,
+    "clockDirection": "remaining",
+    "periods": [
+      {
+        "name": "1st",
+        "durationSeconds": 780.0,
+        "shotsHome": 12,
+        "shotsAway": 6,
+        "goalsHome": 0,
+        "goalsAway": 0
+      },
+      {
+        "name": "2nd",
+        "durationSeconds": 780.0,
+        "shotsHome": 15,
+        "shotsAway": 13,
+        "goalsHome": 2,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "durationSeconds": 780.0,
+        "shotsHome": 15,
+        "shotsAway": 16,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "2nd",
+        "time": "00:11:35",
+        "team": "Kraken Beers",
+        "scorer": "Jordan Dhaliwal",
+        "assists": [
+          "Ryan Tam"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:47",
+        "team": "Knights",
+        "scorer": "Kelsey Regan",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:06:19",
+        "team": "Kraken Beers",
+        "scorer": "Jordan Dhaliwal",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:10:24",
+        "team": "Kraken Beers",
+        "scorer": "Ryan Graves",
+        "assists": [
+          "Tyler Dhaliwal"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:02:59",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Body Chk",
+        "severity": "Dbl Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:12:00",
+        "team": "Knights",
+        "player": "Mike Kari",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:10:03",
+        "team": "Knights",
+        "player": "Scott Coy",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:19",
+        "team": "Knights",
+        "player": "Sebastian Silley",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
   }
 ]
