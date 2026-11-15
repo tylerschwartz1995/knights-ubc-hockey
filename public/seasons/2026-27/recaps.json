@@ -1023,5 +1023,132 @@
         "minutes": 2
       }
     ]
+  },
+  {
+    "id": "evZiM6wJ4iFrlg5q",
+    "date": "2026-11-14",
+    "opponent": "Fat Tugs",
+    "gf": 4,
+    "ga": 3,
+    "result": "W",
+    "ot": true,
+    "clockDirection": "remaining",
+    "periods": [
+      {
+        "name": "1st",
+        "durationSeconds": 780.0,
+        "shotsHome": 8,
+        "shotsAway": 14,
+        "goalsHome": 1,
+        "goalsAway": 2
+      },
+      {
+        "name": "2nd",
+        "durationSeconds": 780.0,
+        "shotsHome": 13,
+        "shotsAway": 12,
+        "goalsHome": 1,
+        "goalsAway": 1
+      },
+      {
+        "name": "3rd",
+        "durationSeconds": 780.0,
+        "shotsHome": 17,
+        "shotsAway": 10,
+        "goalsHome": 1,
+        "goalsAway": 0
+      },
+      {
+        "name": "OT1",
+        "durationSeconds": 300.0,
+        "shotsHome": 3,
+        "shotsAway": 3,
+        "goalsHome": 1,
+        "goalsAway": 0
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:01:59",
+        "team": "Fat Tugs",
+        "scorer": "Alex Vidic",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:01:15",
+        "team": "Fat Tugs",
+        "scorer": "Mick Cameron",
+        "assists": [
+          "Chris Macdonnell"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:00:45",
+        "team": "Knights",
+        "scorer": "Matt Kolec",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:12:03",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:01:50",
+        "team": "Fat Tugs",
+        "scorer": "Jacob Vanderpas",
+        "assists": [
+          "Ethan Lawrie"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:22",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Kelsey Regan"
+        ]
+      },
+      {
+        "period": "OT1",
+        "time": "00:02:23",
+        "team": "Knights",
+        "scorer": "Stuart Coy",
+        "assists": [
+          "Kelsey Regan"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "2nd",
+        "time": "00:04:00",
+        "team": "Knights",
+        "player": "Kelsey Regan",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:56",
+        "team": "Knights",
+        "player": "Stuart Coy",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
   }
 ]
