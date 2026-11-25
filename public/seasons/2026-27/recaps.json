@@ -1150,5 +1150,231 @@
         "minutes": 2
       }
     ]
+  },
+  {
+    "id": "rD7LuVA20hA0vmCC",
+    "date": "2026-11-21",
+    "opponent": "West Coast Express",
+    "gf": 12,
+    "ga": 5,
+    "result": "W",
+    "ot": false,
+    "clockDirection": "remaining",
+    "periods": [
+      {
+        "name": "1st",
+        "durationSeconds": 780.0,
+        "shotsHome": 10,
+        "shotsAway": 16,
+        "goalsHome": 2,
+        "goalsAway": 5
+      },
+      {
+        "name": "2nd",
+        "durationSeconds": 780.0,
+        "shotsHome": 13,
+        "shotsAway": 15,
+        "goalsHome": 1,
+        "goalsAway": 4
+      },
+      {
+        "name": "3rd",
+        "durationSeconds": 780.0,
+        "shotsHome": 10,
+        "shotsAway": 14,
+        "goalsHome": 2,
+        "goalsAway": 3
+      }
+    ],
+    "goals": [
+      {
+        "period": "1st",
+        "time": "00:12:38",
+        "team": "West Coast Express",
+        "scorer": "Nick Okuma",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:03:59",
+        "team": "West Coast Express",
+        "scorer": "Quinn Mell-Cobb",
+        "assists": [
+          "Jack Little"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:09:01",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:07:22",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:05:50",
+        "team": "Knights",
+        "scorer": "Peter Stokes",
+        "assists": []
+      },
+      {
+        "period": "1st",
+        "time": "00:05:18",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "James Deady"
+        ]
+      },
+      {
+        "period": "1st",
+        "time": "00:01:04",
+        "team": "Knights",
+        "scorer": "Nick Gorse",
+        "assists": [
+          "Sebastian Silley"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:09:12",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Peter Stokes"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:04:50",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:02:10",
+        "team": "Knights",
+        "scorer": "Mike Matthews",
+        "assists": []
+      },
+      {
+        "period": "2nd",
+        "time": "00:00:13",
+        "team": "Knights",
+        "scorer": "Tyler Schwartz",
+        "assists": [
+          "Kelsey Regan"
+        ]
+      },
+      {
+        "period": "2nd",
+        "time": "00:11:51",
+        "team": "West Coast Express",
+        "scorer": "Quinn Mell-Cobb",
+        "assists": [
+          "Jeff Desjardins",
+          "Michael Gee"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:08:39",
+        "team": "Knights",
+        "scorer": "Scott Coy",
+        "assists": [
+          "Tyler Schwartz"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:35",
+        "team": "Knights",
+        "scorer": "Sebastian Silley",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:02:41",
+        "team": "West Coast Express",
+        "scorer": "Michael Gee",
+        "assists": []
+      },
+      {
+        "period": "3rd",
+        "time": "00:01:03",
+        "team": "Knights",
+        "scorer": "Mike Kari",
+        "assists": [
+          "Nick Gorse"
+        ]
+      },
+      {
+        "period": "3rd",
+        "time": "00:00:21",
+        "team": "West Coast Express",
+        "scorer": "David Rennie",
+        "assists": [
+          "Quinn Mell-Cobb",
+          "Nick Okuma"
+        ]
+      }
+    ],
+    "penalties": [
+      {
+        "period": "1st",
+        "time": "00:10:55",
+        "team": "West Coast Express",
+        "player": "Nick Okuma",
+        "type": "Hooking",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:07:55",
+        "team": "West Coast Express",
+        "player": "Jack Little",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:06:17",
+        "team": "West Coast Express",
+        "player": "Jeff Desjardins",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "1st",
+        "time": "00:03:22",
+        "team": "Knights",
+        "player": "Peter Stokes",
+        "type": "Roughing",
+        "severity": "Minor",
+        "minutes": 2
+      },
+      {
+        "period": "3rd",
+        "time": "00:03:40",
+        "team": "West Coast Express",
+        "player": "Michael Gee",
+        "type": "Tripping",
+        "severity": "Minor",
+        "minutes": 2
+      }
+    ]
   }
 ]
